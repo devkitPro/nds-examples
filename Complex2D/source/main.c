@@ -107,7 +107,7 @@ int main(void)
 	//vram banks are somewhat complex
 	vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_SUB_BG, VRAM_D_SUB_SPRITE);
 	
-	//irqs are nice..ndslib comes with a very unoptomized default handler
+	//irqs are nice..ndslib comes with a very unoptimised default handler
 	irqInitHandler(irqDefaultHandler);
 	irqSet(IRQ_VBLANK, irqVBlank);
 	
@@ -118,7 +118,7 @@ int main(void)
 	for(i = 0; i< 32*16; i++)
 		SPRITE_GFX_SUB[i] = ((u16*)balldata)[i];
 	
-	//turn of sprites
+	//turn off sprites
 	initOAM();
 
 	for(i = 0; i < NUM_SPRITES; i++)
