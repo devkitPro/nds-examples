@@ -12,22 +12,22 @@ Include Sub Directories=0
 [Group]
 0=
 [Open Files]
-Open File0=C:\projects\devkitPro\examples\nds\DefaultLoader\Makefile
-Open File Pos0=0
+Open File0=C:\projects\devkitPro\examples\nds\DefaultLoader\source\main.c
+Open File Pos0=931
 Open File Line0=0
-Open File Window Pos0=0,1,-1,-1,-4,-23,88,88,928,482
-Open File1=C:\projects\devkitPro\examples\nds\DefaultLoader\build\loader.map
-Open File Pos1=0
-Open File Line1=0
-Open File Window Pos1=0,1,-1,-1,-4,-23,110,110,954,508
-Open File2=C:\devkitARM_r11\arm-elf\lib\ds_cart.ld
-Open File Pos2=262
+Open File Window Pos0=0,1,-1,-1,-4,-23,154,154,994,548
+Open File1=C:\projects\devkitPro\examples\nds\DefaultLoader\Makefile
+Open File Pos1=1461
+Open File Line1=2262
+Open File Window Pos1=0,1,-1,-1,-4,-23,176,176,1020,574
+Open File2=C:\projects\devkitPro\examples\nds\DefaultLoader\build\loader.map
+Open File Pos2=6867
 Open File Line2=0
-Open File Window Pos2=0,1,-1,-1,-4,-23,132,132,976,530
-Open File3=C:\projects\devkitPro\examples\nds\DefaultLoader\source\main.c
+Open File Window Pos2=2,3,-1,-1,-4,-23,0,0,844,398
+Open File3=
 Open File Pos3=0
 Open File Line3=0
-Active File Index=4
+Active File Index=2
 Open File Window Pos3=0,1,-1,-1,-4,-23,154,154,998,552
 Open File4=C:\devkitARM_r11\arm-elf\lib\ds_arm7.ld
 Active File Display Mode=3
@@ -36,7 +36,7 @@ Open File Line4=0
 Open File Window Pos4=2,3,-1,-1,-4,-23,176,176,1020,574
 Open File5=
 [File View]
-Current Select=Project Files\source\main.c
+Current Select=Project Files
 Scroll Position=0
 [Files]
 0=Makefile
