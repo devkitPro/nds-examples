@@ -26,7 +26,7 @@ CFLAGS	:=	-g -Wall -O2\
 CFLAGS	+=	$(INCLUDE) -DARM7
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*).map
+LDFLAGS	=	-nostartfiles -g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*).map
 
 #---------------------------------------------------------------------------------
 # path to tools - this can be deleted if you set the path in windows

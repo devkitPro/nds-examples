@@ -34,7 +34,7 @@ LDFLAGS	=	-g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # path to tools - this can be deleted if you set the path in windows
 #---------------------------------------------------------------------------------
-export PATH		:=	/c/devkitARM_r11/bin:$(PATH)
+export PATH		:=	$(DEVKITARM):$(PATH)
  
 #---------------------------------------------------------------------------------
 # PATH to ndslib - just make a system variable called NDSLIBPATH and be done with it
