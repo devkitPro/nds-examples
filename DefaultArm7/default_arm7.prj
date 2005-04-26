@@ -1,7 +1,7 @@
 [Project ID]
 Signature=UE Proj: v.1
 [Open Files]
-Open File0=C:\projects\devkitPro\examples\nds\DefaultArm7\Makefile
+Open File0=
 Open File Pos0=708
 Open File Line0=0
 Open File Window Pos0=2,3,-1,-1,-4,-23,0,0,840,394
@@ -19,9 +19,9 @@ Open File Pos3=2199
 Open File Line3=2363
 Open File Window Pos3=0,1,-1,-1,-4,-23,176,176,1020,574
 Open File4=
-Active File Display Mode=3
+Active File Display Mode=-1
 [File View]
-Current Select=Project Files
+Current Select=Project Files\Makefile
 Scroll Position=0
 [Project Information]
 Filter=*.*
