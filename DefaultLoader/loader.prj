@@ -12,7 +12,7 @@ Include Sub Directories=0
 [Group]
 0=
 [Open Files]
-Open File0=C:\projects\devkitPro\examples\nds\DefaultLoader\Makefile
+Open File0=
 Open File Pos0=1168
 Open File Line0=941
 Open File Window Pos0=0,1,-1,-1,-4,-23,176,176,1020,574
@@ -30,13 +30,13 @@ Open File Line3=0
 Active File Index=1
 Open File Window Pos3=0,1,-1,-1,-4,-23,154,154,998,552
 Open File4=C:\devkitARM_r11\arm-elf\lib\ds_arm7.ld
-Active File Display Mode=3
+Active File Display Mode=-1
 Open File Pos4=281
 Open File Line4=0
 Open File Window Pos4=2,3,-1,-1,-4,-23,176,176,1020,574
 Open File5=
 [File View]
-Current Select=Project Files\
+Current Select=Project Files\Makefile
 Scroll Position=0
 [Files]
 0=Makefile

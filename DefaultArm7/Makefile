@@ -134,7 +134,6 @@ $(OUTPUT).elf	:	$(OFILES)
 %.bin: %.elf
 	@echo built ... $(notdir $@)
 	@$(OBJCOPY) -O binary $< $@
-	@gbafix	$@
 
 #---------------------------------------------------------------------------------
 %.elf:
