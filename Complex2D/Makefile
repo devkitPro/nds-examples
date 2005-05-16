@@ -30,12 +30,7 @@ CFLAGS	:=	-g -Wall -O2\
 CFLAGS	+=	$(INCLUDE) -DARM9
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*.map)
-
-#---------------------------------------------------------------------------------
-# path to tools - this can be deleted if you set the path in windows
-#---------------------------------------------------------------------------------
-export PATH		:=	$(DEVKITARM)/bin:$(PATH)
+LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*.map)
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -60,11 +55,6 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
  
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
  
-export CC		:=	$(PREFIX)gcc
-export CXX		:=	$(PREFIX)g++
-export AR		:=	$(PREFIX)ar
-export OBJCOPY	:=	$(PREFIX)objcopy
- 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
@@ -88,7 +78,7 @@ else
 endif
 #---------------------------------------------------------------------------------
 
-export OFILES	:=	$(MAPFILES:.map=.o) $(RAWFILES:.raw=.o) $(PALFILES:.pal=.o) $(BINFILES:.bin=.o) $(PCXFILES:.pcx=.o)\
+export OFILES	:=	$(BINFILES:.bin=.o) \
 					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
  
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
@@ -120,39 +110,9 @@ DEPENDS	:=	$(OFILES:.o=.d)
 # main targets
 #---------------------------------------------------------------------------------
 $(OUTPUT).ds.gba	: 	$(OUTPUT).nds
-
 $(OUTPUT).nds	: 	$(OUTPUT).bin
-
 $(OUTPUT).bin	:	$(OUTPUT).elf
- 
 $(OUTPUT).elf	:	$(OFILES)
- 
-#---------------------------------------------------------------------------------
-%.ds.gba: %.nds
-	dsbuild $<
-	@echo built ... $(notdir $@)
-
-#---------------------------------------------------------------------------------
-%.nds: %.bin
-	@ndstool -c $@ -9 $<
-	@echo built ... $(notdir $@)
-
-
-#---------------------------------------------------------------------------------
-%.bin: %.elf
-	@$(OBJCOPY) -O binary $< $@
-	@echo built ... $(notdir $@)
- 
-#---------------------------------------------------------------------------------
-%.elf:
-	@echo linking binary
-	@$(LD)  $(LDFLAGS) -specs=ds_arm9.specs $(OFILES) $(LIBPATHS) $(LIBS) -o $@
- 
-#---------------------------------------------------------------------------------
-%.o	:	%.pcx
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
  
 #---------------------------------------------------------------------------------
 %.o	:	%.bin
@@ -160,30 +120,6 @@ $(OUTPUT).elf	:	$(OFILES)
 	@echo $(notdir $<)
 	@$(bin2o)
  
-#---------------------------------------------------------------------------------
-%.o	:	%.raw
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
- 
-#---------------------------------------------------------------------------------
-%.o	:	%.pal
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
- 
-#---------------------------------------------------------------------------------
-%.o	:	%.map
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
-#---------------------------------------------------------------------------------
-%.o	:	%.mdl
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
  
 -include $(DEPENDS)
  
