@@ -13,10 +13,10 @@ Project Tagfile=
 Create Tagfile=0
 Include Sub Directories=0
 [Open Files]
-Open File0=C:\projects\devkitPro\buildscripts\tools\nds\ndstool\changelog
-Open File Pos0=950
+Open File0=C:\projects\devkitPro\examples\nds\Complex2D\Makefile
+Open File Pos0=177
 Open File Line0=0
-Open File Window Pos0=2,3,-1,-1,-4,-23,154,154,1027,594
+Open File Window Pos0=2,3,-1,-1,-4,-23,88,88,962,528
 Open File1=
 Open File Pos1=11
 Open File Line1=0
@@ -61,7 +61,7 @@ Open File Line10=0
 Open File Window Pos10=2,3,-1,-1,-4,-23,176,176,1053,620
 Open File11=
 [File View]
-Current Select=Project Files\
+Current Select=Project Files\Makefile
 Scroll Position=0
 [Files]
 0=Makefile
