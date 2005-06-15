@@ -6,8 +6,8 @@
 #include "nds.h"
 #include "nds/arm9/rand.h"
 
-#include "ballpalette.h"
-#include "balldata.h"
+#include "ballpalette_bin.h"
+#include "balldata_bin.h"
 
 //////////////////////////////////////////////////////////////////////
 #define NUM_SPRITES 128	
@@ -113,10 +113,10 @@ int main(void)
 	
 	/////////////Init the sprites ///////////
 	for(i = 0; i < 256; i++)
-		SPRITE_PALETTE_SUB[i] = ((u16*)ballpalette)[i];
+		SPRITE_PALETTE_SUB[i] = ((u16*)ballpalette_bin)[i];
 
 	for(i = 0; i< 32*16; i++)
-		SPRITE_GFX_SUB[i] = ((u16*)balldata)[i];
+		SPRITE_GFX_SUB[i] = ((u16*)balldata_bin)[i];
 	
 	//turn off sprites
 	initOAM();
