@@ -26,7 +26,7 @@ ARCH	:=	-mthumb -mthumb-interwork
 
 # note: arm9tdmi isn't the correct CPU arch, but anything newer and LD
 # *insists* it has a FPU or VFP, and it won't take no for an answer!
-CFLAGS	:=	-g -Wall -O2\
+CFLAGS	:=	-save-temps -g -Wall -O2\
  			-mcpu=arm9tdmi -mtune=arm9tdmi -fomit-frame-pointer\
 			-ffast-math \
 			$(ARCH)
@@ -35,7 +35,7 @@ CFLAGS	+=	$(INCLUDE) -DARM9
 CXXFLAGS	:= $(CFLAGS)
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -mno-fpu -Wl,-Map,$(notdir $*.map)
+LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map),--check-sections
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -106,7 +106,7 @@ clean:
 #---------------------------------------------------------------------------------
 else
  
-DEPENDS	:=	$(OFILES:.o=.d)
+DEPENDS	:=	$(OFILES:.o=.P)
  
 #---------------------------------------------------------------------------------
 # main targets
@@ -120,7 +120,7 @@ $(OUTPUT).elf	:	$(OFILES)
 %.o	:	%.bin
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
-	$(bin2o)
+	@$(bin2o)
  
  
 -include $(DEPENDS)
