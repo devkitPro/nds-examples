@@ -1,0 +1,1 @@
+<Project name="Complex_2D"><MagicFolder excludeFolders="CVS;.svn" filter="*.cpp;*.c" name="source" path="source\"><File path="main.cpp"></File></MagicFolder><File path="Makefile"></File></Project>

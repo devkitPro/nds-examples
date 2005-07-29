@@ -1,64 +1,67 @@
-//////////////////////////////////////////////////////////////////////
-// $Id $
-//
-// -- dovoto
-//
-// $Log: not supported by cvs2svn $
-//
-// 
-//////////////////////////////////////////////////////////////////////
+/*---------------------------------------------------------------------------------
+	$Id: main.cpp,v 1.3 2005-07-29 04:50:24 wntrmute Exp $
 
-#include <nds.h>
+	-- dovoto
+
+	$Log: not supported by cvs2svn $
+	Revision 1.2  2005/07/29 03:56:33  dovoto
+	Removed VAR_IN_EXRAM references.
+	Replaced instances of <nds/arm9/rand.h> with <stdlib.h>
+	Corrected spelling on glMaterialShinyness
+
+---------------------------------------------------------------------------------*/
+
 #include <stdlib.h>
+#include <nds.h>
 
+// these files are generated automatically by the bin2o rule
 #include "ballpalette_bin.h"
 #include "balldata_bin.h"
 
-//////////////////////////////////////////////////////////////////////
 #define NUM_SPRITES 128	
 
 sSpriteEntry OAMCopySub[128];
 
-//////////////////////////////////////////////////////////////////////
 
 //simple sprite struct
-typedef struct
-{
-   int x,y;	//location 
-   int dx, dy;	//speed
-   sSpriteEntry* oam;	
-   int gfxID; //graphics lovation
+typedef struct {
+	int x,y;				//location 
+	int dx, dy;			//speed
+	sSpriteEntry* oam;	
+	int gfxID; 				//graphics lovation
 }Sprite;
 
-///////////////////////////////////////////////////////////////////////
 
-void MoveSprite(Sprite* sp)
-{
+//---------------------------------------------------------------------------------
+void MoveSprite(Sprite* sp) {
+//---------------------------------------------------------------------------------
 	int x = sp->x >> 8;
 	int y = sp->y >> 8;
 
-   sp->oam->attribute[1] &= 0xFE00;
-   sp->oam->attribute[1] |= (x & 0x01FF);
+	sp->oam->attribute[1] &= 0xFE00;
+	sp->oam->attribute[1] |= (x & 0x01FF);
  
-   sp->oam->attribute[0] &= 0xFF00;
-   sp->oam->attribute[0] |= (y & 0x00FF);
+	sp->oam->attribute[0] &= 0xFF00;
+	sp->oam->attribute[0] |= (y & 0x00FF);
 
 } 
-///////////////////////////////////////////////////////////////////////
-void initOAM(void)
-{
+
+
+
+//---------------------------------------------------------------------------------
+void initOAM(void) {
+//---------------------------------------------------------------------------------
 	int i;
 
-	for(i = 0; i < 128; i++)
-	{
+	for(i = 0; i < 128; i++) {
 		OAMCopySub[i].attribute[0] = ATTR0_DISABLED;
 	}	
 }
 
-//////////////////////////////////////////////////////////////////////
-void updateOAM(void)
-{
-	int i;
+//---------------------------------------------------------------------------------
+void updateOAM(void) {
+//---------------------------------------------------------------------------------
+	unsigned int i;
 	
 	for(i = 0; i < 128 * sizeof(sSpriteEntry) / 4 ; i++)
 	{
@@ -66,18 +69,17 @@ void updateOAM(void)
 	}
 }
 
-/////////////////////////////////////////////////////////////
 
-void irqVBlank(void) 
-{	
+//---------------------------------------------------------------------------------
+void irqVBlank(void) {	
+//---------------------------------------------------------------------------------
     IF = IF;
 }
 
-///////////////// C code entry (main())/////////////////////
-int main(void) 
-{
+//---------------------------------------------------------------------------------
+int main(void) {
+//---------------------------------------------------------------------------------
 	
-	/////////variables
 	uint16* back = VRAM_A;
 	uint16* front = VRAM_B;
 
@@ -91,11 +93,6 @@ int main(void)
 	uint16* map1 = (uint16*)SCREEN_BASE_BLOCK_SUB(2);
 	uint16 red;
 	
-	
-	///////////////set up/////////////
-	//enable the cache
-//	CP15_ITCMEnableDefault();
-
 	//turn on the power to the system
 	powerON(POWER_ALL);
 
@@ -112,22 +109,21 @@ int main(void)
 	//vram banks are somewhat complex
 	vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_SUB_BG, VRAM_D_SUB_SPRITE);
 	
-	//irqs are nice..ndslib comes with a very unoptomized default handler
+	//irqs are nice..ndslib comes with a very unoptimized default handler
 	irqInitHandler(irqDefaultHandler);
 	irqSet(IRQ_VBLANK, irqVBlank);
 	
-	/////////////Init the sprites ///////////
+	// Sprite initialisation
 	for(i = 0; i < 256; i++)
 		SPRITE_PALETTE_SUB[i] = ((u16*)ballpalette_bin)[i];
 
 	for(i = 0; i< 32*16; i++)
 		SPRITE_GFX_SUB[i] = ((u16*)balldata_bin)[i];
 	
-	//turn of sprites
+	//turn off sprites
 	initOAM();
 
-	for(i = 0; i < NUM_SPRITES; i++)
-	{
+	for(i = 0; i < NUM_SPRITES; i++) {
 		//random place and speed
 		sprites[i].x = rand() & 0xFFFF;
 		sprites[i].y = rand() & 0x7FFF;
@@ -158,33 +154,31 @@ int main(void)
 	
 	//load the maps with alternating tiles (0,1 for bg0 and 0,2 for bg1)
 	for(iy = 0; iy < 32; iy++)
-	for(ix = 0; ix <32; ix++)
-	{
-		map0[iy * 32 + ix] = (ix ^ iy) & 1;
-		map1[iy * 32 + ix] = ((ix ^ iy) & 1)<<1;
-	}    
+		for(ix = 0; ix <32; ix++) {
+			map0[iy * 32 + ix] = (ix ^ iy) & 1;
+			map1[iy * 32 + ix] = ((ix ^ iy) & 1)<<1;
+		}    
+
 	//fill 2 tiles with different colors
-	for(i = 0; i < 64 / 2; i++)
-	{
+	for(i = 0; i < 64 / 2; i++) {
 		BG_GFX_SUB[i+32] = 0x0101;
 		BG_GFX_SUB[i+32+32] = 0x0202;
 	}	
 
-	while (1) 
-	{
+	while (1) {
 		//scroll the background
 		SUB_BG0_X0 = delta ;
 		SUB_BG0_Y0 = delta++ ;
 		
 		//move the sprites
-		for(i = 0; i < NUM_SPRITES; i++)
-		{
+		for(i = 0; i < NUM_SPRITES; i++) {
 			sprites[i].x += sprites[i].dx;
 			sprites[i].y += sprites[i].dy;
 			
 			//check for collision with the screen boundries
 			if(sprites[i].x < (1<<8) || sprites[i].x > (247 << 8))
 				sprites[i].dx = -sprites[i].dx;
+
 			if(sprites[i].y < (1<<8) || sprites[i].y > (182 << 8))
 				sprites[i].dy = -sprites[i].dy;
 			
@@ -195,24 +189,20 @@ int main(void)
 
 	
 		//do the plasma/fire
-		for(ix = 0; ix < SCREEN_WIDTH; ix++)
-		{
+		for(ix = 0; ix < SCREEN_WIDTH; ix++) {
 			back[ix + SCREEN_WIDTH * (SCREEN_HEIGHT - 1)] = rand()& 0xFFFF;
 			back[ix + SCREEN_WIDTH * (SCREEN_HEIGHT - 2)] = rand()& 0xFFFF;
 		}
 
 		back++;
 		
-		for(iy = 1; iy < SCREEN_HEIGHT - 2 ; iy++)
-		{
-			for(ix = 1; ix < SCREEN_WIDTH - 1; ix++) 
-			{
+		for(iy = 1; iy < SCREEN_HEIGHT - 2 ; iy++) {
+			for(ix = 1; ix < SCREEN_WIDTH - 1; ix++)  {
 				red = 0;
 
 				red += front[0];
 				red += front[2];
-				
-				
+	
 				front += SCREEN_WIDTH;
 
 				red += front[0];
@@ -225,9 +215,8 @@ int main(void)
 				red += front[1];
 				red += front[2];
 
-				
 				front -= (2 * SCREEN_WIDTH) - 1;	
-			
+
 				back[0] =  (red >> 3);	
 				back++;
 			}
@@ -241,15 +230,12 @@ int main(void)
 		updateOAM();
 
 		//flip screens
-		if(screen)
-		{
+		if(screen) {
 			videoSetMode(MODE_FB1);
 			front = VRAM_B;
 			back = VRAM_A;
 			screen = 0;
-		}
-		else
-		{
+		} else {
 			videoSetMode(MODE_FB0);	
 			front = VRAM_A;
 			back = VRAM_B;
@@ -259,4 +245,3 @@ int main(void)
 	return 0;
 }
 
-//////////////////////////////////////////////////////////////////////
