@@ -95,7 +95,7 @@ int main()
 		glMaterialf(GL_EMISSION, RGB15(16,16,16));
 
 		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinnyness();
+		glMaterialShinyness();
 		
 		
 		//ds specific, several attributes can be set here	

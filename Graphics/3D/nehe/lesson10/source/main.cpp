@@ -47,7 +47,7 @@ typedef struct tagSECTOR
 	TRIANGLE* triangle;
 } SECTOR;
 
-VAR_IN_EXRAM SECTOR sector1;				// Our Model Goes Here:
+  SECTOR sector1;				// Our Model Goes Here:
 
 
 float sin(float angle)
@@ -234,7 +234,7 @@ int main()
 		glMaterialf(GL_EMISSION, RGB15(16,16,16));
 
 		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinnyness();
+		glMaterialShinyness();
 		
 		
 		//ds specific, several attributes can be set here	

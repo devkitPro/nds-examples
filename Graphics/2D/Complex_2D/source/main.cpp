@@ -1,10 +1,15 @@
 //////////////////////////////////////////////////////////////////////
-// Simple ARM9 demo (touch screen controls the colors)
-// -- joat
+// $Id $
+//
+// -- dovoto
+//
+// $Log: not supported by cvs2svn $
+//
+// 
 //////////////////////////////////////////////////////////////////////
 
 #include <nds.h>
-#include <nds/arm9/rand.h>
+#include <stdlib.h>
 
 #include "ballpalette_bin.h"
 #include "balldata_bin.h"

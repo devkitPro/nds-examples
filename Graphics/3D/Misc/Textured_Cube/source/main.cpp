@@ -1,5 +1,5 @@
 #include <nds.h>
-#include <nds/arm9/rand.h>
+#include <stdlib.h>
 
 //texture_bin.h is created automagicaly from the texture.bin placed in arm9/resources
 //texture.bin is a raw 128x128 16 bit image.  I will release a tool for texture conversion 
@@ -144,7 +144,7 @@ int main()
 		glMaterialf(GL_EMISSION, RGB15(5,5,5));
 
 		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinnyness();
+		glMaterialShinyness();
 
 		//not a real gl function and will likely change
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_FORMAT_LIGHT1 | 

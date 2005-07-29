@@ -10,7 +10,7 @@
 #include <malloc.h>
 //needed to load pcx files
 #include <nds/arm9/image.h>
-#include <nds/arm9/rand.h>
+#include <stdlib.h>
 
 #include "Star_pcx.h"
 
@@ -110,7 +110,7 @@ int main()
 		glMaterialf(GL_EMISSION, RGB15(16,16,16));
 
 		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinnyness();
+		glMaterialShinyness();
 		
 		
 		

@@ -4,7 +4,7 @@
 
 
 //a global copy of sprite attribute memory
-VAR_IN_EXRAM SpriteEntry sprites[128];
+  SpriteEntry sprites[128];
 //rotation attributes overlap so assign then to the same location
 pSpriteRotation spriteRotations = (pSpriteRotation)sprites;
 

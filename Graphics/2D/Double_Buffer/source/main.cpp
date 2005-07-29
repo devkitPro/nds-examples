@@ -6,7 +6,7 @@
 #include <nds.h>
 
 #include <nds/arm9/console.h> //basic print funcionality
-#include <nds/arm9/rand.h>
+#include <stdlib.h>
 
 
 
