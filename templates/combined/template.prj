@@ -1,0 +1,71 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Group]
+0=
+1=arm7 - include
+2=arm7 - source
+3=arm9
+4=arm9 - include
+5=
+6=
+[Project Information]
+Filter=*.*
+Project Directory=C:\projects\devkitPro\test\nds_template\combined\
+Use Relative Directory=1
+Relative to Project File=1
+Project Wordfile=
+Project Tagfile=
+Create Tagfile=0
+Include Sub Directories=0
+[Files - arm9 - source]
+0=arm9\source\template.c
+[Open Files]
+Open File0=
+Active File Display Mode=-1
+Open File Pos0=0
+Open File Line0=734
+Open File Window Pos0=0,1,-1,-1,-4,-23,22,22,940,367
+Open File1=C:\devkitPro\devkitARM\arm-elf\include\machine\types.h
+Open File Pos1=896
+Open File Line1=1006
+Open File Window Pos1=2,3,-1,-1,-4,-23,66,66,988,415
+Open File2=
+Open File Pos2=0
+Open File Line2=0
+Active File Index=1
+Open File Window Pos2=2,3,-1,-1,-4,-23,110,110,1010,489
+Open File3=
+Open File Pos3=0
+Open File Line3=0
+Open File Window Pos3=0,1,-1,-1,-4,-23,66,66,966,445
+Open File4=C:\projects\devkitPro\buildscripts\templates\devkitARM\nds\template\arm7\Makefile
+Open File Pos4=0
+Open File Line4=0
+Open File Window Pos4=0,1,-1,-1,-4,-23,88,88,988,467
+Open File5=C:\projects\devkitPro\examples\gba\mbv2print\Makefile
+Open File Pos5=2756
+Open File Line5=1687
+Open File Window Pos5=0,1,-1,-1,-4,-23,110,110,1010,489
+Open File6=C:\projects\devkitPro\buildscripts\templates\devkitARM\nds\template\combined\arm9\Makefile
+Open File Pos6=3484
+Open File Line6=4128
+Open File Window Pos6=0,1,-1,-1,-4,-23,132,132,1032,511
+Open File7=
+[File View]
+Current Select=Project Files\arm7\Makefile
+Scroll Position=0
+[Files - arm7 - source]
+0=arm7\source\template.c
+[Files - arm7]
+0=arm7\Makefile
+[Files - arm9]
+0=arm9\source\
+1=arm9\Makefile
+[Files]
+0=arm7\include\
+1=arm7\source\
+2=arm9\include\
+3=arm9\source\
+4=arm7\Makefile
+5=arm9\Makefile
+6=Makefile
