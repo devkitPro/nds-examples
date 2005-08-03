@@ -112,8 +112,8 @@ DEPENDS	:=	$(OFILES:.o=.d)
 # main targets
 #---------------------------------------------------------------------------------
 $(OUTPUT).ds.gba	: 	$(OUTPUT).nds
-$(OUTPUT).nds	: 	$(OUTPUT).bin
-$(OUTPUT).bin	:	$(OUTPUT).elf
+$(OUTPUT).nds	: 	$(OUTPUT).arm9
+$(OUTPUT).arm9	:	$(OUTPUT).elf
 $(OUTPUT).elf	:	$(OFILES)
  
 #---------------------------------------------------------------------------------
