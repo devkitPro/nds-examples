@@ -1,16 +1,18 @@
 /*---------------------------------------------------------------------------------
-	$Id: template.c,v 1.1 2005-08-03 06:29:18 wntrmute Exp $
+	$Id: template.c,v 1.2 2005-08-04 14:52:44 wntrmute Exp $
 
 	Simple Sound Demo
 
 	- Dave Murphy (WinterMute)
 
 	$Log: not supported by cvs2svn $
+	Revision 1.1  2005/08/03 06:29:18  wntrmute
+	added sound example
+	
 
 ---------------------------------------------------------------------------------*/
 #include "nds.h"
 #include <nds/arm9/console.h>	//basic print funcionality
-#include <nds/arm9/keys.h>		// key input
 #include <nds/arm9/sound.h>		// sound functions
 
 #include <stdio.h>
