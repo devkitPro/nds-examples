@@ -11,10 +11,14 @@ endif
 # BUILD is the directory where object files & intermediate files will be placed
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
+# DATA is a list of directories containing binary files
+# all directories are relative to this makefile
 #---------------------------------------------------------------------------------
 BUILD		:=	build
 SOURCES		:=	source  
 INCLUDES	:=	include
+DATA		:=
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
@@ -54,7 +58,8 @@ export ARM9BIN	:=	$(TOPDIR)/$(TARGET).arm9
 export ARM9ELF	:=	$(CURDIR)/$(TARGET).arm9.elf
 export DEPSDIR := $(CURDIR)/$(BUILD)
 
-export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
+export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
+					$(foreach dir,$(DATA),$(CURDIR)/$(dir))
  
 export CC		:=	$(PREFIX)gcc
 export CXX		:=	$(PREFIX)g++
@@ -64,6 +69,7 @@ export OBJCOPY	:=	$(PREFIX)objcopy
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
  
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -79,7 +85,8 @@ else
 endif
 #---------------------------------------------------------------------------------
 
-export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
+					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
  
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
@@ -116,6 +123,15 @@ $(ARM9BIN)	:	$(ARM9ELF)
 $(ARM9ELF)	:	$(OFILES)
 	@echo linking $(notdir $@)
 	@$(LD)  $(LDFLAGS) $(OFILES) $(LIBPATHS) $(LIBS) -o $@
+
+#---------------------------------------------------------------------------------
+# you need a rule like this for each extension you use as binary data 
+#---------------------------------------------------------------------------------
+%.bin.o	:	%.bin
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
 
 -include $(DEPENDS)
  
