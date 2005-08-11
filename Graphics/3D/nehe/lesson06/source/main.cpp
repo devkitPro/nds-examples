@@ -20,18 +20,6 @@ float	zrot;				// Z Rotation ( NEW )
 
 int	texture[1];			// Storage For One Texture ( NEW )
 
-void image8to16(sImage* img)
- {
-	 int i;
-
-	 u16* temp = (u16*)malloc(img->height*img->width*2);
-	 
-	 for(i = 0; i < img->height * img->width; i++)
-		 temp[i] = img->palette[img->data8[i]] | (1<<15);
-
-	 img->data16 = temp;
- }
-
 int LoadGLTextures()									// Load PCX files And Convert To Textures
 {
 	sImage pcx;                //////////////(NEW) and different from nehe.
@@ -44,6 +32,8 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	glGenTextures(1, &texture[0]);
 	glBindTexture(0, texture[0]);
 	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, pcx.data8);
+
+	imageDestroy(&pcx);
 
 	return TRUE;
 }
