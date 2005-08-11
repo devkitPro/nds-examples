@@ -6,6 +6,9 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen	
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.1  2005/07/31 18:25:36  dovoto
+ *      Added the touch look demo by revo to demonstrate camera control by touch pad in a 3D scene
+ *
  ********************************************************************************************/
 
 // include your ndslib
@@ -125,6 +128,8 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	glBindTexture(0, texture[0]);
 	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD | GL_TEXTURE_WRAP_S | GL_TEXTURE_WRAP_T, pcx.data8);
 
+	imageDestroy(&pcx);
+
 	return TRUE;
 }
 
@@ -158,40 +163,30 @@ int main()
 		//these little button functions are pretty handy
 		scanKeys();
 				
-	
-		if (keysHeld() & KEY_A)
+		if (keysHeld() & (KEY_LEFT|KEY_Y))
 		{
-			lookupdown -= 1;
+			xpos -= SIN[(heading+128)& LUT_MASK] >> 5;
+			zpos += COS[(heading+128)& LUT_MASK] >> 5;
 		}
-		if (keysHeld() & KEY_B)
+		if (keysHeld() & (KEY_RIGHT|KEY_A))
 		{
-			lookupdown += 1;
+			xpos += SIN[(heading+128)& LUT_MASK] >> 5;
+			zpos -= COS[(heading+128)& LUT_MASK] >> 5;
 		}
-		
-		if (keysHeld() & KEY_LEFT)
-		{
-			heading -= 1;	
-			yrot = heading;
-		}
-		if (keysHeld() & KEY_RIGHT)
-		{
-			heading += 1;
-			yrot = heading;
-		}
-		if (keysHeld() & KEY_DOWN)
+		if (keysHeld() & (KEY_DOWN|KEY_B))
 		{
 			
-			xpos -= SIN[heading & LUT_MASK]>>4;
-			zpos += COS[heading & LUT_MASK]>>4;
+			xpos -= SIN[heading & LUT_MASK]>>5;
+			zpos += COS[heading & LUT_MASK]>>5;
 			
 			walkbiasangle+= 10;
 			
 			walkbias = SIN[walkbiasangle & LUT_MASK]>>4;
 		}
-		if (keysHeld() & KEY_UP)
+		if (keysHeld() & (KEY_UP|KEY_X))
 		{
-			xpos += SIN[heading& LUT_MASK] >> 4;
-			zpos -= COS[heading& LUT_MASK] >> 4;
+			xpos += SIN[heading& LUT_MASK] >> 5;
+			zpos -= COS[heading& LUT_MASK] >> 5;
 
 			if (walkbiasangle <= 0)
 			{
@@ -206,11 +201,9 @@ int main()
 
 		// Camera rotation by touch screen
 
-		uint16 specialKeysPressed = ~IPC->buttons;
-
 		static bool movingCamera = false;
 
-		if (specialKeysPressed & (1 << 6))
+		if (keysHeld() & KEY_TOUCH)
 		{
 			static int16 old_touchX = IPC->touchXpx;
 			static int16 old_touchY = IPC->touchYpx;
@@ -223,6 +216,12 @@ int main()
 				// filtering measurement errors
 				if (dx<20 && dx>-20 && dy<20 && dy>-20)
 				{
+					if(dx>-3&&dx<3)
+						dx=0;
+
+					if(dy>-2&&dy<2)
+						dy=0;
+
 					lookupdown -= dy;
 	
 					heading += dx;	
