@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
-	$Id: template.c,v 1.2 2005-08-04 14:52:44 wntrmute Exp $
+	$Id: template.c,v 1.3 2005-08-31 03:02:39 wntrmute Exp $
 
 	Simple Sound Demo
 
 	- Dave Murphy (WinterMute)
 
 	$Log: not supported by cvs2svn $
+	Revision 1.2  2005/08/04 14:52:44  wntrmute
+	*** empty log message ***
+	
 	Revision 1.1  2005/08/03 06:29:18  wntrmute
 	added sound example
 	
@@ -40,7 +43,7 @@ int main(void) {
 	//consoleInit() is a lot more flexible but this gets you up and running quick
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 
-	consolePrintf("\n\nSimple Sound Demo\n\nPress A for SaberOff\n      L for ion\n      R for blaster\n");
+	iprintf("\n\nSimple Sound Demo\n\nPress A for SaberOff\n      L for ion\n      R for blaster\n");
 
 	while(1) {
 

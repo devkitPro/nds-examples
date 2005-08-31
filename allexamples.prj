@@ -14,7 +14,7 @@ Include Sub Directories=0
 [Group]
 0=
 [Open Files]
-Open File0=c:\devkitPro\libnds\include\nds.h
+Open File0=
 Open File Pos0=1754
 Open File Line0=1360
 Open File Window Pos0=0,1,-1,-1,-4,-23,154,154,1072,513
@@ -44,7 +44,7 @@ Open File Pos6=0
 Open File Line6=0
 Open File Window Pos6=0,1,-1,-1,-4,-23,132,132,1010,576
 Open File7=
-Active File Display Mode=3
+Active File Display Mode=-1
 [File View]
-Current Select=Project Files\
+Current Select=Project Files
 Scroll Position=0

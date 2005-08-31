@@ -6,6 +6,13 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen	
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.2  2005/08/11 15:51:33  desktopman
+ *      Added strafe
+ *      Added mirror controls for lefties
+ *      Added filtering of small changes to prevent flickering
+ *      Slowed down movement a bit
+ *      Now destroys the pcx struct after use
+ *
  *      Revision 1.1  2005/07/31 18:25:36  dovoto
  *      Added the touch look demo by revo to demonstrate camera control by touch pad in a 3D scene
  *
@@ -19,6 +26,7 @@
 //needed to load pcx files
 #include <nds/arm9/image.h>
 
+#include <nds/arm9/trig_lut.h>
 
 #include "Mud_pcx.h"
 #include "World_txt.h"

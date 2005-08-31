@@ -1,15 +1,19 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.1 2005-08-05 02:34:21 wntrmute Exp $
+	$Id: main.c,v 1.2 2005-08-31 03:02:39 wntrmute Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.1  2005/08/05 02:34:21  wntrmute
+	*** empty log message ***
+	
  
 ---------------------------------------------------------------------------------*/
 
 #include <nds.h>				// include your ndslib
 #include <nds/arm9/image.h>		// needed to load pcx files
+#include <nds/arm9/trig_lut.h>
 #include <stdio.h>
 #include <stdlib.h>
 

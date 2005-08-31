@@ -7,7 +7,7 @@
 
 #include <nds/arm9/console.h> //basic print funcionality
 #include <stdlib.h>
-
+#include <stdio.h>
 
 
 void WaitForVblank()
@@ -39,9 +39,9 @@ int main(void)
 	//consoleInit() is a lot more flexible but this gets you up and running quick
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 
-	consolePrintf("\n\n\tHello DS devers\n");
-	consolePrintf("\twww.drunkencoders.com\n");
-	consolePrintf("\tdouble buffer demo");
+	iprintf("\n\n\tHello DS devers\n");
+	iprintf("\twww.drunkencoders.com\n");
+	iprintf("\tdouble buffer demo");
 	
 	///////////////set up our bitmap background///////////////////////
 	

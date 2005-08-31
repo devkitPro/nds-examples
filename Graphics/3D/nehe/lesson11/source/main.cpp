@@ -10,6 +10,7 @@
 
 //needed to load pcx files
 #include <nds/arm9/image.h>
+#include <nds/arm9/trig_lut.h>
 
 
 #include "drunkenlogo_pcx.h"
