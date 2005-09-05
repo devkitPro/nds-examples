@@ -1,10 +1,13 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.2 2005-08-31 03:02:39 wntrmute Exp $
+	$Id: main.c,v 1.3 2005-09-05 00:32:19 wntrmute Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.2  2005/08/31 03:02:39  wntrmute
+	updated for new stdio support
+	
 	Revision 1.1  2005/08/05 02:34:21  wntrmute
 	*** empty log message ***
 	
@@ -166,7 +169,7 @@ int main()
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 
 	// IRQ basic setup
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	// Set our viewport to be the same size as the screen

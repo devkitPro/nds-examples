@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.3 2005-08-31 03:02:39 wntrmute Exp $
+	$Id: main.cpp,v 1.4 2005-09-05 00:32:19 wntrmute Exp $
 
 	Simple console print demo
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.3  2005/08/31 03:02:39  wntrmute
+	updated for new stdio support
+	
 	Revision 1.2  2005/08/03 06:36:30  wntrmute
 	added logging
 	added display of pixel co-ords
@@ -17,11 +20,22 @@
 #include <nds/arm9/console.h> //basic print funcionality
 #include <stdio.h>
 
+volatile int frame = 0;
+
+//---------------------------------------------------------------------------------
+void Vblank() {
+//---------------------------------------------------------------------------------
+	frame++;
+}
+	
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
+	touchPosition touchXY;
 
-
+	irqInit();
+	irqSet(IRQ_VBLANK, Vblank);
+	irqEnable(IRQ_VBLANK);
 	videoSetMode(0);	//not using the main screen
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
 	vramSetBankC(VRAM_C_SUB_BG); 
@@ -33,15 +47,17 @@ int main(void) {
 	//consoleInit() is a lot more flexible but this gets you up and running quick
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 
-	iprintf("\n\n\tHello DS devers\n");
+	iprintf("\n\n\t   Hello DS dev'rs\n");
+	iprintf("\t  www.devkitpro.org");
 	iprintf("\twww.drunkencoders.com");
-	
-	while(1) {
 
-		//move the cursor
-		printAt(0,10);
-		iprintf("Touch x = %04X, %04X\n", IPC->touchX, IPC->touchXpx);
-		iprintf("Touch y = %04X, %04X\n", IPC->touchY, IPC->touchYpx);		
+	while(1) {
+	
+		swiWaitForVBlank();
+		touchXY=touchReadXY();
+		iprintAt(0,0,"Frame = %d",frame);
+		iprintAt(0,16,"Touch x = %04X, %04X\n", touchXY.x, touchXY.px);
+		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);		
 	
 	}
 

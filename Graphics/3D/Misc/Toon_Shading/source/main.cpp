@@ -7,26 +7,24 @@
 #include "statue_bin.h"
 
 
-
-#ifndef PEN_DOWN
-#define PEN_DOWN	(((~IPC->buttons) << 6) & (1<<12))
-#endif
-
-
 static void get_pen_delta( int *dx, int *dy )
 {
 	static int prev_pen[2] = { 0x7FFFFFFF, 0x7FFFFFFF };
 
-	if( PEN_DOWN )
+	u32 keys = keysHeld();
+
+	if( keys & KEY_TOUCH )
 	{
+		touchPosition touchXY=touchReadXY();
+
 		if( prev_pen[0] != 0x7FFFFFFF )
 		{
-			*dx = (prev_pen[0] - IPC->touchX);
-			*dy = (prev_pen[1] - IPC->touchY);
+			*dx = (prev_pen[0] - touchXY.x);
+			*dy = (prev_pen[1] - touchXY.y);
 		}
 
-		prev_pen[0] = IPC->touchX;
-		prev_pen[1] = IPC->touchY;
+		prev_pen[0] = touchXY.x;
+		prev_pen[1] = touchXY.y;
 	}
 	else
 	{
@@ -38,7 +36,7 @@ static void get_pen_delta( int *dx, int *dy )
 
 
 int main()
-{	
+{
 
 	int rotateX = 0;
 	int rotateY = 0;
@@ -49,7 +47,7 @@ int main()
 	videoSetMode(MODE_0_3D);
 
 	//irqs are nice
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	//this should work the same as the normal gl call
@@ -65,10 +63,10 @@ int main()
 	glSetToonTableRange( 0, 15, RGB15(8,8,8) );
 	glSetToonTableRange( 16, 31, RGB15(24,24,24) );
 
-	while(1)		
+	while(1)
 	{
 		glReset();
-	
+
 		//any floating point gl call is being converted to fixed prior to being implemented
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 
@@ -95,10 +93,13 @@ int main()
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_FORMAT_LIGHT1 | POLY_TOON_SHADING);
 
 
-		if(!(KEYS & KEY_UP)) rotateX += 3<<3;
-		if(!(KEYS & KEY_DOWN)) rotateX -= 3<<3;
-		if(!(KEYS & KEY_LEFT)) rotateY += 3<<3;
-		if(!(KEYS & KEY_RIGHT)) rotateY -= 3<<3;
+		scanKeys();
+		u32 keys = keysHeld();
+
+		if( keys & KEY_UP ) rotateX += 3<<3;
+		if( keys & KEY_DOWN ) rotateX -= 3<<3;
+		if( keys & KEY_LEFT ) rotateY += 3<<3;
+		if( keys & KEY_RIGHT ) rotateY -= 3<<3;
 
 		int pen_delta[2];
 		get_pen_delta( &pen_delta[0], &pen_delta[1] );
@@ -106,13 +107,13 @@ int main()
 		rotateX -= pen_delta[1];
 
 
-		glCallList((u32*)statue_bin);	
-			
+		glCallList((u32*)statue_bin);
+
 		glFlush();
 
-		//swi seems to be broken, will let you know when i get this POS figured out	
+		//swi seems to be broken, will let you know when i get this POS figured out
 		//swiWaitForVBlank();
 	}
 
 	return 0;
-}//end main 
+}//end main

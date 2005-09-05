@@ -38,7 +38,7 @@ int main()
     powerON(POWER_ALL_2D);
 
     //irqs are nice
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
     
     //enable vram and map it to the right places
@@ -76,8 +76,7 @@ int main()
 
 	
 // direct bitmap sprite
-	printAt(1,1);
-	iprintf("Direct Bitmap:");
+	iprintAt(1,1,"Direct Bitmap:");
     sprites[0].attribute[0] = ATTR0_BMP | ATTR0_ROTSCALE_DOUBLE | 10; 
 	sprites[0].attribute[1] = ATTR1_SIZE_32 | 20;
 	sprites[0].attribute[2] = ATTR2_ALPHA(1)| 0;
@@ -87,8 +86,7 @@ int main()
 		SPRITE_GFX[i]=RGB15(31,0,0)|(1<<15); //dont forget alpha bit
 
 // 256 color sprite
-	printAt(1,9);
-   	iprintf("256 color:");
+	iprintAt(1,9,"256 color:");
 	sprites[1].attribute[0] = ATTR0_COLOR_256 | ATTR0_ROTSCALE_DOUBLE | 75;
 	sprites[1].attribute[1] = ATTR1_SIZE_32 | 20; // size 64x64, x 10
 	sprites[1].attribute[2] = 64;
@@ -101,8 +99,7 @@ int main()
 		SPRITE_GFX[i+64*16]=(1<<8)|1;
 
 // 16 color sprite
-	printAt(1,16);
-   	iprintf("16 color:");
+   	iprintAt(1,16,"16 color:");
 	sprites[2].attribute[0] = ATTR0_COLOR_16 | ATTR0_ROTSCALE_DOUBLE | 135;
 	sprites[2].attribute[1] = ATTR1_SIZE_32 | 20;
 	sprites[2].attribute[2] = ATTR2_PALETTE(1) | 96;

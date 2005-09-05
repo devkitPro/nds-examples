@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.2 2005-08-31 01:26:30 wntrmute Exp $
+	$Id: main.c,v 1.3 2005-09-05 00:32:20 wntrmute Exp $
 
 	Simple console print demo
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.2  2005/08/31 01:26:30  wntrmute
+	updated to work with new stdio support
+
 	Revision 1.1  2005/08/03 06:29:56  wntrmute
 	added templates
 
@@ -21,6 +24,7 @@
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
+	touchPosition touchXY;
 
 	videoSetMode(0);	//not using the main screen
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
@@ -38,10 +42,9 @@ int main(void) {
 
 	while(1) {
 
-		//move the cursor
-		printAt(0,10);
-		iprintf("Touch x = %04X, %04X\n", IPC->touchX, IPC->touchXpx);
-		iprintf("Touch y = %04X, %04X\n", IPC->touchY, IPC->touchYpx);
+		touchXY=touchReadXY();
+		iprintAt(0,10,"Touch x = %04X, %04X\n", touchXY.x, touchXY.px);
+		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);
 
 	}
 

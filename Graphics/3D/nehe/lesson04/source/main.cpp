@@ -21,7 +21,7 @@ int main()
 	videoSetMode(MODE_0_3D);
 	
 	// IRQ basic setup
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	// Set our viewport to be the same size as the screen

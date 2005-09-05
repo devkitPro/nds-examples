@@ -1,11 +1,14 @@
 /********************************************************************************************
- * 		Nehe lesson 10 modification which uses the touch screen to control the camera and dpad 
+ * 		Nehe lesson 10 modification which uses the touch screen to control the camera and dpad
  *		to move the player.
 
  * 		Author: revo																		*
- *		Updated by revo (from 10b) - added camera moving by touching touch screen	
+ *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.3  2005/08/31 03:02:39  wntrmute
+ *      updated for new stdio support
+ *
  *      Revision 1.2  2005/08/11 15:51:33  desktopman
  *      Added strafe
  *      Added mirror controls for lefties
@@ -78,10 +81,10 @@ SECTOR sector1;				// Our Model Goes Here:
 		buff++;
 		*buff = *file++;
 	}
-	
-	buff[0] = '\n';	
+
+	buff[0] = '\n';
 	buff[1] = 0;
-	
+
 }
 
 
@@ -96,7 +99,7 @@ void readstr(char *string)
 
 void SetupWorld()
 {
-	float x, y, z; 
+	float x, y, z;
 	float u, v;
 	int numtriangles;
 	char oneline[255];
@@ -106,7 +109,7 @@ void SetupWorld()
 
 	sector1.triangle = (TRIANGLE*)malloc(numtriangles*sizeof(TRIANGLE));
 	sector1.numtriangles = numtriangles;
-	
+
 	for (int loop = 0; loop < numtriangles; loop++)
 	{
 		for (int vert = 0; vert < 3; vert++)
@@ -120,7 +123,7 @@ void SetupWorld()
 			sector1.triangle[loop].vertex[vert].v = floatot16(v*128);
 		}
 	}
-	
+
 	return;
 }
 int LoadGLTextures()									// Load PCX files And Convert To Textures
@@ -129,7 +132,7 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 
 	//load our texture
 	loadPCX((u8*)Mud_pcx, &pcx);
-	
+
 	image8to16(&pcx);
 
 	glGenTextures(1, &texture[0]);
@@ -142,35 +145,35 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 }
 
 int main()
-{	
-	
-	
+{
+
+
 	// Turn on everything
 	powerON(POWER_ALL);
-	
-	// Setup the Main screen for 3D 
+
+	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 
 	// IRQ basic setup
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
-	
-	// Specify the Clear Color and Depth 
+
+	// Specify the Clear Color and Depth
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
 	LoadGLTextures();
 	SetupWorld();
-	
 
-	while (1) 
+
+	while (1)
 	{
 		//these little button functions are pretty handy
 		scanKeys();
-				
+
 		if (keysHeld() & (KEY_LEFT|KEY_Y))
 		{
 			xpos -= SIN[(heading+128)& LUT_MASK] >> 5;
@@ -183,12 +186,12 @@ int main()
 		}
 		if (keysHeld() & (KEY_DOWN|KEY_B))
 		{
-			
+
 			xpos -= SIN[heading & LUT_MASK]>>5;
 			zpos += COS[heading & LUT_MASK]>>5;
-			
+
 			walkbiasangle+= 10;
-			
+
 			walkbias = SIN[walkbiasangle & LUT_MASK]>>4;
 		}
 		if (keysHeld() & (KEY_UP|KEY_X))
@@ -210,16 +213,18 @@ int main()
 		// Camera rotation by touch screen
 
 		static bool movingCamera = false;
+		touchPosition touchXY;
 
 		if (keysHeld() & KEY_TOUCH)
 		{
-			static int16 old_touchX = IPC->touchXpx;
-			static int16 old_touchY = IPC->touchYpx;
+			touchXy = touchReadXY();
+			static int16 old_touchX = touchXY.px;
+			static int16 old_touchY = touchXY.py;
 
 			if (movingCamera)
 			{
-				int16 dx = IPC->touchXpx - old_touchX;
-				int16 dy = IPC->touchYpx - old_touchY;
+				int16 dx = touchXY.px - old_touchX;
+				int16 dy = touchXY.py - old_touchY;
 
 				// filtering measurement errors
 				if (dx<20 && dx>-20 && dy<20 && dy>-20)
@@ -231,14 +236,14 @@ int main()
 						dy=0;
 
 					lookupdown -= dy;
-	
-					heading += dx;	
+
+					heading += dx;
 					yrot = heading;
 				}
 			}
 
-			old_touchX = IPC->touchXpx;
-			old_touchY = IPC->touchYpx;			
+			old_touchX = touchXY.px;
+			old_touchY = touchXY.py;
 
 			movingCamera = true;
 		}
@@ -249,14 +254,14 @@ int main()
 		glReset();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
-		
+
 		glLight(0, RGB15(31,31,31) , 0,	floatov10(-1.0), 0);
 
 		glPushMatrix();
-		
+
 		glMatrixMode(GL_TEXTURE);
 		glIdentity();
-		
+
 		glMatrixMode(GL_MODELVIEW);
 
 		//need to set up some material properties since DS does not have them set by default
@@ -267,27 +272,27 @@ int main()
 
 		//ds uses a table for shinyness..this generates a half-ass one
 		glMaterialShinyness();
-		
-		
-		//ds specific, several attributes can be set here	
+
+
+		//ds specific, several attributes can be set here
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0);
-		
+
 		// Set the current matrix to be the model matrix
 		glMatrixMode(GL_MODELVIEW);
-		
+
 		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
+		glPushMatrix();
 
 		DrawGLScene();
-		
+
 		// Pop our Matrix from the stack (restore state)
 		glPopMatrix(1);
 
-		// flush to screen	
+		// flush to screen
 		glFlush();
-	
+
 	}
-	
+
 	return 0;
 }
 
@@ -301,20 +306,20 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 	f32 ztrans = -zpos;
 	f32 ytrans = -walkbias-(1<<10);
 	int sceneroty = LUT_SIZE - yrot;
-	
+
 	glLoadIdentity();
-	
+
 	int numtriangles;
 
 	glRotatef32i(lookupdown,(1<<12),0,0);
 	glRotatef32i(sceneroty,0,(1<<12),0);
-	
+
 	glTranslate3f32(xtrans, ytrans, ztrans);
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
-	
+
 	numtriangles = sector1.numtriangles;
-	
-	
+
+
 	// Process Each Triangle
 	for (int loop_m = 0; loop_m < numtriangles; loop_m++)
 	{
@@ -326,14 +331,14 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 			u_m = sector1.triangle[loop_m].vertex[0].u;
 			v_m = sector1.triangle[loop_m].vertex[0].v;
 			glTexCoord2t16(u_m,v_m); glVertex3v16(x_m,y_m,z_m);
-			
+
 			x_m = sector1.triangle[loop_m].vertex[1].x;
 			y_m = sector1.triangle[loop_m].vertex[1].y;
 			z_m = sector1.triangle[loop_m].vertex[1].z;
 			u_m = sector1.triangle[loop_m].vertex[1].u;
 			v_m = sector1.triangle[loop_m].vertex[1].v;
 			glTexCoord2t16(u_m,v_m); glVertex3v16(x_m,y_m,z_m);
-			
+
 			x_m = sector1.triangle[loop_m].vertex[2].x;
 			y_m = sector1.triangle[loop_m].vertex[2].y;
 			z_m = sector1.triangle[loop_m].vertex[2].z;

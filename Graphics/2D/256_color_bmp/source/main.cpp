@@ -21,7 +21,7 @@
 int main(void)
 {
 	//irqs are nice
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
     //set the mode for 2 text layers and two extended background layers

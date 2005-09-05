@@ -57,7 +57,7 @@ int main()
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 
 	// IRQ basic setup
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	// Set our viewport to be the same size as the screen

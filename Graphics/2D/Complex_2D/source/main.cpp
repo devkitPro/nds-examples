@@ -1,9 +1,13 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.3 2005-07-29 04:50:24 wntrmute Exp $
+	$Id: main.cpp,v 1.4 2005-09-05 00:32:19 wntrmute Exp $
 
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.3  2005/07/29 04:50:24  wntrmute
+	added UltraEdit and Pnotepad project files
+	fixed Id macro
+	
 	Revision 1.2  2005/07/29 03:56:33  dovoto
 	Removed VAR_IN_EXRAM references.
 	Replaced instances of <nds/arm9/rand.h> with <stdlib.h>
@@ -109,8 +113,8 @@ int main(void) {
 	//vram banks are somewhat complex
 	vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_SUB_BG, VRAM_D_SUB_SPRITE);
 	
-	//irqs are nice..ndslib comes with a very unoptimized default handler
-	irqInitHandler(irqDefaultHandler);
+	//irqs are nice
+	irqInit();
 	irqSet(IRQ_VBLANK, irqVBlank);
 	
 	// Sprite initialisation

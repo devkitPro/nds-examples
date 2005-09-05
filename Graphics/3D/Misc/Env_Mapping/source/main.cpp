@@ -5,25 +5,24 @@
 #include "cafe_bin.h"
 
 
-#ifndef PEN_DOWN
-#define PEN_DOWN	(((~IPC->buttons) << 6) & (1<<12))
-#endif
-
-
 static void get_pen_delta( int *dx, int *dy )
 {
 	static int prev_pen[2] = { 0x7FFFFFFF, 0x7FFFFFFF };
 
-	if( PEN_DOWN )
+	u32 keys = keysHeld();
+
+	if( keys & KEY_TOUCH )
 	{
+		touchPosition touchXY=touchReadXY();
+
 		if( prev_pen[0] != 0x7FFFFFFF )
 		{
-			*dx = (prev_pen[0] - IPC->touchX);
-			*dy = (prev_pen[1] - IPC->touchY);
+			*dx = (prev_pen[0] - touchXY.x);
+			*dy = (prev_pen[1] - touchXY.y);
 		}
 
-		prev_pen[0] = IPC->touchX;
-		prev_pen[1] = IPC->touchY;
+		prev_pen[0] = touchXY.x;
+		prev_pen[1] = touchXY.y;
 	}
 	else
 	{
@@ -34,7 +33,7 @@ static void get_pen_delta( int *dx, int *dy )
 
 
 int main()
-{	
+{
 
 	int rotateX = 0;
 	int rotateY = 0;
@@ -45,12 +44,12 @@ int main()
 	videoSetMode(MODE_0_3D);
 
 	//irqs are nice
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
-	
+
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
 
@@ -62,7 +61,7 @@ int main()
 	glTexImage2D( 0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, GL_TEXTURE_WRAP_S|GL_TEXTURE_WRAP_T|TEXGEN_NORMAL, (u8*)cafe_bin );
 
 
-	while(1)		
+	while(1)
 	{
 		glReset();
 
@@ -90,10 +89,13 @@ int main()
 
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK );
 
-		if(!(KEYS & KEY_UP)) rotateX += 3<<3;
-		if(!(KEYS & KEY_DOWN)) rotateX -= 3<<3;
-		if(!(KEYS & KEY_LEFT)) rotateY += 3<<3;
-		if(!(KEYS & KEY_RIGHT)) rotateY -= 3<<3;
+		scanKeys();
+		u32 keys = keysHeld();
+
+		if( keys & KEY_UP ) rotateX += 3<<3;
+		if( keys & KEY_DOWN ) rotateX -= 3<<3;
+		if( keys & KEY_LEFT ) rotateY += 3<<3;
+		if( keys & KEY_RIGHT ) rotateY -= 3<<3;
 
 		int pen_delta[2];
 		get_pen_delta( &pen_delta[0], &pen_delta[1] );
@@ -102,7 +104,7 @@ int main()
 
 
 		glBindTexture( 0, cafe_texid );
-		glCallList((u32*)teapot_bin);	
+		glCallList((u32*)teapot_bin);
 
 		glFlush();
 
@@ -110,4 +112,4 @@ int main()
 	}
 
 	return 0;
-}//end main 
+}//end main

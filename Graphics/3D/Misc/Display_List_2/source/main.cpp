@@ -16,7 +16,7 @@ int main()
 	videoSetMode(MODE_0_3D);
 
 	//irqs are nice
-	irqInitHandler(irqDefaultHandler);
+	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
 	//this should work the same as the normal gl call
