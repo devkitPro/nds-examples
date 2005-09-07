@@ -14,7 +14,7 @@ int main()
 
 	//irqs are nice
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
@@ -51,10 +51,14 @@ int main()
 		//not a real gl function and will likely change
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
 
-		if(!(KEYS & KEY_UP)) rotateX += 3;
-		if(!(KEYS & KEY_DOWN)) rotateX -= 3;
-		if(!(KEYS & KEY_LEFT)) rotateY += 3;
-		if(!(KEYS & KEY_RIGHT)) rotateY -= 3;
+		scanKeys();
+		
+		u16 keys = keysHeld();
+		
+		if(!(keys & KEY_UP)) rotateX += 3;
+		if(!(keys & KEY_DOWN)) rotateX -= 3;
+		if(!(keys & KEY_LEFT)) rotateY += 3;
+		if(!(keys & KEY_RIGHT)) rotateY -= 3;
 		
 
 		//draw the obj
@@ -75,8 +79,7 @@ int main()
 			
 		glFlush();
 
-		//swi seems to be broken, will let you know when i get this POS figured out	
-		//swiWaitForVBlank();
+		swiWaitForVBlank();
 	}
 
 	return 0;

@@ -48,7 +48,7 @@ int main()
 
 	//irqs are nice
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
@@ -111,8 +111,7 @@ int main()
 
 		glFlush();
 
-		//swi seems to be broken, will let you know when i get this POS figured out
-		//swiWaitForVBlank();
+		swiWaitForVBlank();
 	}
 
 	return 0;

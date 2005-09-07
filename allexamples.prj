@@ -2,38 +2,36 @@
 Signature=UE Proj: v.1
 [Project Information]
 Filter=*.*
-Project Directory=C:\projects\devkitPro\examples\
+Project Directory=C:\projects\devkitPro\examples\nds\
 Use Relative Directory=1
 Relative to Project File=1
 Project Wordfile=
 Project Tagfile=
 Create Tagfile=0
 Include Sub Directories=0
-[Files]
-0=Makefile
 [Group]
 0=
 [Open Files]
 Open File0=
-Open File Pos0=1754
-Open File Line0=1360
-Open File Window Pos0=0,1,-1,-1,-4,-23,154,154,1072,513
-Open File1=c:\projects\devkitPro\examples\nds\sound\SimpleSound\source\template.c
-Open File Pos1=441
-Open File Line1=0
-Open File Window Pos1=2,3,-1,-1,-4,-23,0,0,922,363
-Open File2=
-Open File Pos2=1848
-Open File Line2=578
-Open File Window Pos2=0,1,-1,-1,-4,-23,44,44,922,488
-Open File3=C:\projects\devkitPro\examples\gamecube\ReadText\makefile
+Open File Pos0=245
+Open File Line0=100
+Open File Window Pos0=0,1,-1,-1,-4,-23,88,88,996,447
+Open File1=C:\projects\devkitPro\examples\nds\Graphics\3D\Misc\Toon_Shading\source\main.cpp
+Open File Pos1=795
+Open File Line1=575
+Open File Window Pos1=0,1,-1,-1,-4,-23,110,110,1022,473
+Open File2=C:\projects\devkitPro\sources\psptoolchain\README.TXT
+Open File Pos2=671
+Open File Line2=1513
+Open File Window Pos2=2,3,-1,-1,-4,-23,132,132,1044,495
+Open File3=
 Open File Pos3=1807
 Open File Line3=1303
 Open File Window Pos3=0,1,-1,-1,-4,-23,66,66,944,510
 Open File4=C:\projects\devkitPro\examples\gp32\DemoGP32\Makefile
 Open File Pos4=4366
 Open File Line4=2894
-Active File Index=1
+Active File Index=2
 Open File Window Pos4=2,3,-1,-1,-4,-23,88,88,966,532
 Open File5=C:\projects\devkitPro\examples\gba\mbv2print\Makefile
 Open File Pos5=2762
@@ -48,3 +46,10 @@ Active File Display Mode=-1
 [File View]
 Current Select=Project Files
 Scroll Position=0
+[Files]
+0=filesystem\
+1=Graphics\
+2=input\
+3=Makefile
+4=sound\
+5=templates\

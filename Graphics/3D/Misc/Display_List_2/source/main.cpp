@@ -64,10 +64,14 @@ int main()
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_FORMAT_LIGHT1 | 
 													POLY_FORMAT_LIGHT2 | POLY_FORMAT_LIGHT3 ) ;
 		
-		if(!(KEYS & KEY_UP)) rotateX += 3;
-		if(!(KEYS & KEY_DOWN)) rotateX -= 3;
-		if(!(KEYS & KEY_LEFT)) rotateY += 3;
-		if(!(KEYS & KEY_RIGHT)) rotateY -= 3;
+		scanKeys();
+		
+		u16 keys = keysHeld();
+		
+		if(!(keys & KEY_UP)) rotateX += 3;
+		if(!(keys & KEY_DOWN)) rotateX -= 3;
+		if(!(keys & KEY_LEFT)) rotateY += 3;
+		if(!(keys & KEY_RIGHT)) rotateY -= 3;
 		
 		glCallList((u32*)teapot_bin);	
 

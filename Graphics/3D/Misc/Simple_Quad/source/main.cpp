@@ -2,8 +2,8 @@
 
 
 int main()
-{	
-	
+{
+
 	float rotateX = 0.0;
 	float rotateY = 0.0;
 
@@ -14,24 +14,24 @@ int main()
 
 	//irqs are nice
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
-	
+
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
-	
-	
-	
-	while(1)		
+
+
+
+	while(1)
 	{
 		glReset();
-	
+
 		//any floating point gl call is being converted to fixed prior to being implemented
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 
-		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
+		gluLookAt(	0.0, 0.0, 1.0,		//camera possition
 					0.0, 0.0, 0.0,		//look at
 					0.0, 1.0, 0.0);		//up
 
@@ -39,11 +39,11 @@ int main()
 
 		//move it away from the camera
 		glTranslate3f32(0, 0, floatof32(-1));
-				
+
 		glRotateX(rotateX);
 		glRotateY(rotateY);
-		
-		
+
+
 		glMatrixMode(GL_MODELVIEW);
 
 
@@ -51,15 +51,18 @@ int main()
 		//not a real gl function and will likely change
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
 
-		if(!(KEYS & KEY_UP)) rotateX += 3;
-		if(!(KEYS & KEY_DOWN)) rotateX -= 3;
-		if(!(KEYS & KEY_LEFT)) rotateY += 3;
-		if(!(KEYS & KEY_RIGHT)) rotateY -= 3;
-		
+		scanKeys();
+
+		u16 keys = keysHeld();
+
+		if(!(keys & KEY_UP)) rotateX += 3;
+		if(!(keys & KEY_DOWN)) rotateX -= 3;
+		if(!(keys & KEY_LEFT)) rotateY += 3;
+		if(!(keys & KEY_RIGHT)) rotateY -= 3;
 
 		//draw the obj
 		glBegin(GL_QUAD);
-			
+
 			glColor3b(255,0,0);
 			glVertex3v16(intov16(-1),intov16(-1),0);
 
@@ -71,16 +74,15 @@ int main()
 
 			glColor3b(255,0,255);
 			glVertex3v16(intov16(-1), intov16(1), 0);
-			
+
 		glEnd();
-		
+
 		glPopMatrix(1);
-			
+
 		glFlush();
 
-		//swi seems to be broken, will let you know when i get this POS figured out	
-		//swiWaitForVBlank();
+		swiWaitForVBlank();
 	}
 
 	return 0;
-}//end main 
+}//end main

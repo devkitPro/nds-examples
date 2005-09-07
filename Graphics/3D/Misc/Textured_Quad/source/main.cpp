@@ -6,12 +6,7 @@
 //later
 #include "texture_bin.h"
 
-
-
-
-
-int main()
-{	
+int main() {	
 	
 	int textureID;
 
@@ -25,7 +20,7 @@ int main()
 
 	//irqs are nice
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
@@ -40,8 +35,7 @@ int main()
 	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture_bin);
 	
 	
-	while(1)		
-	{
+	while(1) {
 		glReset();
 	
 		//any floating point gl call is being converted to fixed prior to being implemented
@@ -50,9 +44,6 @@ int main()
 		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
 					0.0, 0.0, 0.0,		//look at
 					0.0, 1.0, 0.0);		//up
-		
-		
-
 
 		glPushMatrix();
 
@@ -78,10 +69,14 @@ int main()
 		//not a real gl function and will likely change
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK);
 
-		if(!(KEYS & KEY_UP)) rotateX += 3;
-		if(!(KEYS & KEY_DOWN)) rotateX -= 3;
-		if(!(KEYS & KEY_LEFT)) rotateY += 3;
-		if(!(KEYS & KEY_RIGHT)) rotateY -= 3;
+		scanKeys();
+		
+		u16 keys = keysHeld();
+		
+		if(!(keys & KEY_UP)) rotateX += 3;
+		if(!(keys & KEY_DOWN)) rotateX -= 3;
+		if(!(keys & KEY_LEFT)) rotateY += 3;
+		if(!(keys & KEY_RIGHT)) rotateY -= 3;
 		
 		glBindTexture(0, textureID);
 
@@ -107,8 +102,7 @@ int main()
 			
 		glFlush();
 
-		//swi seems to be broken, will let you know when i get this POS figured out	
-		//swiWaitForVBlank();
+		swiWaitForVBlank();
 	}
 
 	return 0;

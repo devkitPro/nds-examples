@@ -6,6 +6,10 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.4  2005/09/05 00:32:20  wntrmute
+ *      removed references to IPC struct
+ *      replaced with API functions
+ *
  *      Revision 1.3  2005/08/31 03:02:39  wntrmute
  *      updated for new stdio support
  *
@@ -168,6 +172,8 @@ int main()
 	LoadGLTextures();
 	SetupWorld();
 
+	touchPosition	thisXY;
+	touchPosition	lastXY = { 0,0,0,0 };		
 
 	while (1)
 	{
@@ -212,42 +218,30 @@ int main()
 
 		// Camera rotation by touch screen
 
-		static bool movingCamera = false;
-		touchPosition touchXY;
-
 		if (keysHeld() & KEY_TOUCH)
 		{
-			touchXy = touchReadXY();
-			static int16 old_touchX = touchXY.px;
-			static int16 old_touchY = touchXY.py;
+			thisXY = touchReadXY();
 
-			if (movingCamera)
+			int16 dx = thisXY.px - lastXY.px;
+			int16 dy = thisXY.py - lastXY.py;
+
+			// filtering measurement errors
+			if (dx<20 && dx>-20 && dy<20 && dy>-20)
 			{
-				int16 dx = touchXY.px - old_touchX;
-				int16 dy = touchXY.py - old_touchY;
+				if(dx>-3&&dx<3)
+					dx=0;
 
-				// filtering measurement errors
-				if (dx<20 && dx>-20 && dy<20 && dy>-20)
-				{
-					if(dx>-3&&dx<3)
-						dx=0;
-
-					if(dy>-2&&dy<2)
-						dy=0;
+				if(dy>-2&&dy<2)
+					dy=0;
 
 					lookupdown -= dy;
 
 					heading += dx;
 					yrot = heading;
-				}
 			}
 
-			old_touchX = touchXY.px;
-			old_touchY = touchXY.py;
-
-			movingCamera = true;
+			lastXY = thisXY;
 		}
-		else movingCamera = false;
 
 
 		// Reset the screen and setup the view
