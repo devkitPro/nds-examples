@@ -118,7 +118,8 @@ int main(void)
 		BG3_CX = (scrollX<<8) - rcX * (c - s);
 		BG3_CY = (scrollY<<8) - rcY * (s + c);
 
-		consoleClear();
+		// clear the console screen (ansi escape sequence)
+		iprintf("\x1b[2J");
 
 	}
 	return 0;

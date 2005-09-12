@@ -1,11 +1,15 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.4 2005-09-05 00:32:19 wntrmute Exp $
+	$Id: main.cpp,v 1.5 2005-09-12 18:32:38 wntrmute Exp $
 
 	Simple console print demo
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.4  2005/09/05 00:32:19  wntrmute
+	removed references to IPC struct
+	replaced with API functions
+	
 	Revision 1.3  2005/08/31 03:02:39  wntrmute
 	updated for new stdio support
 	
@@ -55,8 +59,10 @@ int main(void) {
 	
 		swiWaitForVBlank();
 		touchXY=touchReadXY();
-		iprintAt(0,0,"Frame = %d",frame);
-		iprintAt(0,16,"Touch x = %04X, %04X\n", touchXY.x, touchXY.px);
+
+		// print at using ansi escape sequence \x1b[line;columnH 
+		iprintf("\x1b[0;0HFrame = %d",frame);
+		iprintf("\x1b[16;0Touch x = %04X, %04X\n", touchXY.x, touchXY.px);
 		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);		
 	
 	}
