@@ -88,7 +88,7 @@ int main()
 
 // 256 color sprite
 // print at using ansi escape sequence \x1b[line;columnH 
-	iprintf("\x1b[1;9H256 color:");
+	iprintf("\x1b[9;1H256 color:");
 	sprites[1].attribute[0] = ATTR0_COLOR_256 | ATTR0_ROTSCALE_DOUBLE | 75;
 	sprites[1].attribute[1] = ATTR1_SIZE_32 | 20; // size 64x64, x 10
 	sprites[1].attribute[2] = 64;
@@ -102,7 +102,7 @@ int main()
 
 // 16 color sprite
 // print at using ansi escape sequence \x1b[line;columnH 
-   	iprintf("\x1b[1;1616 color:");
+   	iprintf("\x1b[16;1H16 color:");
 	sprites[2].attribute[0] = ATTR0_COLOR_16 | ATTR0_ROTSCALE_DOUBLE | 135;
 	sprites[2].attribute[1] = ATTR1_SIZE_32 | 20;
 	sprites[2].attribute[2] = ATTR2_PALETTE(1) | 96;
