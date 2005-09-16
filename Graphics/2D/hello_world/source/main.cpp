@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.5 2005-09-12 18:32:38 wntrmute Exp $
+	$Id: main.cpp,v 1.6 2005-09-16 12:20:32 wntrmute Exp $
 
 	Simple console print demo
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.5  2005/09/12 18:32:38  wntrmute
+	removed *printAt replaced with ansi escape sequences
+	
 	Revision 1.4  2005/09/05 00:32:19  wntrmute
 	removed references to IPC struct
 	replaced with API functions
@@ -51,9 +54,9 @@ int main(void) {
 	//consoleInit() is a lot more flexible but this gets you up and running quick
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 
-	iprintf("\n\n\t   Hello DS dev'rs\n");
-	iprintf("\t  www.devkitpro.org");
-	iprintf("\twww.drunkencoders.com");
+	iprintf("      Hello DS dev'rs\n");
+	iprintf("     www.devkitpro.org\n");
+	iprintf("   www.drunkencoders.com");
 
 	while(1) {
 	
@@ -61,8 +64,8 @@ int main(void) {
 		touchXY=touchReadXY();
 
 		// print at using ansi escape sequence \x1b[line;columnH 
-		iprintf("\x1b[0;0HFrame = %d",frame);
-		iprintf("\x1b[16;0Touch x = %04X, %04X\n", touchXY.x, touchXY.px);
+		iprintf("\x1b[10;0HFrame = %d",frame);
+		iprintf("\x1b[16;0HTouch x = %04X, %04X\n", touchXY.x, touchXY.px);
 		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);		
 	
 	}
