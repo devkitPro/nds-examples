@@ -1,11 +1,15 @@
 /*---------------------------------------------------------------------------------
-	$Id: simplesound.c,v 1.1 2005-09-17 02:29:02 wntrmute Exp $
+	$Id: simplesound.c,v 1.2 2005-09-17 02:47:56 wntrmute Exp $
 
 	Simple Sound Demo
 
 	- Dave Murphy (WinterMute)
 
 	$Log: not supported by cvs2svn $
+	Revision 1.1  2005/09/17 02:29:02  wntrmute
+	renamed source file
+	added irq support for swi
+	
 	Revision 1.3  2005/08/31 03:02:39  wntrmute
 	updated for new stdio support
 	
@@ -39,6 +43,7 @@ int main(void) {
 	irqInit();
 	// a vblank interrupt is needed to use swiWaitForVBlank()
 	// since the dispatcher handles the flags no handler is required
+	irqSet(IRQ_VBLANK, NULL);
 	irqEnable(IRQ_VBLANK);
 
 	videoSetMode(0);	//not using the main screen
@@ -54,6 +59,21 @@ int main(void) {
 
 	iprintf("\n\nSimple Sound Demo\n\nPress A for SaberOff\n      L for ion\n      R for blaster\n");
 
+	// set the generic sound parameters
+	setGenericSound(	11025,	/* sample rate */
+						127,	/* volume */
+						64,		/* panning */
+						1 );	/* sound format*/
+
+	TransferSoundData blaster = {
+		blaster_raw,		/* Sample address */
+		blaster_raw_size,	/* Sample length */
+		11025,				/* Sample rate */
+		127,				/* Volume */
+		64,					/* panning */
+		1 					/* format */
+	};
+
 	while(1) {
 
 		swiWaitForVBlank();
@@ -65,7 +85,7 @@ int main(void) {
 
 		if ( keys & KEY_A) playGenericSound(saberoff_raw, saberoff_raw_size);
 
-		if ( keys & KEY_R) playGenericSound(blaster_raw, blaster_raw_size);
+		if ( keys & KEY_R) playSound(&blaster);
 
 	}
 
