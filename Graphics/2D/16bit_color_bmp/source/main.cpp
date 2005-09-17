@@ -7,7 +7,7 @@
 #include <nds/arm9/console.h> //basic print funcionality
 #include <stdio.h>
 
-//make file automaticaly makes a header file for access
+//makefile automaticaly makes a header file for access
 //to the binary data in any file ending in .bin that is in
 //the data folder.  It also links in that data to your project
 
@@ -67,7 +67,7 @@ int main(void)
 	// as we go
 
 	for(int i = 0; i < 256*256; i++)
-	   BG_GFX[i] = ((u16*)drunkenlogo_bin)[i] | BIT(15); //need the cast since drunkelogo is
+	   BG_GFX[i] = ((u16*)drunkenlogo_bin)[i] | BIT(15); //need the cast since drunkenlogo is
 	                                                   //8 bit data
     while(1)swiWaitForVBlank();
 
