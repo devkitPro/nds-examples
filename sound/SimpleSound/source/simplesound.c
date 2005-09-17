@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
-	$Id: template.c,v 1.3 2005-08-31 03:02:39 wntrmute Exp $
+	$Id: simplesound.c,v 1.1 2005-09-17 02:29:02 wntrmute Exp $
 
 	Simple Sound Demo
 
 	- Dave Murphy (WinterMute)
 
 	$Log: not supported by cvs2svn $
+	Revision 1.3  2005/08/31 03:02:39  wntrmute
+	updated for new stdio support
+	
 	Revision 1.2  2005/08/04 14:52:44  wntrmute
 	*** empty log message ***
 	
@@ -32,6 +35,12 @@ int main(void) {
 
 	powerON( POWER_LCD | POWER_2D_B );
 
+	// initialise the irq dispatcher
+	irqInit();
+	// a vblank interrupt is needed to use swiWaitForVBlank()
+	// since the dispatcher handles the flags no handler is required
+	irqEnable(IRQ_VBLANK);
+
 	videoSetMode(0);	//not using the main screen
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
 	vramSetBankC(VRAM_C_SUB_BG); 
@@ -47,7 +56,7 @@ int main(void) {
 
 	while(1) {
 
-		//swiWaitForVBlank();
+		swiWaitForVBlank();
 		scanKeys();
 		
 		u16 keys = keysDown();
