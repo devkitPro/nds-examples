@@ -1,9 +1,13 @@
 /*---------------------------------------------------------------------------------
-	$Id: template.c,v 1.3 2005-09-05 00:32:20 wntrmute Exp $
+	$Id: template.c,v 1.4 2005-09-17 23:15:13 wntrmute Exp $
 
 	Basic Hello World
 
 	$Log: not supported by cvs2svn $
+	Revision 1.3  2005/09/05 00:32:20  wntrmute
+	removed references to IPC struct
+	replaced with API functions
+	
 	Revision 1.2  2005/08/31 01:24:21  wntrmute
 	updated for new stdio support
 
@@ -38,7 +42,7 @@ int main(void) {
 	while(1) {
 
 		touchXY=touchReadXY();
-		iprintAt(0,10,"Touch x = %04X, %04X\n", touchXY.x, touchXY.px);
+		iprintf("\x1b[10;0HTouch x = %04X, %04X\n", touchXY.x, touchXY.px);
 		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);
 
 	}
