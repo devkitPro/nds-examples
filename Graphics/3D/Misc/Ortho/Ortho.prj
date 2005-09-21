@@ -1,0 +1,28 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Filter=*.*
+Project Directory=C:\projects\devkitPro\test\nds_template\arm9\
+Use Relative Directory=1
+Relative to Project File=1
+Project Wordfile=
+Project Tagfile=
+Create Tagfile=0
+Include Sub Directories=0
+[Files]
+0=include\
+1=Makefile
+2=source\
+[Group]
+0=
+[Open Files]
+Open File0=C:\projects\devkitPro\examples\nds\Graphics\3D\Misc\Ortho\Active File Display Mode=-1
+Open File Pos0=0
+Open File Line0=0
+Active File Index=0
+Open File Window Pos0=2,3,-1,-1,-4,-23,0,0,908,359
+Open File1=
+Active File Display Mode=3
+[File View]
+Current Select=Project Files
+Scroll Position=0
