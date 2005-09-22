@@ -1,9 +1,13 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.4 2005-09-05 00:32:19 wntrmute Exp $
+	$Id: main.cpp,v 1.5 2005-09-22 22:48:32 wntrmute Exp $
 
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.4  2005/09/05 00:32:19  wntrmute
+	removed references to IPC struct
+	replaced with API functions
+	
 	Revision 1.3  2005/07/29 04:50:24  wntrmute
 	added UltraEdit and Pnotepad project files
 	fixed Id macro
@@ -77,7 +81,6 @@ void updateOAM(void) {
 //---------------------------------------------------------------------------------
 void irqVBlank(void) {	
 //---------------------------------------------------------------------------------
-    IF = IF;
 }
 
 //---------------------------------------------------------------------------------
@@ -113,7 +116,8 @@ int main(void) {
 	//vram banks are somewhat complex
 	vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_SUB_BG, VRAM_D_SUB_SPRITE);
 	
-	//irqs are nice
+	// a vblank interrupt is needed to use swiWaitForVBlank()
+	// since the dispatcher handles the flags no handler is required
 	irqInit();
 	irqSet(IRQ_VBLANK, irqVBlank);
 	
