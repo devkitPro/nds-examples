@@ -104,7 +104,8 @@ $(BUILD):
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).arm9 $(TARGET).ds.gba 
- 
+run:
+	wmb -data $(OUTPUT).nds
  
 #---------------------------------------------------------------------------------
 else

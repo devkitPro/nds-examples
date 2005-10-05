@@ -1,9 +1,12 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.5 2005-09-22 22:48:32 wntrmute Exp $
+	$Id: main.cpp,v 1.6 2005-10-05 21:10:39 wntrmute Exp $
 
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.5  2005/09/22 22:48:32  wntrmute
+	remove IF
+	
 	Revision 1.4  2005/09/05 00:32:19  wntrmute
 	removed references to IPC struct
 	replaced with API functions
@@ -28,14 +31,14 @@
 
 #define NUM_SPRITES 128	
 
-sSpriteEntry OAMCopySub[128];
+SpriteEntry OAMCopySub[128];
 
 
 //simple sprite struct
 typedef struct {
 	int x,y;				//location 
 	int dx, dy;			//speed
-	sSpriteEntry* oam;	
+	SpriteEntry* oam;	
 	int gfxID; 				//graphics lovation
 }Sprite;
 
@@ -71,7 +74,7 @@ void updateOAM(void) {
 //---------------------------------------------------------------------------------
 	unsigned int i;
 	
-	for(i = 0; i < 128 * sizeof(sSpriteEntry) / 4 ; i++)
+	for(i = 0; i < 128 * sizeof(SpriteEntry) / 4 ; i++)
 	{
 		((uint32*)OAM_SUB)[i] = ((uint32*)OAMCopySub)[i];
 	}
