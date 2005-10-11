@@ -16,7 +16,7 @@ int main()
 {	
 	// Turn on everything
 	powerON(POWER_ALL);
-	
+
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
 	
