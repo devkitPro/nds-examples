@@ -1,9 +1,12 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.6 2005-10-05 21:10:39 wntrmute Exp $
+	$Id: main.cpp,v 1.7 2005-10-11 05:09:42 dovoto Exp $
 
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.6  2005/10/05 21:10:39  wntrmute
+	*** empty log message ***
+	
 	Revision 1.5  2005/09/22 22:48:32  wntrmute
 	remove IF
 	
@@ -24,10 +27,10 @@
 
 #include <stdlib.h>
 #include <nds.h>
+#include <nds/arm9/image.h>
 
-// these files are generated automatically by the bin2o rule
-#include "ballpalette_bin.h"
-#include "balldata_bin.h"
+//include our ball pcx file (auto generated)
+#include "ball_pcx.h"
 
 #define NUM_SPRITES 128	
 
@@ -124,12 +127,21 @@ int main(void) {
 	irqInit();
 	irqSet(IRQ_VBLANK, irqVBlank);
 	
+
+	sImage ball;
+
+	//load our ball pcx file into an image
+	loadPCX((u8*)ball_pcx, &ball);
+	
+	//tile it so it is usefull as sprite data
+	imageTileData(&ball);
+
 	// Sprite initialisation
 	for(i = 0; i < 256; i++)
-		SPRITE_PALETTE_SUB[i] = ((u16*)ballpalette_bin)[i];
+		SPRITE_PALETTE_SUB[i] = ball.palette[i];
 
 	for(i = 0; i< 32*16; i++)
-		SPRITE_GFX_SUB[i] = ((u16*)balldata_bin)[i];
+		SPRITE_GFX_SUB[i] = ball.data16[i];
 	
 	//turn off sprites
 	initOAM();
