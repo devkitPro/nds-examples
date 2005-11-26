@@ -48,7 +48,7 @@ int main() {
 		glPushMatrix();
 
 		//move it away from the camera
-		glTranslate3f32(0, 0, floatof32(-1));
+		glTranslate3f32(0, 0, floattof32(-1));
 				
 		glRotateX(rotateX);
 		glRotateY(rotateY);
@@ -82,19 +82,19 @@ int main() {
 
 		//draw the obj
 		glBegin(GL_QUAD);
-			glNormal(NORMAL_PACK(0,intov10(-1),0));
+			glNormal(NORMAL_PACK(0,inttov10(-1),0));
 
-			glTexCoord1i(TEXTURE_PACK(intot16(128), 0));
-			glVertex3v16(floatov16(-0.5),	floatov16(-0.5), 0 );
+			glTexCoord1i(TEXTURE_PACK(inttot16(128), 0));
+			glVertex3v16(floattov16(-0.5),	floattov16(-0.5), 0 );
 	
-			glTexCoord1i(TEXTURE_PACK(intot16(128),intot16(128)));
-			glVertex3v16(floatov16(0.5),	floatov16(-0.5), 0 );
+			glTexCoord1i(TEXTURE_PACK(inttot16(128),inttot16(128)));
+			glVertex3v16(floattov16(0.5),	floattov16(-0.5), 0 );
 	
-			glTexCoord1i(TEXTURE_PACK(0, intot16(128)));
-			glVertex3v16(floatov16(0.5),	floatov16(0.5), 0 );
+			glTexCoord1i(TEXTURE_PACK(0, inttot16(128)));
+			glVertex3v16(floattov16(0.5),	floattov16(0.5), 0 );
 
 			glTexCoord1i(TEXTURE_PACK(0,0));
-			glVertex3v16(floatov16(-0.5),	floatov16(0.5), 0 );
+			glVertex3v16(floattov16(-0.5),	floattov16(0.5), 0 );
 		
 		glEnd();
 		

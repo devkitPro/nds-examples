@@ -86,8 +86,8 @@ void InitGL(void)
 	{
 		for(int y=0; y<32; y++)
 		{
-			points[x][y][0]= (intov16(x)/4);
-			points[x][y][1]= (intov16(y)/4);
+			points[x][y][0]= (inttov16(x)/4);
+			points[x][y][1]= (inttov16(y)/4);
 			points[x][y][2]= SIN[ (x * 16) & LUT_MASK];
 		}
 	}
@@ -170,10 +170,10 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 	{
 		for( y = 0; y < 31; y++ )
 		{
-			float_x = intot16(x) << 2;
-			float_y = intot16(y) << 2;
-			float_xb = intot16(x+1) << 2;
-			float_yb = intot16(y+1) << 2;
+			float_x = inttot16(x) << 2;
+			float_y = inttot16(y) << 2;
+			float_xb = inttot16(x+1) << 2;
+			float_yb = inttot16(y+1) << 2;
 
 			glTexCoord2t16( float_x, float_y);
 			glVertex3v16( points[x][y][0], points[x][y][1], points[x][y][2] );

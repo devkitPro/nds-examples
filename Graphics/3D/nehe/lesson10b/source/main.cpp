@@ -98,11 +98,11 @@ void SetupWorld()
 		{
 			readstr(oneline);
 			sscanf(oneline, "%f %f %f %f %f", &x, &y, &z, &u, &v);
-			sector1.triangle[loop].vertex[vert].x = floatov16(x);
-			sector1.triangle[loop].vertex[vert].y = floatov16(y);
-			sector1.triangle[loop].vertex[vert].z = floatov16(z);
-			sector1.triangle[loop].vertex[vert].u = floatot16(u*128);
-			sector1.triangle[loop].vertex[vert].v = floatot16(v*128);
+			sector1.triangle[loop].vertex[vert].x = floattov16(x);
+			sector1.triangle[loop].vertex[vert].y = floattov16(y);
+			sector1.triangle[loop].vertex[vert].z = floattov16(z);
+			sector1.triangle[loop].vertex[vert].u = floattot16(u*128);
+			sector1.triangle[loop].vertex[vert].v = floattot16(v*128);
 		}
 	}
 	
@@ -205,7 +205,7 @@ int main()
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
 		
-		glLight(0, RGB15(31,31,31) , 0,	floatov10(-1.0), 0);
+		glLight(0, RGB15(31,31,31) , 0,	floattov10(-1.0), 0);
 
 		glPushMatrix();
 		

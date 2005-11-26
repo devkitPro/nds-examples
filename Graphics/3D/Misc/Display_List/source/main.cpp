@@ -8,12 +8,12 @@ u32 triangle[] =
 	FIFO_COMMAND_PACK(FIFO_BEGIN, FIFO_COLOR, FIFO_VERTEX16, FIFO_COLOR),
 	GL_TRIANGLE,
 	RGB15(31,0,0),
-	VERTEX_PACK(intov16(-1),intov16(-1)), VERTEX_PACK(0,0),
+	VERTEX_PACK(inttov16(-1),inttov16(-1)), VERTEX_PACK(0,0),
 	RGB15(0,31,0),
 	FIFO_COMMAND_PACK(FIFO_VERTEX16, FIFO_COLOR, FIFO_VERTEX16, FIFO_END),
-	VERTEX_PACK(intov16(1),intov16(-1)), VERTEX_PACK(0,0),
+	VERTEX_PACK(inttov16(1),inttov16(-1)), VERTEX_PACK(0,0),
 	RGB15(0,0,31),
-	VERTEX_PACK(intov16(0),intov16(1)), VERTEX_PACK(0,0),
+	VERTEX_PACK(inttov16(0),inttov16(1)), VERTEX_PACK(0,0),
 };
 
 int main()
@@ -51,7 +51,7 @@ int main()
 		glPushMatrix();
 
 		//move it away from the camera
-		glTranslate3f32(0, 0, floatof32(-1));
+		glTranslate3f32(0, 0, floattof32(-1));
 				
 		glRotateX(rotateX);
 		glRotateY(rotateY);

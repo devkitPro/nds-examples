@@ -9,14 +9,14 @@
 
 //verticies for the cube
 v16 CubeVectors[] = {
- 		floatov16(-0.5),	floatov16(-0.5),	floatov16(0.5), 
-		floatov16(0.5),		floatov16(-0.5),	floatov16(0.5),
-		floatov16(0.5),		floatov16(-0.5),	floatov16(-0.5),
-		floatov16(-0.5),	floatov16(-0.5),	floatov16(-0.5),
-		floatov16(-0.5),	floatov16(0.5),		floatov16(0.5), 
-		floatov16(0.5),		floatov16(0.5),		floatov16(0.5),
-		floatov16(0.5),		floatov16(0.5),		floatov16(-0.5),
-		floatov16(-0.5),	floatov16(0.5),		floatov16(-0.5)
+ 		floattov16(-0.5), floattov16(-0.5), floattov16(0.5), 
+		floattov16(0.5),  floattov16(-0.5), floattov16(0.5),
+		floattov16(0.5),  floattov16(-0.5), floattov16(-0.5),
+		floattov16(-0.5), floattov16(-0.5), floattov16(-0.5),
+		floattov16(-0.5), floattov16(0.5),  floattov16(0.5), 
+		floattov16(0.5),  floattov16(0.5),	floattov16(0.5),
+		floattov16(0.5),  floattov16(0.5),  floattov16(-0.5),
+		floattov16(-0.5), floattov16(0.5),  floattov16(-0.5)
 };
 
 //polys
@@ -33,20 +33,20 @@ u8 CubeFaces[] = {
 u32 uv[] =
 {
 	
-	TEXTURE_PACK(intot16(128), 0),
-	TEXTURE_PACK(intot16(128),intot16(128)),
-	TEXTURE_PACK(0, intot16(128)),
+	TEXTURE_PACK(inttot16(128), 0),
+	TEXTURE_PACK(inttot16(128),inttot16(128)),
+	TEXTURE_PACK(0, inttot16(128)),
 	TEXTURE_PACK(0,0)
 };
 
 u32 normals[] =
 {
-	NORMAL_PACK(0,intov10(-1),0),
-	NORMAL_PACK(0,intov10(1),0),
-	NORMAL_PACK(intov10(1),0,0),
-	NORMAL_PACK(0,0,intov10(-1)),
-	NORMAL_PACK(intov10(-1),0,0),
-	NORMAL_PACK(0,intov10(1),0)
+	NORMAL_PACK(0,inttov10(-1),0),
+	NORMAL_PACK(0,inttov10(1),0),
+	NORMAL_PACK(inttov10(1),0,0),
+	NORMAL_PACK(0,0,inttov10(-1)),
+	NORMAL_PACK(inttov10(-1),0,0),
+	NORMAL_PACK(0,inttov10(1),0)
 
 };
 
@@ -120,15 +120,15 @@ int main()
 		
 
 		
-		glLight(0, RGB15(31,31,31) , 0,				  floatov10(-1.0),		 0);
-		glLight(1, RGB15(31,0,31),   0,				  floatov10(1) - 1,			 0);
-		glLight(2, RGB15(0,31,0) ,   floatov10(-1.0), 0,					 0);
-		glLight(3, RGB15(0,0,31) ,   floatov10(1.0) - 1,  0,					 0);
+		glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
+		glLight(1, RGB15(31,0,31),   0,				  floattov10(1) - 1,			 0);
+		glLight(2, RGB15(0,31,0) ,   floattov10(-1.0), 0,					 0);
+		glLight(3, RGB15(0,0,31) ,   floattov10(1.0) - 1,  0,					 0);
 
 		glPushMatrix();
 
 		//move it away from the camera
-		glTranslate3f32(0, 0, floatof32(-1));
+		glTranslate3f32(0, 0, floattof32(-1));
 				
 		glRotateX(rotateX);
 		glRotateY(rotateY);

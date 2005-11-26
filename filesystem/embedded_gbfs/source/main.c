@@ -1,10 +1,14 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.3 2005-09-05 00:32:19 wntrmute Exp $
+	$Id: main.c,v 1.4 2005-11-26 21:26:59 joatski Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.3  2005/09/05 00:32:19  wntrmute
+	removed references to IPC struct
+	replaced with API functions
+	
 	Revision 1.2  2005/08/31 03:02:39  wntrmute
 	updated for new stdio support
 	
@@ -63,7 +67,7 @@ SECTOR sector1;				// Our Model Goes Here:
 
 
 //---------------------------------------------------------------------------------
-float sin(float angle) {
+float tsin(float angle) {
 //---------------------------------------------------------------------------------
 	f32 s = SIN[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
 
@@ -71,7 +75,7 @@ float sin(float angle) {
 }
 
 //---------------------------------------------------------------------------------
-float cos(float angle) {
+float tcos(float angle) {
 //---------------------------------------------------------------------------------
 	f32 c = COS[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
 
@@ -203,8 +207,8 @@ int main()
 		}
 		
 		if (keysHeld() & KEY_DOWN) {
-			xpos -= (float)sin(heading) * 0.05f;
-			zpos += (float)cos(heading) * 0.05f;
+			xpos -= (float)tsin(heading) * 0.05f;
+			zpos += (float)tcos(heading) * 0.05f;
 			if (walkbiasangle >= 359.0f)
 			{
 				walkbiasangle = 0.0f;
@@ -213,19 +217,19 @@ int main()
 			{
 				walkbiasangle+= 10;
 			}
-			walkbias = (float)sin(walkbiasangle)/20.0f;
+			walkbias = (float)tsin(walkbiasangle)/20.0f;
 		}
 		if (keysHeld() & KEY_UP)
 		{
-			xpos += sin(heading) * 0.05f;
-			zpos -= cos(heading) * 0.05f;
+			xpos += tsin(heading) * 0.05f;
+			zpos -= tcos(heading) * 0.05f;
 
 			if (walkbiasangle <= 1.0f) {
 				walkbiasangle = 359.0f;
 			} else {
 				walkbiasangle-= 10;
 			}
-			walkbias = (float)sin(walkbiasangle)/20.0f;
+			walkbias = (float)tsin(walkbiasangle)/20.0f;
 		}
 
 		// Reset the screen and setup the view
@@ -233,7 +237,7 @@ int main()
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
 		
-		glLight(0, RGB15(31,31,31), 0, floatov10(-1.0), 0);
+		glLight(0, RGB15(31,31,31), 0, floattov10(-1.0), 0);
 
 		glPushMatrix();
 		

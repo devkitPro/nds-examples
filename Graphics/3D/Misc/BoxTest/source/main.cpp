@@ -188,12 +188,12 @@ int main()
 		printf("\nSingle test (float): %i", 2*(getTimer(0) - time));
 
 		time = startTimer(0);
-		BoxTest(intov16(-1),intov16(-1),intov16(-1),intov16(2),intov16(2),intov16(2));
+		BoxTest(inttov16(-1),inttov16(-1),inttov16(-1),inttov16(2),inttov16(2),inttov16(2));
 		printf("\nSingle test (fixed): %i", 2*(getTimer(0) - time));
 
 		time = startTimer(0);
 		for(int i = 0; i < 64; i++)
-			BoxTest(intov16(-1),intov16(-1),intov16(-1),intov16(2),intov16(2),intov16(2));
+			BoxTest(inttov16(-1),inttov16(-1),inttov16(-1),inttov16(2),inttov16(2),inttov16(2));
 
 		printf("\n64 tests avg. (fixed): %i", (getTimer(0) - time) / 32);
 		printf("\nBox Test result: %s", hit ? "hit" : "miss");

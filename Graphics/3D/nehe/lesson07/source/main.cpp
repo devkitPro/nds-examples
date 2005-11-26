@@ -113,7 +113,7 @@ int main()
 		
 		//set up a directional ligth arguments are light number (0-3), light color, 
 		//and an x,y,z vector that points in the direction of the light
-		glLight(0, RGB15(31,31,31) , 0, floatov10(-1.0), 0);
+		glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0);
 
 		glPushMatrix();
 		

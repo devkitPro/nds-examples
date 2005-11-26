@@ -219,7 +219,7 @@ int main()
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
 		
-		glLight(0, RGB15(31,31,31) , 0,				  floatov10(-1.0),		 0);
+		glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
 
 		glPushMatrix();
 		

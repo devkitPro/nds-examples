@@ -74,13 +74,13 @@ int main()
 
 		//NB: When toon-shading, the hw ignores lights 2 and 3
 		//Also note that the hw uses the RED component of the lit vertex to index the toon-table
-		glLight(0, RGB15(16,16,16) , 0,		floatov10(-1.0),		0);
-		glLight(1, RGB15(16,16,16),   floatov10(-1.0),	0,		0);
+		glLight(0, RGB15(16,16,16) , 0,		floattov10(-1.0),		0);
+		glLight(1, RGB15(16,16,16),   floattov10(-1.0),	0,		0);
 
 
 
 		glMatrixMode(GL_MODELVIEW);
-		glTranslate3f32(0, 0, floatof32(-3));
+		glTranslate3f32(0, 0, floattof32(-3));
 		glRotateXi(rotateX>>3);
 		glRotateYi(rotateY>>3);
 
