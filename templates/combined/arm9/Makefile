@@ -62,11 +62,6 @@ export DEPSDIR := $(CURDIR)/$(BUILD)
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir))
  
-export CC		:=	$(PREFIX)gcc
-export CXX		:=	$(PREFIX)g++
-export AR		:=	$(PREFIX)ar
-export OBJCOPY	:=	$(PREFIX)objcopy
- 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
@@ -90,9 +85,8 @@ export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
 					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
  
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
-					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
-					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
-					-I$(CURDIR)/$(BUILD)
+			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+			-I$(CURDIR)/$(BUILD)
  
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
  
