@@ -4,9 +4,7 @@
 #include <nds/arm9/console.h> //basic print funcionality
 
 
-//texture_bin.h is created automagicaly from the texture.bin placed in arm9/resources
-//texture.bin is a raw 128x128 16 bit image.  I will release a tool for texture conversion 
-//later
+//texture_bin our original texture
 #include "texture_bin.h"
 
 // most of the following textures were generated from online samples available at 
@@ -275,10 +273,10 @@ int main()
 		
 		u16 keys = keysHeld();
 		
-		if(!(keys & KEY_UP)) rotateX += 3;
-		if(!(keys & KEY_DOWN)) rotateX -= 3;
-		if(!(keys & KEY_LEFT)) rotateY += 3;
-		if(!(keys & KEY_RIGHT)) rotateY -= 3;
+		if((keys & KEY_UP)) rotateX += 3;
+		if((keys & KEY_DOWN)) rotateX -= 3;
+		if((keys & KEY_LEFT)) rotateY += 3;
+		if((keys & KEY_RIGHT)) rotateY -= 3;
 		
 		u16 keysPressed = keysDown();
 		

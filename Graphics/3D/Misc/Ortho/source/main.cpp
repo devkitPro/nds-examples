@@ -95,7 +95,7 @@ int main()
 		
 		
 		//ds specific, several attributes can be set here	
-		if(!(keysHeld() & KEY_L))
+		if((keysHeld() & KEY_L))
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE  | POLY_FORMAT_LIGHT0| POLY_FORMAT_LIGHT1| POLY_FORMAT_LIGHT2);
 		else
 			glPolyFmt(POLY_ALPHA(0)  | POLY_CULL_NONE  | POLY_FORMAT_LIGHT0| POLY_FORMAT_LIGHT1| POLY_FORMAT_LIGHT2);

@@ -37,7 +37,6 @@ int main()
 	
 	while(1)		
 	{
-		glReset();
 	
 		//any floating point gl call is being converted to fixed prior to being implemented
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
@@ -69,10 +68,10 @@ int main()
 		
 		u16 keys = keysHeld();
 		
-		if(!(keys & KEY_UP)) rotateX += 3;
-		if(!(keys & KEY_DOWN)) rotateX -= 3;
-		if(!(keys & KEY_LEFT)) rotateY += 3;
-		if(!(keys & KEY_RIGHT)) rotateY -= 3;
+		if((keys & KEY_UP)) rotateX += 3;
+		if((keys & KEY_DOWN)) rotateX -= 3;
+		if((keys & KEY_LEFT)) rotateY += 3;
+		if((keys & KEY_RIGHT)) rotateY -= 3;
 		
 		glCallList(triangle);	
 

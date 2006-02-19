@@ -54,7 +54,8 @@ int main()
 	glClearDepth(0x7FFF);
 
 	vramSetBankA(VRAM_A_TEXTURE);
-
+	glEnable(GL_TEXTURE_2D);
+	
 	int cafe_texid;
 	glGenTextures( 1, &cafe_texid );
 	glBindTexture( 0, cafe_texid );
@@ -63,8 +64,8 @@ int main()
 
 	while(1)
 	{
-		glReset();
-
+		
+	
 		//any floating point gl call is being converted to fixed prior to being implemented
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 

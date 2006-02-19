@@ -73,10 +73,10 @@ int main() {
 		
 		u16 keys = keysHeld();
 		
-		if(!(keys & KEY_UP)) rotateX += 3;
-		if(!(keys & KEY_DOWN)) rotateX -= 3;
-		if(!(keys & KEY_LEFT)) rotateY += 3;
-		if(!(keys & KEY_RIGHT)) rotateY -= 3;
+		if((keys & KEY_UP)) rotateX += 3;
+		if((keys & KEY_DOWN)) rotateX -= 3;
+		if((keys & KEY_LEFT)) rotateY += 3;
+		if((keys & KEY_RIGHT)) rotateY -= 3;
 		
 		glBindTexture(0, textureID);
 

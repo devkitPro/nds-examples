@@ -151,9 +151,7 @@ int main()
 			oldy = touchReadXY().py;
 		}
 
-		// Reset the screen and setup the view
-		glReset();
-
+		
 		//change ortho vs perspective
 		if(keysHeld() & KEY_B)
 			glOrtho(-2,2,-2,2,0.1,10);	

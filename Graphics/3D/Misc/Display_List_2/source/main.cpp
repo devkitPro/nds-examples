@@ -29,7 +29,6 @@ int main()
 	
 	while(1)		
 	{
-		glReset();
 	
 		//any floating point gl call is being converted to fixed prior to being implemented
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
