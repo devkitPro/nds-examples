@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------------
 
 ifeq ($(strip $(DEVKITARM)),)
-$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM)
+$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
 include $(DEVKITARM)/ds_rules
@@ -30,6 +30,7 @@ ARCH	:=	-mthumb -mthumb-interwork
 CFLAGS	:=	-g -Wall -O2\
  			-mcpu=arm9tdmi -mtune=arm9tdmi -fomit-frame-pointer\
 			-ffast-math \
+			-fno-strict-aliasing \
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9
