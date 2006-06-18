@@ -3,12 +3,14 @@ SUBDIRS:= $(shell ls | egrep -v '^(CVS)$$')
 DATESTRING	:=	$(shell date +%Y)$(shell date +%m)$(shell date +%d)
 
 #---------------------------------------------------------------------------------
-all:
+all: examples
 #---------------------------------------------------------------------------------
+	rm -fr bin
+	mkdir -p bin
+	find ./ -name *.nds -exec cp -fv {} bin \;
+
+examples:
 	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE) -C $$i ; fi; done;
-	@rm -fr bin
-	@mkdir -p bin
-	@find ./ -name *.nds -exec cp -fv {} bin \;
 
 #---------------------------------------------------------------------------------
 clean:

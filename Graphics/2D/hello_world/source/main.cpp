@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.6 2005-09-16 12:20:32 wntrmute Exp $
+	$Id: main.cpp,v 1.7 2006-06-18 21:32:41 wntrmute Exp $
 
 	Simple console print demo
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.6  2005/09/16 12:20:32  wntrmute
+	corrected iprintfs
+	
 	Revision 1.5  2005/09/12 18:32:38  wntrmute
 	removed *printAt replaced with ansi escape sequences
 	
@@ -24,7 +27,6 @@
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
 
-#include <nds/arm9/console.h> //basic print funcionality
 #include <stdio.h>
 
 volatile int frame = 0;
