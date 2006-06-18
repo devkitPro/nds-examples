@@ -1,19 +1,5 @@
-/*---------------------------------------------------------------------------------
-	$Id: template.c,v 1.2 2005-09-07 20:06:06 wntrmute Exp $
-
-	Simple ARM7 stub (sends RTC, TSC, and X/Y data to the ARM 9)
-
-	$Log: not supported by cvs2svn $
-	Revision 1.8  2005/08/03 05:13:16  wntrmute
-	corrected sound code
-
-
----------------------------------------------------------------------------------*/
 #include <nds.h>
-
-#include <nds/bios.h>
-#include <nds/arm7/touch.h>
-#include <nds/arm7/clock.h>
+#include <stdlib.h>
 
 //---------------------------------------------------------------------------------
 void startSound(int sampleRate, const void* data, u32 bytes, u8 channel, u8 vol,  u8 pan, u8 format) {
@@ -35,67 +21,65 @@ s32 getFreeSoundChannel() {
 	return -1;
 }
 
+int vcount;
+touchPosition first,tempPos;
+
 //---------------------------------------------------------------------------------
-void VblankHandler(void) {
+void VcountHandler() {
 //---------------------------------------------------------------------------------
-	static int heartbeat = 0;
-
-	uint16 but=0, x=0, y=0, xpx=0, ypx=0, z1=0, z2=0, batt=0, aux=0;
-	int t1=0, t2=0;
-	uint32 temp=0;
-	uint8 ct[sizeof(IPC->curtime)];
-	u32 i;
-
-	// Update the heartbeat
-	heartbeat++;
-
-	// Read the touch screen
+	static int lastbut = -1;
+	
+	uint16 but=0, x=0, y=0, xpx=0, ypx=0, z1=0, z2=0;
 
 	but = REG_KEYXY;
 
-	if (!(but & (1<<6))) {
-
-		touchPosition tempPos = touchReadXY();
+	if (!( (but ^ lastbut) & (1<<6))) {
+ 
+		tempPos = touchReadXY();
 
 		x = tempPos.x;
 		y = tempPos.y;
 		xpx = tempPos.px;
 		ypx = tempPos.py;
+		z1 = tempPos.z1;
+		z2 = tempPos.z2;
+		
+	} else {
+		lastbut = but;
+		but |= (1 <<6);
 	}
 
-	z1 = touchRead(TSC_MEASURE_Z1);
-	z2 = touchRead(TSC_MEASURE_Z2);
+	if ( vcount == 80 ) {
+		first = tempPos;
+	} else {
+		if (	abs( xpx - first.px) > 10 || abs( ypx - first.py) > 10 ||
+				(but & ( 1<<6)) ) {
 
-	
-	batt = touchRead(TSC_MEASURE_BATTERY);
-	aux  = touchRead(TSC_MEASURE_AUX);
+			but |= (1 <<6);
+			lastbut = but;
 
-	// Read the time
-	rtcGetTime((uint8 *)ct);
-	BCDToInteger((uint8 *)&(ct[1]), 7);
-
-	// Read the temperature
-	temp = touchReadTemperature(&t1, &t2);
-
-	// Update the IPC struct
-	IPC->heartbeat	= heartbeat;
+		} else { 	
+			IPC->mailBusy = 1;
+			IPC->touchX			= x;
+			IPC->touchY			= y;
+			IPC->touchXpx		= xpx;
+			IPC->touchYpx		= ypx;
+			IPC->touchZ1		= z1;
+			IPC->touchZ2		= z2;
+			IPC->mailBusy = 0;
+		}
+	}
 	IPC->buttons		= but;
-	IPC->touchX			= x;
-	IPC->touchY			= y;
-	IPC->touchXpx		= xpx;
-	IPC->touchYpx		= ypx;
-	IPC->touchZ1		= z1;
-	IPC->touchZ2		= z2;
-	IPC->battery		= batt;
-	IPC->aux			= aux;
+	vcount ^= (80 ^ 130);
+	SetYtrigger(vcount);
 
-	for(i=0; i<sizeof(ct); i++) {
-		IPC->curtime[i] = ct[i];
-	}
+}
 
-	IPC->temperature = temp;
-	IPC->tdiode1 = t1;
-	IPC->tdiode2 = t2;
+//---------------------------------------------------------------------------------
+void VblankHandler(void) {
+//---------------------------------------------------------------------------------
+
+	u32 i;
 
 
 	//sound code  :)
@@ -129,9 +113,12 @@ int main(int argc, char ** argv) {
 
 	irqInit();
 	irqSet(IRQ_VBLANK, VblankHandler);
-	irqEnable(IRQ_VBLANK);
+	SetYtrigger(80);
+	vcount = 80;
+	irqSet(IRQ_VCOUNT, VcountHandler);
+	irqEnable(IRQ_VBLANK | IRQ_VCOUNT);
 
-	// Keep the ARM7 out of main RAM
+	// Keep the ARM7 idle
 	while (1) swiWaitForVBlank();
 }
 
