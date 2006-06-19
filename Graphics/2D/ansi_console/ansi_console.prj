@@ -16,8 +16,13 @@ Include Sub Directories=0
 1=source\
 2=Makefile
 [Open Files]
-Open File0=
-Active File Display Mode=-1
+Open File0=E:\projects\devkitPro\examples\nds\Graphics\2D\ansi_console\source\main.c
+Active File Display Mode=3
+Open File Pos0=476
+Open File Line0=0
+Active File Index=0
+Open File Window Pos0=2,3,-1,-1,-4,-23,0,0,779,403
+Open File1=
 [File View]
-Current Select=Project Files\
+Current Select=Project Files
 Scroll Position=0

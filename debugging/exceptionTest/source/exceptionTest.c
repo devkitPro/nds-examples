@@ -11,7 +11,7 @@ int main(void) {
 //---------------------------------------------------------------------------------
 
 	// install the default exception handler
-	setExceptionHandler(defaultExceptionHandler) ;
+	defaultExceptionHandler();
 
 	irqInit();
 	irqEnable(IRQ_VBLANK);
