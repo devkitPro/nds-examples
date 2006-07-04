@@ -37,7 +37,7 @@ int main(void) {
 	vramSetBankH(VRAM_H_LCD); 
 
 	for(i = 0; i < fontPaletteSize; ++i) {
-		(VRAM_H + 0x3000 )[i] = fontPalette[i];
+		VRAM_H_EXT_PALETTE[3][0][i]= fontPalette[i];
 	}
 
 	// map bank to extended palette after writing data
