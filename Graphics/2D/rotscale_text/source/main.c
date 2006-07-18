@@ -36,6 +36,7 @@ int main(void) {
 	// extended palettes are written with bank mapped to lcd
 	vramSetBankH(VRAM_H_LCD); 
 
+	// each background has it's own set of 16 256 color palettes
 	for(i = 0; i < fontPaletteSize; ++i) {
 		VRAM_H_EXT_PALETTE[3][0][i]= fontPalette[i];
 	}
@@ -96,5 +97,4 @@ int main(void) {
 
 	}
 
-	return 0;
 }

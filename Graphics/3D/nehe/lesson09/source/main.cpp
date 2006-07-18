@@ -17,31 +17,31 @@
 int DrawGLScene();
 
 
-bool	twinkle;			// Twinkling Stars
-bool	tp;					// 'T' Key Pressed?
+bool	twinkle;		// Twinkling Stars
+bool	tp;				// 'T' Key Pressed?
 
-const	u32 num=50;				// Number Of Stars To Draw
+const	u32 num=50;		// Number Of Stars To Draw
 
-typedef struct				// Create A Structure For Star
+typedef struct			// Create A Structure For Star
 {
-	int r, g, b;			// Stars Color
-	GLfloat dist,			// Stars Distance From Center
-			angle;			// Stars Current Angle
+	int r, g, b;		// Stars Color
+	GLfloat dist,		// Stars Distance From Center
+			angle;		// Stars Current Angle
 }stars;
 
-stars star[num];			// Need To Keep Track Of 'num' Stars
+stars star[num];		// Need To Keep Track Of 'num' Stars
 
-GLfloat	zoom=-15.0f;		// Distance Away From Stars
-GLfloat tilt=90.0f;			// Tilt The View
-GLfloat	spin;				// Spin Stars
+GLfloat	zoom=-15.0f;	// Distance Away From Stars
+GLfloat tilt=90.0f;		// Tilt The View
+GLfloat	spin;			// Spin Stars
 
-GLuint	loop;				// General Loop Variable
+GLuint	loop;			// General Loop Variable
 int	texture[1];			// Storage For One textures
 
 
-int LoadGLTextures()									// Load PCX files And Convert To Textures
-{
-	sImage pcx;                //////////////(NEW) and different from nehe.
+// Load PCX files And Convert To Textures
+int LoadGLTextures() {
+	sImage pcx;			// (NEW) and different from nehe.
 
 	//load our texture
 	loadPCX((u8*)Star_pcx, &pcx);
@@ -50,7 +50,7 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	//DS supports no filtering of anykind so no need for more than one texture
 	glGenTextures(1, &texture[0]);
 	glBindTexture(0, texture[0]);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, pcx.data8);
+	glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, pcx.data8);
 
 	imageDestroy(&pcx);
 
