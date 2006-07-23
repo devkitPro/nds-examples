@@ -26,8 +26,8 @@ void initSprites(void)
 //copy our sprite to object attribute memory
 void updateOAM(void)
 {
-	DC_FlushAll();
-    dmaCopy(sprites, OAM, 128 * sizeof(SpriteEntry));
+	DC_FlushRange(sprites,128*sizeof(SpriteEntry));
+	dmaCopy(sprites, OAM, 128 * sizeof(SpriteEntry));
 }
 
 int main()
