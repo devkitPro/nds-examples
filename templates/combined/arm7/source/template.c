@@ -37,12 +37,17 @@ void VcountHandler() {
  
 		tempPos = touchReadXY();
 
-		x = tempPos.x;
-		y = tempPos.y;
-		xpx = tempPos.px;
-		ypx = tempPos.py;
-		z1 = tempPos.z1;
-		z2 = tempPos.z2;
+		if ( tempPos.x == 0 || tempPos.y == 0 ) {
+			but |= (1 <<6);
+			lastbut = but;
+		} else {
+			x = tempPos.x;
+			y = tempPos.y;
+			xpx = tempPos.px;
+			ypx = tempPos.py;
+			z1 = tempPos.z1;
+			z2 = tempPos.z2;
+		}
 		
 	} else {
 		lastbut = but;
