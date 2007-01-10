@@ -1,9 +1,12 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.c,v 1.3 2007-01-10 16:43:18 dovoto Exp $
+	$Id: main.c,v 1.4 2007-01-10 16:57:30 dovoto Exp $
 
 	Basic DS Motion example
 
 	$Log: not supported by cvs2svn $
+	Revision 1.3  2007/01/10 16:43:18  dovoto
+	Update motion example to demonstrate new calibration functionality
+	
 	Revision 1.2  2007/01/09 06:23:05  dovoto
 	Fixed logging header
 	
@@ -54,8 +57,12 @@ int main(void) {
 //to callivrate other offsets you would have to instruct the user to orient
 //the DS in various positions
 void Calibrate(){
-
-	iprintf("Set the DS on a flat table and press A\n");
+	
+	scanKeys();
+	
+	consoleClear();
+	
+	iprintf("Set the DS on a flat table...\nPress A\n");
 	
 	while(!keysDown() & KEY_A) scanKeys();
 	
