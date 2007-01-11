@@ -1,10 +1,13 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.4 2005-11-26 21:26:59 joatski Exp $
+	$Id: main.c,v 1.5 2007-01-11 05:33:41 dovoto Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.4  2005/11/26 21:26:59  joatski
+	Changed to use corrected fixed-point macro names
+	
 	Revision 1.3  2005/09/05 00:32:19  wntrmute
 	removed references to IPC struct
 	replaced with API functions
@@ -234,6 +237,8 @@ int main()
 
 		// Reset the screen and setup the view
 		glReset();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
 		

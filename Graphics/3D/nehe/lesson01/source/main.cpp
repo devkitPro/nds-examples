@@ -33,7 +33,9 @@ int main()
 	while (1) 
 	{
 		// Reset the screen and setup the view
-		glReset();
+		//glReset();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1, 1, 1);									// Set the color..not in nehe source...ds gl default will be black
 

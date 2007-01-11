@@ -202,6 +202,8 @@ int main()
 
 		// Reset the screen and setup the view
 		glReset();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
 		

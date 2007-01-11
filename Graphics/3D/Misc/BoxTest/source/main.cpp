@@ -153,11 +153,13 @@ int main()
 
 		
 		//change ortho vs perspective
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		if(keysHeld() & KEY_B)
 			glOrtho(-2,2,-2,2,0.1,10);	
-		else
-			gluPerspective(45, 256.0 / 192.0, 0.1, 10);								
-
+		else {
+			gluPerspective(45, 256.0 / 192.0, 0.1, 10);
+		}
 		//change cull mode
 		if(keysHeld() & KEY_A)
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE );

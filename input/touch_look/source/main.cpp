@@ -6,6 +6,9 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.6  2005/11/26 21:26:59  joatski
+ *      Changed to use corrected fixed-point macro names
+ *
  *      Revision 1.5  2005/09/07 20:06:06  wntrmute
  *      updated for latest libnds changes
  *
@@ -249,6 +252,8 @@ int main()
 
 		// Reset the screen and setup the view
 		glReset();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		glColor3f(1,1,1);
 

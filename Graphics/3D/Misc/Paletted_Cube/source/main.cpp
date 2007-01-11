@@ -230,6 +230,8 @@ int main()
 		iprintf("\x1b[18;4HSize: %dx%d, %d bytes     ", 128,128,textures[nTexture].size);
 	
 		//any floating point gl call is being converted to fixed prior to being implemented
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 
 		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 

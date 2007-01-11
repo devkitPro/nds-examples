@@ -39,6 +39,8 @@ int main()
 	{
 	
 		//any floating point gl call is being converted to fixed prior to being implemented
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 
 		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 

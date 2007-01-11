@@ -65,9 +65,12 @@ int main()
 		// Reset the screen and setup the view
 		glReset();
 		scanKeys();
-
-		if(!(keysHeld() & KEY_R))
+		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		if(!(keysHeld() & KEY_R)) {
 			gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+		}
 		else
 			glOrtho(-3, 3,-2, 2,-6, 6);
 	
