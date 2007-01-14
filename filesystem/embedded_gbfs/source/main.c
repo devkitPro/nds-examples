@@ -1,10 +1,13 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.5 2007-01-11 05:33:41 dovoto Exp $
+	$Id: main.c,v 1.6 2007-01-14 11:31:58 wntrmute Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.5  2007/01/11 05:33:41  dovoto
+	Applied gabebear patch #1632896
+	
 	Revision 1.4  2005/11/26 21:26:59  joatski
 	Changed to use corrected fixed-point macro names
 	
@@ -72,7 +75,7 @@ SECTOR sector1;				// Our Model Goes Here:
 //---------------------------------------------------------------------------------
 float tsin(float angle) {
 //---------------------------------------------------------------------------------
-	f32 s = SIN[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
+	int32 s = SIN[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
 
 	return f32tofloat(s);
 }
@@ -80,7 +83,7 @@ float tsin(float angle) {
 //---------------------------------------------------------------------------------
 float tcos(float angle) {
 //---------------------------------------------------------------------------------
-	f32 c = COS[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
+	int32 c = COS[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
 
 	return f32tofloat(c);
 }

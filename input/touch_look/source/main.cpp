@@ -6,6 +6,9 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.7  2007/01/11 05:33:41  dovoto
+ *      Applied gabebear patch #1632896
+ *
  *      Revision 1.6  2005/11/26 21:26:59  joatski
  *      Changed to use corrected fixed-point macro names
  *
@@ -48,11 +51,11 @@
 int DrawGLScene();
 
 int heading;
-f32 xpos;
-f32 zpos;
+int32 xpos;
+int32 zpos;
 
 int	yrot;				// Y Rotation
-f32 walkbias = 0;
+int32 walkbias = 0;
 int walkbiasangle = 0;
 int lookupdown = 0;
 
@@ -304,9 +307,9 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 
 	v16 x_m, y_m, z_m;
 	t16 u_m, v_m;
-	f32 xtrans = -xpos;
-	f32 ztrans = -zpos;
-	f32 ytrans = -walkbias-(1<<10);
+	int32 xtrans = -xpos;
+	int32 ztrans = -zpos;
+	int32 ytrans = -walkbias-(1<<10);
 	int sceneroty = LUT_SIZE - yrot;
 
 	glLoadIdentity();

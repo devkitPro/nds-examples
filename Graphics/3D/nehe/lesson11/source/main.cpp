@@ -33,14 +33,14 @@ int	texture[1];			// Storage For 3 Textures (only going to use 1 on the DS for t
 
 float sin(float angle)
 {
-	f32 s = SIN[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
+	int32 s = SIN[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
 
 	return f32tofloat(s);
 }
 
 float cos(float angle)
 {
-	f32 c = COS[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
+	int32 c = COS[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
 
 	return f32tofloat(c);
 }
