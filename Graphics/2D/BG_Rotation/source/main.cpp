@@ -28,7 +28,7 @@ int main(void)
 
 	// set the first bank as background memory and the third as sub background memory
 	// B and D are not used
-	vramSetMainBanks(	VRAM_A_MAIN_BG_0x6000000, VRAM_B_LCD,
+	vramSetMainBanks(	VRAM_A_MAIN_BG_0x06000000, VRAM_B_LCD,
 						VRAM_C_SUB_BG , VRAM_D_LCD);
 
 	// set up text background for text

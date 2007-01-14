@@ -27,7 +27,7 @@ int main(void) {
 	//set the first two banks as background memory and the third as sub background memory
 	//D is not used..if you need a bigger background then you will need to map
 	//more vram banks consecutivly (VRAM A-D are all 0x20000 bytes in size)
-	vramSetMainBanks(	VRAM_A_MAIN_BG_0x6000000, VRAM_B_MAIN_BG_0x6020000, 
+	vramSetMainBanks(	VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000, 
 						VRAM_C_SUB_BG , VRAM_D_LCD); 
 
 	// set up text background for text

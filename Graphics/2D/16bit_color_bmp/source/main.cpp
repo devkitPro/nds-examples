@@ -27,7 +27,7 @@ int main(void)
     // set the first bank as background memory and the third as sub background memory
     // B and D are not used (if you want a bitmap greater than 256x256 you will need more
     // memory so another vram bank must be used and mapped consecutivly
-    vramSetMainBanks(	VRAM_A_MAIN_BG_0x6000000, VRAM_B_LCD,
+    vramSetMainBanks(	VRAM_A_MAIN_BG_0x06000000, VRAM_B_LCD,
 						VRAM_C_SUB_BG , VRAM_D_LCD);
 
 	// set up text background for text
