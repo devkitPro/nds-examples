@@ -6,6 +6,9 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.8  2007/01/14 11:31:58  wntrmute
+ *      bogus fixed types removed from libnds
+ *
  *      Revision 1.7  2007/01/11 05:33:41  dovoto
  *      Applied gabebear patch #1632896
  *
@@ -150,7 +153,7 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 
 	glGenTextures(1, &texture[0]);
 	glBindTexture(0, texture[0]);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD | GL_TEXTURE_WRAP_S | GL_TEXTURE_WRAP_T, pcx.data8);
+	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD | GL_TEXTURE_WRAP_S | GL_TEXTURE_WRAP_T, pcx.image.data8);
 
 	imageDestroy(&pcx);
 

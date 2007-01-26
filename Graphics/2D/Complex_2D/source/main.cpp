@@ -1,9 +1,13 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.7 2005-10-11 05:09:42 dovoto Exp $
+	$Id: main.cpp,v 1.8 2007-01-26 14:53:20 wntrmute Exp $
 
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.7  2005/10/11 05:09:42  dovoto
+	Updated makefile to more recent itteration
+	Converted complex 2D to load data from pcx file instead of preformated binary data.
+	
 	Revision 1.6  2005/10/05 21:10:39  wntrmute
 	*** empty log message ***
 	
@@ -141,7 +145,7 @@ int main(void) {
 		SPRITE_PALETTE_SUB[i] = ball.palette[i];
 
 	for(i = 0; i< 32*16; i++)
-		SPRITE_GFX_SUB[i] = ball.data16[i];
+		SPRITE_GFX_SUB[i] = ball.image.data16[i];
 	
 	//turn off sprites
 	initOAM();

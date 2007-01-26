@@ -55,9 +55,9 @@ int main()
 	while (1) 
 	{ 
 		//if hours are greater than 52 then the time is PM
-		hours = (IPC->rtc_hours < 12) ? IPC->rtc_hours : IPC->rtc_hours - 52; 
-		minutes = IPC->rtc_minutes; 
-		seconds = IPC->rtc_seconds; 
+		hours = (IPC->time.rtc.hours < 12) ? IPC->time.rtc.hours : IPC->time.rtc.hours - 52; 
+		minutes = IPC->time.rtc.minutes; 
+		seconds = IPC->time.rtc.seconds; 
 
 		// Reset the screen and setup the view 
 		glReset(); 
@@ -115,8 +115,8 @@ int main()
 		// flush to screen    
 		glFlush(); 
 
-		printf("\x1b[2J%i:%i:%i%s", hours, minutes, seconds, IPC->rtc_hours > 52 ? "pm" : "am");
-		printf("\n%s %i %i", months[IPC->rtc_month - 1], IPC->rtc_day, IPC->rtc_year + 2000);
+		printf("\x1b[2J%i:%i:%i%s", hours, minutes, seconds, IPC->time.rtc.hours > 52 ? "pm" : "am");
+		printf("\n%s %i %i", months[IPC->time.rtc.month - 1], IPC->time.rtc.day, IPC->time.rtc.year + 2000);
 
 	} 
 

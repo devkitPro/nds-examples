@@ -119,7 +119,7 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 
 	glGenTextures(1, &texture[0]);
 	glBindTexture(0, texture[0]);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD | GL_TEXTURE_WRAP_S | GL_TEXTURE_WRAP_T, pcx.data8);
+	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD | GL_TEXTURE_WRAP_S | GL_TEXTURE_WRAP_T, pcx.image.data8);
 
 	return TRUE;
 }

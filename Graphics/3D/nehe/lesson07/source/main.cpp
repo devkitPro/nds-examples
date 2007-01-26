@@ -42,7 +42,7 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	//DS supports no filtering of anykind so no need for more than one texture
 	glGenTextures(1, &texture[0]);
 	glBindTexture(0, texture[0]);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, pcx.data8);
+	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, pcx.image.data8);
 
 	imageDestroy(&pcx);
 
