@@ -50,6 +50,11 @@ int main()
 	irqInit();
 	irqEnable(IRQ_VBLANK);
 
+	// initialize gl
+	glInit();
+	
+	glEnable(GL_ANTIALIAS);
+
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
 
@@ -62,54 +67,54 @@ int main()
 	//We block-fill it in two halves, we get cartoony 2-tone lighting
 	glSetToonTableRange( 0, 15, RGB15(8,8,8) );
 	glSetToonTableRange( 16, 31, RGB15(24,24,24) );
-
+	
+	//any floating point gl call is being converted to fixed prior to being implemented
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	
+	//NB: When toon-shading, the hw ignores lights 2 and 3
+	//Also note that the hw uses the RED component of the lit vertex to index the toon-table
+	glLight(0, RGB15(16,16,16) , 0,		floattov10(-1.0),		0);
+	glLight(1, RGB15(16,16,16),   floattov10(-1.0),	0,		0);
+	
+	gluLookAt(	0.0, 0.0, -3.0,		//camera possition 
+				0.0, 0.0, 0.0,		//look at
+				0.0, 1.0, 0.0);		//up
+	
 	while(1)
 	{
-		glReset();
-
-		//any floating point gl call is being converted to fixed prior to being implemented
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
-
-
-
-		//NB: When toon-shading, the hw ignores lights 2 and 3
-		//Also note that the hw uses the RED component of the lit vertex to index the toon-table
-		glLight(0, RGB15(16,16,16) , 0,		floattov10(-1.0),		0);
-		glLight(1, RGB15(16,16,16),   floattov10(-1.0),	0,		0);
-
-
 
 		glMatrixMode(GL_MODELVIEW);
-		glTranslate3f32(0, 0, floattof32(-3));
-		glRotateXi(rotateX>>3);
-		glRotateYi(rotateY>>3);
+		glPushMatrix();
+			glRotateXi(rotateX);
+			glRotateYi(rotateY);
 
 
-		glMaterialf(GL_AMBIENT, RGB15(8,8,8));
-		glMaterialf(GL_DIFFUSE, RGB15(24,24,24));
-		glMaterialf(GL_SPECULAR, RGB15(0,0,0));
-		glMaterialf(GL_EMISSION, RGB15(0,0,0));
+			glMaterialf(GL_AMBIENT, RGB15(8,8,8));
+			glMaterialf(GL_DIFFUSE, RGB15(24,24,24));
+			glMaterialf(GL_SPECULAR, RGB15(0,0,0));
+			glMaterialf(GL_EMISSION, RGB15(0,0,0));
 
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_FORMAT_LIGHT1 | POLY_TOON_SHADING);
-
-
-		scanKeys();
-		u32 keys = keysHeld();
-
-		if( keys & KEY_UP ) rotateX += 3<<3;
-		if( keys & KEY_DOWN ) rotateX -= 3<<3;
-		if( keys & KEY_LEFT ) rotateY += 3<<3;
-		if( keys & KEY_RIGHT ) rotateY -= 3<<3;
-
-		int pen_delta[2];
-		get_pen_delta( &pen_delta[0], &pen_delta[1] );
-		rotateY -= pen_delta[0];
-		rotateX -= pen_delta[1];
+			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_FORMAT_LIGHT1 | POLY_TOON_SHADING);
 
 
-		glCallList((u32*)statue_bin);
+			scanKeys();
+			u32 keys = keysHeld();
+
+			if( keys & KEY_UP ) rotateX += 1;
+			if( keys & KEY_DOWN ) rotateX -= 1;
+			if( keys & KEY_LEFT ) rotateY += 1;
+			if( keys & KEY_RIGHT ) rotateY -= 1;
+
+			int pen_delta[2];
+			get_pen_delta( &pen_delta[0], &pen_delta[1] );
+			rotateY -= pen_delta[0];
+			rotateX -= pen_delta[1];
+
+
+			glCallList((u32*)statue_bin);
+			glPopMatrix(1);
 
 		glFlush();
 

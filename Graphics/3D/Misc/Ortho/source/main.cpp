@@ -51,6 +51,12 @@ int main()
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
+	// initialize gl
+	glInit();
+	
+	//enable textures
+	glEnable(GL_TEXTURE_2D);
+
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
@@ -62,8 +68,6 @@ int main()
 
 	while (1) 
 	{
-		// Reset the screen and setup the view
-		glReset();
 		scanKeys();
 		
 		glMatrixMode(GL_PROJECTION);

@@ -24,6 +24,9 @@ int main()
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
+	// initialize the geometry engine
+	glInit();
+
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
@@ -31,33 +34,26 @@ int main()
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
 	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	
+	//ds specific, several attributes can be set here	
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
+	
+	// Set the current matrix to be the model matrix
+	glMatrixMode(GL_MODELVIEW);
+	
 	while (1) 
 	{
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
-		glColor3f(1, 1, 1);
-
-		//ds specific, several attributes can be set here	
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
-		
-		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
-
+		// draw the scene
 		DrawGLScene();
 		
-		// Pop our Matrix from the stack (restore state)
-		glPopMatrix(1);
-
-		swiWaitForVBlank();
 		// flush to screen	
 		glFlush();
-	
+		
+		// wait for the screen to refresh
+		swiWaitForVBlank();
 	}
 	
 	return 0;
@@ -69,6 +65,7 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 	glTranslatef(-1.5f,0.0f,-6.0f);						// Move Left 1.5 Units And Into The Screen 6.0
 	glRotatef(rtri,0.0f,1.0f,0.0f);						// Rotate The Triangle On The Y axis ( NEW )
+	glColor3f(1, 1, 1);									// set the vertex color
 	glBegin(GL_TRIANGLES);								// Start Drawing A Triangle
 		glColor3f(1.0f,0.0f,0.0f);						// Set Top Point Of Triangle To Red
 		glVertex3f( 0.0f, 1.0f, 0.0f);					// First Point Of The Triangle
@@ -87,7 +84,7 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 		glVertex3f( 1.0f,-1.0f, 0.0f);					// Bottom Right
 		glVertex3f(-1.0f,-1.0f, 0.0f);					// Bottom Left
 	glEnd();											// Done Drawing The Quad
-	rtri+=0.2f;											// Increase The Rotation Variable For The Triangle ( NEW )
-	rquad-=0.15f;										// Decrease The Rotation Variable For The Quad ( NEW )
+	rtri+=0.9f;											// Increase The Rotation Variable For The Triangle ( NEW )
+	rquad-=0.75f;										// Decrease The Rotation Variable For The Quad ( NEW )
 	return TRUE;										// Keep Going
 }

@@ -21,7 +21,10 @@ int main()
 	// IRQ basic setup
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
-
+	
+	// initialize the geometry engine
+	glInit();
+	
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
@@ -29,35 +32,26 @@ int main()
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
 	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	
+	//ds specific, several attributes can be set here	
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
+	
+	// Set the current matrix to be the model matrix
+	glMatrixMode(GL_MODELVIEW);
+	
 	while (1) 
 	{
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
-		glColor3f(1, 1, 1);									// Set the color..not in nehe source...ds gl default will be black
-
-		//ds specific, several attributes can be set here	
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
-		
-		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
-
+		// draw the scene
 		DrawGLScene();
-		
-		// Pop our Matrix from the stack (restore state)
-		glPopMatrix(1);
-
-		//a handy little built in function to wait for a screen refresh
-		swiWaitForVBlank();
 		
 		// flush to screen	
 		glFlush();
-	
+		
+		//a handy little built in function to wait for a screen refresh
+		swiWaitForVBlank();
 	}
 	
 	return 0;

@@ -1,5 +1,5 @@
 /****************************************
- * 		NDS NeHe Lesson 04    			*
+ * 		NDS NeHe Lesson 07    			*
  * 		Author: Ethos					*
  ****************************************/
 
@@ -61,6 +61,12 @@ int main()
 	// IRQ basic setup
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
+	
+	// initialize the geometry engine
+	glInit();
+	
+	// enable textures
+	glEnable(GL_TEXTURE_2D);
 
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
@@ -70,74 +76,43 @@ int main()
 	glClearDepth(0x7FFF);
 	
 	LoadGLTextures();
-
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	
+	//set up a directional light arguments are light number (0-3), light color, 
+	//and an x,y,z vector that points in the direction of the light, the direction must be normalized
+	glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0);
+	
+	//need to set up some material properties since DS does not have them set by default
+	glMaterialf(GL_AMBIENT, RGB15(8,8,8));
+	glMaterialf(GL_DIFFUSE, RGB15(8,8,8));
+	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
+	glMaterialf(GL_EMISSION, RGB15(16,16,16));
+	
+	//ds uses a table for shinyness..this generates a half-ass one
+	glMaterialShinyness();
+	
+	// Set the current matrix to be the model matrix
+	glMatrixMode(GL_MODELVIEW);
+	
 	while (1) 
 	{
 		//these little button functions are pretty handy
 		scanKeys();
 
 	
-		if ((keysDown() & KEY_A))
-		{
-			light = !light;
-		}
-
-		if (keysHeld() & KEY_R)
-		{
-			z-=0.02f;
-		}
-		if (keysHeld() & KEY_L)
-		{
-			z+=0.02f;
-		}
-		if (keysHeld() & KEY_LEFT)
-		{
-			xspeed-=0.01f;
-		}
-		if (keysHeld() & KEY_RIGHT)
-		{
-			xspeed+=0.01f;
-		}
-		if (keysHeld() & KEY_UP)
-		{
-			yspeed+=0.01f;
-		}
-		if (keysHeld() & KEY_DOWN)
-		{
-			yspeed-=0.01f;
-		}
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+		if ((keysDown() & KEY_A)) light = !light;
+		if (keysHeld() & KEY_R) z-=0.02f;
+		if (keysHeld() & KEY_L) z+=0.02f;
+		if (keysHeld() & KEY_LEFT) xspeed-=0.01f;
+		if (keysHeld() & KEY_RIGHT) xspeed+=0.01f;
+		if (keysHeld() & KEY_UP) yspeed+=0.01f;
+		if (keysHeld() & KEY_DOWN) yspeed-=0.01f;
+		
+		
 		glColor3f(1,1,1);
-		
-		//set up a directional ligth arguments are light number (0-3), light color, 
-		//and an x,y,z vector that points in the direction of the light
-		glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0);
-
-		glPushMatrix();
-		
-		glMatrixMode(GL_TEXTURE);
-		glIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-
-		//need to set up some material properties since DS does not have them set by default
-		
-		glMaterialf(GL_AMBIENT, RGB15(8,8,8));
-		glMaterialf(GL_DIFFUSE, RGB15(8,8,8));
-		glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
-		glMaterialf(GL_EMISSION, RGB15(16,16,16));
-
-		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinyness();
-		
-		
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
 		
 		if (!light)
 		{
@@ -149,17 +124,14 @@ int main()
 			//ds specific, several attributes can be set here including turning on our light	
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK  | POLY_FORMAT_LIGHT0);
 		}
-		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
 
 		DrawGLScene();
-		
-		// Pop our Matrix from the stack (restore state)
-		glPopMatrix(1);
 
 		// flush to screen	
 		glFlush();
-	
+		
+		// wait for the screen to refresh
+		swiWaitForVBlank();
 	}
 	
 	return 0;

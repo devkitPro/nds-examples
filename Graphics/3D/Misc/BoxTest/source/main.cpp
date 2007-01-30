@@ -99,6 +99,9 @@ int main()
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
+	// initialize gl
+	glInit();
+	
 	// Set our view port to be the same size as the screen
 	glViewPort(0,0,255,191);
 
@@ -198,6 +201,8 @@ int main()
 		printf("\n64 tests avg. (fixed): %i", (getTimer(0) - time) / 32);
 		printf("\nBox Test result: %s", hit ? "hit" : "miss");
 
+		while (GFX_STATUS & (1<<27)); // wait until the geometry engine is not busy
+
 		glGetInt(GL_GET_VERTEX_RAM_COUNT, &vertex_count);
 		glGetInt(GL_GET_POLYGON_RAM_COUNT, &polygon_count);
 
@@ -210,13 +215,11 @@ int main()
 		printf("\nPress L and R to zoom");
 		printf("\nTouch screen to rotate cube");
 
-		//a handy little built in function to wait for a screen refresh
-		swiWaitForVBlank();
-
-		// flush to screen	
+		// flush to the screen
 		glFlush();
 
-
+		//a handy little built in function to wait for a screen refresh
+		swiWaitForVBlank();
 
 	}
 

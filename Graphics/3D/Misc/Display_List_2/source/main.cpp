@@ -19,6 +19,9 @@ int main()
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
 
+	// initialize gl
+	glInit();
+
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
 	

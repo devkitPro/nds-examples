@@ -26,6 +26,9 @@ int main()
 
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
+	
+	// initialize gl
+	glInit();
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);

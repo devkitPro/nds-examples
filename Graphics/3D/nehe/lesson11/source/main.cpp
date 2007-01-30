@@ -73,7 +73,13 @@ void InitGL(void)
 	// IRQ basic setup
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
-
+	
+	// initialize the geometry engine
+	glInit();
+	
+	// enable textures
+	glEnable(GL_TEXTURE_2D);
+	
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
@@ -81,7 +87,23 @@ void InitGL(void)
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
 	LoadGLTextures();
-
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	
+	//need to set up some material properties since DS does not have them set by default
+	glMaterialf(GL_AMBIENT, RGB15(31,31,31));
+	glMaterialf(GL_DIFFUSE, RGB15(31,31,31));
+	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(16,16,16));
+	glMaterialf(GL_EMISSION, RGB15(31,31,31));
+	
+	//ds uses a table for shinyness..this generates a half-ass one
+	glMaterialShinyness();
+	
+	//ds specific, several attributes can be set here	
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE );
+	
 	for(int x=0; x<32; x++)
 	{
 		for(int y=0; y<32; y++)
@@ -96,57 +118,19 @@ void InitGL(void)
 }
 int main()
 {	
-	
-	
-
 	InitGL();
 	
-
+	glMatrixMode(GL_MODELVIEW);
+	
 	while (1) 
 	{
-		
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
-		glColor3b(255,255,255);
-		
-	
-		glPushMatrix();
-		
-		glMatrixMode(GL_TEXTURE);
-		glIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-
-		//need to set up some material properties since DS does not have them set by default
-		glMaterialf(GL_AMBIENT, RGB15(31,31,31));
-		glMaterialf(GL_DIFFUSE, RGB15(31,31,31));
-		glMaterialf(GL_SPECULAR, BIT(15) | RGB15(16,16,16));
-		glMaterialf(GL_EMISSION, RGB15(31,31,31));
-
-		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinyness();
-		
-		
-		//ds specific, several attributes can be set here	
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE );
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
-		
-		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
-
 		DrawGLScene();
 		
-		// Pop our Matrix from the stack (restore state)
-		glPopMatrix(1);
-
 		// flush to screen	
 		glFlush();
-	
+		
+		// wait for the screen to refresh
+		swiWaitForVBlank();
 	}
 	
 	return 0;
@@ -156,7 +140,9 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 {
 	int x, y;
 	t16 float_x, float_y, float_xb, float_yb;
-
+	
+	glColor3b(255,255,255);    // set the vertex color
+	
 	glLoadIdentity();									// Reset The View
 
 	glTranslatef(0.0f,0.0f,-12.0f);

@@ -127,6 +127,12 @@ int main()
 	irqInit();
 	irqEnable(IRQ_VBLANK);
 
+	// initialize gl
+	glInit();
+	
+	//enable textures
+	glEnable(GL_TEXTURE_2D);
+
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
 	
@@ -209,12 +215,19 @@ int main()
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 	iprintf("\x1b[4;8HPaletted Cube");
 	iprintf("\x1b[6;2HRight/Left shoulder to switch");
-
+	
+	//any floating point gl call is being converted to fixed prior to being implemented
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	
+	gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
+				0.0, 0.0, 0.0,		//look at
+				0.0, 1.0, 0.0);		//up
 
 	int nTexture = 0;
 	while(1)		
 	{
-		glReset();
 		const char* texture_type;
 		switch(textures[nTexture].format)
 		{
@@ -229,17 +242,6 @@ int main()
 		iprintf("\x1b[17;4HTex: %d(%s)",nTexture, texture_type);
 		iprintf("\x1b[18;4HSize: %dx%d, %d bytes     ", 128,128,textures[nTexture].size);
 	
-		//any floating point gl call is being converted to fixed prior to being implemented
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
-
-		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
-					0.0, 0.0, 0.0,		//look at
-					0.0, 1.0, 0.0);		//up
-		
-		
-
 		
 		glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
 		glLight(1, RGB15(31,0,31),   0,				  floattov10(1) - 1,			 0);

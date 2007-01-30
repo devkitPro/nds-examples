@@ -50,7 +50,13 @@ int main()
 	// IRQ basic setup
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
-
+	
+	// initialize the geometry engine
+	glInit();
+	
+	// enable textures
+	glEnable(GL_TEXTURE_2D);
+	
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
@@ -59,54 +65,42 @@ int main()
 	glClearDepth(0x7FFF);
 	
 	LoadGLTextures();
-
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	
+	// Set the current matrix to be the model matrix
+	glMatrixMode(GL_MODELVIEW);
+	
+	//need to set up some material properties since DS does not have them set by default
+	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
+	glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
+	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
+	glMaterialf(GL_EMISSION, RGB15(16,16,16));
+	
+	//ds uses a table for shinyness..this generates a half-ass one
+	glMaterialShinyness();
+	
+	//ds specific, several attributes can be set here	
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE  | POLY_FORMAT_LIGHT0| POLY_FORMAT_LIGHT1| POLY_FORMAT_LIGHT2);
+	
+	glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
+	glLight(1, RGB15(31,31,31) , 0,				  0,	floattov10(-1.0));
+	glLight(2, RGB15(31,31,31) , 0,				  0,	floattov10(1.0));
+	
 	while (1) 
 	{
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+		// set the color of the vertices to be drawn
 		glColor3f(1,1,1);
 		
-		glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
-		glLight(1, RGB15(31,31,31) , 0,				  0,	floattov10(-1.0));
-		glLight(2, RGB15(31,31,31) , 0,				  0,	floattov10(1.0));
-
-		glPushMatrix();
-		
-		glMatrixMode(GL_TEXTURE);
-		glIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-
-		//need to set up some material properties since DS does not have them set by default
-		glMaterialf(GL_AMBIENT, RGB15(16,16,16));
-		glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
-		glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
-		glMaterialf(GL_EMISSION, RGB15(16,16,16));
-
-		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinyness();
-		
-		
-		//ds specific, several attributes can be set here	
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE  | POLY_FORMAT_LIGHT0| POLY_FORMAT_LIGHT1| POLY_FORMAT_LIGHT2);
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
-		
-		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
-
 		DrawGLScene();
-		
-		// Pop our Matrix from the stack (restore state)
-		glPopMatrix(1);
 
 		// flush to screen	
 		glFlush();
-	
+		
+		// wait for the screen to refresh
+		swiWaitForVBlank();
 	}
 	
 	return 0;

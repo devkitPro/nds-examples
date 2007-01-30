@@ -93,6 +93,12 @@ int main()
 	irqInit();
 	irqEnable(IRQ_VBLANK);
 
+	// initialize gl
+	glInit();
+	
+	//enable textures
+	glEnable(GL_TEXTURE_2D);
+
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
 	
@@ -106,21 +112,16 @@ int main()
 	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture_bin);
 	
 	
-	while(1)		
-	{
-		glReset();
+	//any floating point gl call is being converted to fixed prior to being implemented
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 	
-		//any floating point gl call is being converted to fixed prior to being implemented
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
-
-		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
-					0.0, 0.0, 0.0,		//look at
-					0.0, 1.0, 0.0);		//up
-		
-		
-
+	gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
+				0.0, 0.0, 0.0,		//look at
+				0.0, 1.0, 0.0);		//up
+	
+	while(1) {
 		
 		glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
 		glLight(1, RGB15(31,0,31),   0,				  floattov10(1) - 1,			 0);

@@ -46,6 +46,12 @@ int main()
 	//irqs are nice
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
+	
+	// intialize gl
+	glInit();
+	
+	//turn on antialiasing
+	glEnable(GL_ANTIALIAS);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
@@ -61,32 +67,28 @@ int main()
 	glBindTexture( 0, cafe_texid );
 	glTexImage2D( 0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, GL_TEXTURE_WRAP_S|GL_TEXTURE_WRAP_T|TEXGEN_NORMAL, (u8*)cafe_bin );
 
-
+	
+	//any floating point gl call is being converted to fixed prior to being implemented
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	
 	while(1)
 	{
-		
-	    glReset();
-		//any floating point gl call is being converted to fixed prior to being implemented
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
-
-
 		//TEXGEN_NORMAL helpfully pops our normals into this matrix and uses the result as texcoords
 		glMatrixMode(GL_TEXTURE);
 		glIdentity();
 		GLvector tex_scale = { 64<<16, -64<<16, 1<<16 };
 		glScalev( &tex_scale );		//scale normals up from (-1,1) range into texcoords
-		glRotateXi(rotateX>>3);			//rotate texture-matrix to match the camera
+		glRotateXi(rotateX>>3);		//rotate texture-matrix to match the camera
 		glRotateYi(rotateY>>3);
 
 
-		glMatrixMode(GL_MODELVIEW);
+		glMatrixMode(GL_POSITION);
 		glIdentity();
 		glTranslate3f32(0, 0, floattof32(-3));
 		glRotateXi(rotateX>>3);
 		glRotateYi(rotateY>>3);
-
 
 		glMaterialf(GL_EMISSION, RGB15(31,31,31));
 

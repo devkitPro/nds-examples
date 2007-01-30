@@ -69,6 +69,15 @@ int main()
 	// IRQ basic setup
 	irqInit();
 	irqSet(IRQ_VBLANK, 0);
+	
+	// initialize the geometry engine
+	glInit();
+	
+	// enable textures
+	glEnable(GL_TEXTURE_2D);
+	
+	// enable alpha blending
+	glEnable(GL_BLEND);
 
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
@@ -78,60 +87,37 @@ int main()
 	glClearDepth(0x7FFF);
 	
 	LoadGLTextures();
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	glColor3f(1,1,1);
+	
+	//set up a directional ligth arguments are light number (0-3), light color, 
+	//and an x,y,z vector that points in the direction of the light
+	glLight(0, RGB15(31,31,31) , 0, 0,floattov10(-1.0));
+	
+	//need to set up some material properties since DS does not have them set by default
+	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
+	glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
+	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
+	glMaterialf(GL_EMISSION, RGB15(16,16,16));
+	
+	//ds uses a table for shinyness..this generates a half-ass one
+	glMaterialShinyness();
+	
+	glPolyFmt(POLY_ALPHA(15) | POLY_CULL_BACK  | POLY_FORMAT_LIGHT0);
 
-	while (1) 
-	{
-
-
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
-		glColor3f(1,1,1);
-		
-		glEnable(GL_BLEND);
-
-
-		//set up a directional ligth arguments are light number (0-3), light color, 
-		//and an x,y,z vector that points in the direction of the light
-		glLight(0, RGB15(31,31,31) , 0, 0,floattov10(-1.0));
-
-		glPushMatrix();
-		
-		glMatrixMode(GL_TEXTURE);
-		glIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-
-		//need to set up some material properties since DS does not have them set by default
-		
-		glMaterialf(GL_AMBIENT, RGB15(16,16,16));
-		glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
-		glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
-		glMaterialf(GL_EMISSION, RGB15(16,16,16));
-
-		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinyness();
-		
-		
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
-		
-    	//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
-
-		glPolyFmt(POLY_ALPHA(15) | POLY_CULL_BACK  | POLY_FORMAT_LIGHT0);
-
+	glMatrixMode(GL_MODELVIEW);
+	
+	while (1) {
 		DrawGLScene();
 		
-		// Pop our Matrix from the stack (restore state)
-		glPopMatrix(1);
-
 		// flush to screen	
 		glFlush();
-	
+		
+		// wait for the screen to refresh
+		swiWaitForVBlank();
 	}
 	
 	return 0;

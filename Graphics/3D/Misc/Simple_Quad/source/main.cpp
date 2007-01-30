@@ -15,6 +15,9 @@ int main()
 	//irqs are nice
 	irqInit();
 	irqEnable(IRQ_VBLANK);
+	
+	// initialize gl
+	glInit();
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
@@ -22,21 +25,17 @@ int main()
 	glClearColor(0,0,0);
 	glClearDepth(0x7FFF);
 
-
+	//any floating point gl call is being converted to fixed prior to being implemented
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	
+	gluLookAt(	0.0, 0.0, 1.0,		//camera possition
+				0.0, 0.0, 0.0,		//look at
+				0.0, 1.0, 0.0);		//up
 
 	while(1)
 	{
-		glReset();
-
-		//any floating point gl call is being converted to fixed prior to being implemented
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
-
-		gluLookAt(	0.0, 0.0, 1.0,		//camera possition
-					0.0, 0.0, 0.0,		//look at
-					0.0, 1.0, 0.0);		//up
-
 		glPushMatrix();
 
 		//move it away from the camera
