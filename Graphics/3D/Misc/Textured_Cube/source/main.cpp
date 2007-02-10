@@ -62,16 +62,16 @@ u32 normals[] =
 
 	glNormal(normals[poly]);
 
-	glTexCoord1i(uv[0]);
+	GFX_TEX_COORD = (uv[0]);
 	glVertex3v16(CubeVectors[f1*3], CubeVectors[f1*3 + 1], CubeVectors[f1*3 +  2] );
 	
-	glTexCoord1i(uv[1]);
+	GFX_TEX_COORD = (uv[1]);
 	glVertex3v16(CubeVectors[f2*3], CubeVectors[f2*3 + 1], CubeVectors[f2*3 + 2] );
 	
-	glTexCoord1i(uv[2]);
+	GFX_TEX_COORD = (uv[2]);
 	glVertex3v16(CubeVectors[f3*3], CubeVectors[f3*3 + 1], CubeVectors[f3*3 + 2] );
 
-	glTexCoord1i(uv[3]);
+	GFX_TEX_COORD = (uv[3]);
 	glVertex3v16(CubeVectors[f4*3], CubeVectors[f4*3 + 1], CubeVectors[f4*3 + 2] );
 }
 

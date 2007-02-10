@@ -85,16 +85,16 @@ int main() {
 		glBegin(GL_QUAD);
 			glNormal(NORMAL_PACK(0,inttov10(-1),0));
 
-			glTexCoord1i(TEXTURE_PACK(inttot16(128), 0));
+			GFX_TEX_COORD = (TEXTURE_PACK(inttot16(128), 0));
 			glVertex3v16(floattov16(-0.5),	floattov16(-0.5), 0 );
 	
-			glTexCoord1i(TEXTURE_PACK(inttot16(128),inttot16(128)));
+			GFX_TEX_COORD = (TEXTURE_PACK(inttot16(128),inttot16(128)));
 			glVertex3v16(floattov16(0.5),	floattov16(-0.5), 0 );
 	
-			glTexCoord1i(TEXTURE_PACK(0, inttot16(128)));
+			GFX_TEX_COORD = (TEXTURE_PACK(0, inttot16(128)));
 			glVertex3v16(floattov16(0.5),	floattov16(0.5), 0 );
 
-			glTexCoord1i(TEXTURE_PACK(0,0));
+			GFX_TEX_COORD = (TEXTURE_PACK(0,0));
 			glVertex3v16(floattov16(-0.5),	floattov16(0.5), 0 );
 		
 		glEnd();
