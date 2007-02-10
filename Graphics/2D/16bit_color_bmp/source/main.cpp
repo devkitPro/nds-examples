@@ -1,18 +1,23 @@
-// Simple console print demo
-// -- dovoto
-
 #include <nds.h>
-#include <nds/arm9/console.h> //basic print funcionality
 #include <stdio.h>
 
-//makefile automaticly makes a header file for access
-//to the binary data in any file ending in .bin that is in
-//the data folder.  It also links in that data to your project
+// git outputs a nice header to reference data
+#include "drunkenlogo.h"
 
-#include "drunkenlogo_bin.h"
+int getSize(uint8 *source, uint16 *dest, uint32 arg) {
+	return *(uint32*)source;
+}
 
-int main(void)
-{
+uint8 readByte(uint8 *source) {
+ 	return *source;
+}
+TDecompressionStream drunkenlogo_decomp = {
+  getSize,
+  NULL,
+  readByte
+};
+
+int main(void) {
 	// irqs are nice
 	irqInit();
 	irqEnable(IRQ_VBLANK);
@@ -54,21 +59,10 @@ int main(void)
 	BG3_YDX = 0;
 	BG3_YDY = 1 << 8;
 
-	//our bitmap looks a bit better if we center it so scroll down (256 - 192) / 2
 	BG3_CX = 0;
-	BG3_CY = 32 << 8;
+	BG3_CY = 0;
 
-    // what we would like to do is this:
-	//
-    //  dmaCopy(drunkenlogo, BG_GFX, 256*256*2);
-	//
-	// but gfx2gba does not care much about an alpha bit so you will get a nice black
-	// image if you try the above...instead we must copy it manualy and set the alpha bit
-	// as we go
-
-	for(int i = 0; i < 256*256; i++)
-		BG_GFX[i] = ((u16*)drunkenlogo_bin)[i] | BIT(15); //need the cast since drunkenlogo is
-															//8 bit data
+	swiDecompressLZSSVram((void*)drunkenlogoBitmap, BG_GFX, 0, &drunkenlogo_decomp);
 	while(1) swiWaitForVBlank();
 
 	return 0;
