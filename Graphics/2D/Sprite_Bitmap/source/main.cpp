@@ -33,7 +33,6 @@ void updateOAM(void)
 int main()
 {
 
-//////////////////////////// INIT ////////////////////////////////////////
 	//turn everything on
     powerON(POWER_ALL_2D);
 
@@ -60,7 +59,6 @@ int main()
     // black backdrop
 	BG_PALETTE[0]=RGB15(0,0,0);
 
-//////////////////////////// Print setup /////////////////////////////////    	
     
     BG0_CR = BG_MAP_BASE(31);//use bg0 for the text
 	
@@ -69,7 +67,6 @@ int main()
 	//consoleInit() is a lot more flexible but this gets you up and running quick
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK(31), (u16*)CHAR_BASE_BLOCK(0), 16);
 
-//////////////////////////// Sprite setup ////////////////////////////////
     
     //turn off the sprites
     initSprites();
