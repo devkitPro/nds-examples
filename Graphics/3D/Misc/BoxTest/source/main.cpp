@@ -102,6 +102,13 @@ int main()
 	// initialize gl
 	glInit();
 	
+	// turn on antialiasing
+	glEnable(GL_ANTIALIAS);
+	
+	// set the backgground polygon ID to 63, antialiasing only works between polygons with different IDs
+	//    the default polygon ID is 0 so the cube and background will antialias against each other
+	glClearPolyID(63);
+	
 	// Set our view port to be the same size as the screen
 	glViewPort(0,0,255,191);
 
@@ -111,7 +118,7 @@ int main()
 
 	//camera
 	float rotX = 0, rotY = 0;
-	float translate = -3;
+	float translate = -5;
 
 	//some profiling code
 	u16 time;
@@ -121,7 +128,7 @@ int main()
 	int vertex_count;
 
 	//object 
-	int rx = 0, ry = 0;
+	int rx = 50, ry = 15;
 	int oldx = 0, oldy = 0;
 
 	//main loop
@@ -131,8 +138,8 @@ int main()
 		scanKeys();
 
 		//process input
-		if(keysHeld() & KEY_LEFT) rotY--;
-		if(keysHeld() & KEY_RIGHT) rotY++;
+		if(keysHeld() & KEY_LEFT) rotY++;
+		if(keysHeld() & KEY_RIGHT) rotY--;
 		if(keysHeld() & KEY_UP) rotX ++;
 		if(keysHeld() & KEY_DOWN) rotX --;
 		if(keysHeld() & KEY_L) translate += .1;
@@ -159,9 +166,9 @@ int main()
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		if(keysHeld() & KEY_B)
-			glOrtho(-2,2,-2,2,0.1,10);	
+			glOrtho(-4,4,-3,3,0.1,10);	
 		else {
-			gluPerspective(45, 256.0 / 192.0, 0.1, 10);
+			gluPerspective(35, 256.0 / 192.0, 0.1, 10);
 		}
 		//change cull mode
 		if(keysHeld() & KEY_A)
