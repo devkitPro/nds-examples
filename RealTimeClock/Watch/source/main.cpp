@@ -51,29 +51,31 @@ int main()
 	glClearDepth(0x7FFF); 
 
 	consoleDemoInit();
-
+	
+	// Reset the screen and setup the view 
+	glInit(); 
+	
+	
+	//ds specific, several attributes can be set here    
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE); 
+	
+	// Set the current matrix to be the model matrix 
+	glMatrixMode(GL_MODELVIEW); 
+	glLoadIdentity(); 
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	gluLookAt(	0.0, 0.0, 3.0,		//camera possition 
+				0.0, 0.0, 0.0,		//look at
+				0.0, 1.0, 0.0);		//up
+	
 	while (1) 
 	{ 
 		//if hours are greater than 52 then the time is PM
 		hours = (IPC->time.rtc.hours < 12) ? IPC->time.rtc.hours : IPC->time.rtc.hours - 52; 
 		minutes = IPC->time.rtc.minutes; 
-		seconds = IPC->time.rtc.seconds; 
-
-		// Reset the screen and setup the view 
-		glReset(); 
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);                         
-
-		//ds specific, several attributes can be set here    
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE); 
-
-		// Set the current matrix to be the model matrix 
-		glMatrixMode(GL_MODELVIEW); 
-		glLoadIdentity(); 
-
-		//move the camera back a little 
-		glTranslatef(0,0,-3); 
+		seconds = IPC->time.rtc.seconds;
 
 		//Push our original Matrix onto the stack (save state) 
 		glPushMatrix();    
@@ -107,17 +109,13 @@ int main()
 		DrawQuad(0,0,.3,1.8); 
 
 		// Pop our Matrix from the stack (restore state) 
-		glPopMatrix(1); 
-
-		//a handy little built in function to wait for a screen refresh 
-		swiWaitForVBlank(); 
-
-		// flush to screen    
-		glFlush(); 
+		glPopMatrix(1);
 
 		printf("\x1b[2J%i:%i:%i%s", hours, minutes, seconds, IPC->time.rtc.hours > 52 ? "pm" : "am");
 		printf("\n%s %i %i", months[IPC->time.rtc.month - 1], IPC->time.rtc.day, IPC->time.rtc.year + 2000);
-
+		
+		// flush to screen    
+		glFlush(); 
 	} 
 
 	return 0; 
