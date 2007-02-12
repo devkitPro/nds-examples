@@ -1,6 +1,4 @@
 #include <nds.h>
- 
-#include <nds/arm9/console.h> //basic print funcionality
 #include <stdio.h>
  
 SpriteEntry OAMCopy[128];
@@ -47,6 +45,9 @@ int main(void) {
 	touchPosition touch;
 
 	powerON(POWER_ALL_2D);
+
+	// put the main screen on the bottom lcd
+	lcdMainOnBottom();
 
 	// Initialise the interrupt system
 	irqInit();
