@@ -11,11 +11,6 @@ export TARGET		:=	$(shell basename $(CURDIR))
 export TOPDIR		:=	$(CURDIR)
 
 
-#---------------------------------------------------------------------------------
-# path to tools - this can be deleted if you set the path in windows
-#---------------------------------------------------------------------------------
-export PATH		:=	$(DEVKITARM)/bin:$(PATH)
-
 .PHONY: $(TARGET).arm7 $(TARGET).arm9
 
 #---------------------------------------------------------------------------------
