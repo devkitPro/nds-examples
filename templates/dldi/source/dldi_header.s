@@ -22,7 +22,7 @@
 	.word	0xBF8DA5ED		@ Magic number to identify this region
 	.asciz	" Chishm"		@ Identifying Magic string (8 bytes with null terminator)
 	.byte	0x01			@ Version number
-	.byte	0x0D	@8KiB	@ Log [base-2] of the maximum size of this driver in bytes.
+	.byte	0x0F	@32KiB	@ Log [base-2] of the maximum size of this driver in bytes.
 	.byte	FIX_GOT | FIX_BSS | FIX_GLUE	@ Sections to fix
 	.byte 	0x00			@ Space allocated in the application, not important here.
 	
@@ -46,7 +46,7 @@
 @---------------------------------------------------------------------------------
 @ IO_INTERFACE data -- 32 bytes
 	.ascii	"XXXX"			@ ioType
-	.word	FEATURE_MEDIUM_CANREAD | FEATURE_MEDIUM_CANWRITE | FEATURE_SLOT_GBA
+	.word	FEATURE_MEDIUM_CANREAD | FEATURE_MEDIUM_CANWRITE | FEATURE_SLOT_NDS
 	.word	startup			@ 
 	.word	isInserted		@ 
 	.word	readSectors		@   Function pointers to standard device driver functions
