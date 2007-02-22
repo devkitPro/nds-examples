@@ -18,45 +18,48 @@ u32 triangle[] =
 
 int main()
 {	
-
+	
 	float rotateX = 0.0;
 	float rotateY = 0.0;
-
+	
 	powerON(POWER_ALL);
-
+	
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
 	
 	// initialize gl
 	glInit();
-
+	
+	// enable antialiasing
+	glEnable(GL_ANTIALIAS);
+	
+	// setup the rear plane
+	glClearColor(0,0,0,31); // BG must be opaque for AA to work
+	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
+	glClearDepth(0x7FFF);
+	
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
 	
-	glClearColor(0,0,0);
-	glClearDepth(0x7FFF);
-	
-	
-	
 	while(1)		
 	{
-	
+		
 		//any floating point gl call is being converted to fixed prior to being implemented
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		gluPerspective(35, 256.0 / 192.0, 0.1, 40);
-
+		
 		gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
 					0.0, 0.0, 0.0,		//look at
 					0.0, 1.0, 0.0);		//up
 		
 		
-
+		
 		glPushMatrix();
-
+		
 		//move it away from the camera
 		glTranslate3f32(0, 0, floattof32(-1));
-				
+		
 		glRotateX(rotateX);
 		glRotateY(rotateY);
 		
@@ -64,11 +67,11 @@ int main()
 		glIdentity();
 		
 		glMatrixMode(GL_MODELVIEW);
-
-	
+		
+		
 		//not a real gl function and will likely change
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
-
+		
 		scanKeys();
 		
 		u16 keys = keysHeld();
@@ -79,12 +82,12 @@ int main()
 		if((keys & KEY_RIGHT)) rotateY -= 3;
 		
 		glCallList(triangle);	
-
+		
 		glPopMatrix(1);
-			
+		
 		glFlush();
-
+		
 	}
-
+	
 	return 0;
 }//end main 
