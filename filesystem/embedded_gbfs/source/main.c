@@ -1,10 +1,13 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.7 2007-01-26 14:53:21 wntrmute Exp $
+	$Id: main.c,v 1.8 2007-02-22 07:09:07 gabebear Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.7  2007/01/26 14:53:21  wntrmute
+	update for latest libnds changes
+	
 	Revision 1.6  2007/01/14 11:31:58  wntrmute
 	bogus fixed types removed from libnds
 	
@@ -188,18 +191,46 @@ int main()
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
+	// Reset the screen and setup the view
+	glInit();
+	
+	//setup the projection matrix
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	
+	//setup a light
+	glLight(0, RGB15(31,31,31), 0, floattov10(-1.0), 0);
+	
+	//need to set up some material properties since DS does not have them set by default
+	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
+	glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
+	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
+	glMaterialf(GL_EMISSION, RGB15(16,16,16));
+	
+	//ds uses a table for shinyness..this generates a half-ass one
+	glMaterialShinyness();
+	
+	//ds specific, several attributes can be set here	
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0);
+	
+	// Set the current matrix to be the model matrix
+	glMatrixMode(GL_MODELVIEW);
+	
 	// Specify the Clear Color and Depth 
-	glClearColor(0,0,0);
+	glClearColor(0,0,0,31);
 	glClearDepth(0x7FFF);
+	
+	// specify the color for vertices
+	glColor3f(1,1,1);
+	
 	LoadGLTextures();
 	SetupWorld();
 	
-
-	while (1) 
+	while (1)
 	{
 		//these little button functions are pretty handy
 		scanKeys();
-				
 	
 		if (keysHeld() & KEY_A) lookupdown -= 1.0f;
 
@@ -241,38 +272,6 @@ int main()
 			walkbias = (float)tsin(walkbiasangle)/20.0f;
 		}
 
-		// Reset the screen and setup the view
-		glReset();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(35, 256.0 / 192.0, 0.1, 100);
-		glColor3f(1,1,1);
-		
-		glLight(0, RGB15(31,31,31), 0, floattov10(-1.0), 0);
-
-		glPushMatrix();
-		
-		glMatrixMode(GL_TEXTURE);
-		glIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-
-		//need to set up some material properties since DS does not have them set by default
-		glMaterialf(GL_AMBIENT, RGB15(16,16,16));
-		glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
-		glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
-		glMaterialf(GL_EMISSION, RGB15(16,16,16));
-
-		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinyness();
-		
-		
-		//ds specific, several attributes can be set here	
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0);
-		
-		// Set the current matrix to be the model matrix
-		glMatrixMode(GL_MODELVIEW);
-		
 		//Push our original Matrix onto the stack (save state)
 		glPushMatrix();	
 
