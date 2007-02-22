@@ -1,10 +1,15 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.8 2007-02-22 07:09:07 gabebear Exp $
+	$Id: main.c,v 1.9 2007-02-22 08:03:29 gabebear Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.8  2007/02/22 07:09:07  gabebear
+	This doesn't load textures, which is the whole point of this example, but I don't have a GBA cart to test with.
+	- there was an extra glPush
+	- updated 3d code for ne libnds
+	
 	Revision 1.7  2007/01/26 14:53:21  wntrmute
 	update for latest libnds changes
 	
@@ -193,6 +198,9 @@ int main()
 	
 	// Reset the screen and setup the view
 	glInit();
+	
+	// enable textures
+	glEnable(GL_TEXTURE_2D);
 	
 	//setup the projection matrix
 	glMatrixMode(GL_PROJECTION);
