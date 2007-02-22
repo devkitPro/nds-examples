@@ -89,18 +89,15 @@ int main()
 	
 	// enable edge outlining, this will be used to show which object is selected
 	glEnable(GL_OUTLINE);
-
-	//set the outline colors to white
-	for(int i=0;i<8;i++) glSetOutlineColor(i,RGB15(31,31,31));
+	
+	//set the first outline color to white
+	glSetOutlineColor(0,RGB15(31,31,31));
 	
 	int viewport[]={0,0,255,191}; // used later for gluPickMatrix()
 	
-	// enable antialiasing
-	glEnable(GL_ANTIALIAS);
-	
 	// setup the rear plane
-	glClearColor(0,0,0,31); // BG must be opaque for AA to work
-	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
+	glClearColor(0,0,0,0); // set BG to black and clear
+	glClearPolyID(0); // the BG and polygons will have the same ID unless a polygon is highlighted
 	glClearDepth(0x7FFF);
 	
 	// setup the camera
@@ -144,27 +141,27 @@ int main()
 				
 				glTranslate3f32(floattof32(2.9),floattof32(0),floattof32(0)); // translate the modelview matrix to the drawing location
 				if(clicked==CONE) {
-					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0x8)); // set a poly ID for outlining
+					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(1)); // set a poly ID for outlining
 				} else {
-					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0)); // set a poly ID for no outlining
+					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0)); // set a poly ID for no outlining (same as BG)
 				}
 				glCallList((u32*)cone_bin); // draw a green cone from a predefined packed command list
 				
 				
 				glTranslate3f32(floattof32(-3),floattof32(1.8),floattof32(2)); // translate the modelview matrix to the drawing location
 				if(clicked==CYLINDER) {
-					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0x8)); // set a poly ID for outlining
+					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(1)); // set a poly ID for outlining
 				} else {
-					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0)); // set a poly ID for no outlining
+					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0)); // set a poly ID for no outlining (same as BG)
 				}
 				glCallList((u32*)cylinder_bin); // draw a blue cylinder from a predefined packed command list
 				
 				
 				glTranslate3f32(floattof32(.5),floattof32(-2.6),floattof32(-4)); // translate the modelview matrix to the drawing location
 				if(clicked==SPHERE) {
-					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0x8)); // set a poly ID for outlining
+					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(1)); // set a poly ID for outlining
 				} else {
-					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0)); // set a poly ID for no outlining
+					glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_FORMAT_LIGHT0 | POLY_ID(0)); // set a poly ID for no outlining (same as BG)
 				}
 				glCallList((u32*)sphere_bin); // draw a red sphere from a predefined packed command list
 
