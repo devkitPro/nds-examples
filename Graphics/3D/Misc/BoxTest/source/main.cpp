@@ -102,20 +102,17 @@ int main()
 	// initialize gl
 	glInit();
 	
-	// turn on antialiasing
+	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
 	
-	// set the backgground polygon ID to 63, antialiasing only works between polygons with different IDs
-	//    the default polygon ID is 0 so the cube and background will antialias against each other
-	glClearPolyID(63);
+	// setup the rear plane
+	glClearColor(0,0,0,31); // BG must be opaque for AA to work
+	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
+	glClearDepth(0x7FFF);
 	
 	// Set our view port to be the same size as the screen
 	glViewPort(0,0,255,191);
-
-	// Specify the Clear Color and Depth 
-	glClearColor(0,0,0);
-	glClearDepth(0x7FFF);
-
+	
 	//camera
 	float rotX = 0, rotY = 0;
 	float translate = -5;

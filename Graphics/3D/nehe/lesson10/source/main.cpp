@@ -156,12 +156,17 @@ int main()
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
 	
+	// enable antialiasing
+	glEnable(GL_ANTIALIAS);
+	
+	// setup the rear plane
+	glClearColor(0,0,0,31); // BG must be opaque for AA to work
+	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
+	glClearDepth(0x7FFF);
+	
 	// Set our viewport to be the same size as the screen
 	glViewPort(0,0,255,191);
 	
-	// Specify the Clear Color and Depth 
-	glClearColor(0,0,0);
-	glClearDepth(0x7FFF);
 	LoadGLTextures();
 	SetupWorld();
 	

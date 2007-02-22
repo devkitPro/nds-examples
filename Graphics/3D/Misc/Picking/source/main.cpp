@@ -95,9 +95,12 @@ int main()
 	
 	int viewport[]={0,0,255,191}; // used later for gluPickMatrix()
 	
-	// setup the rear plane (a.k.a. the clear-plane)
-	glClearPolyID(0);
-	glClearColor(0,0,0);
+	// enable antialiasing
+	glEnable(GL_ANTIALIAS);
+	
+	// setup the rear plane
+	glClearColor(0,0,0,31); // BG must be opaque for AA to work
+	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
 	glClearDepth(0x7FFF);
 	
 	// setup the camera

@@ -53,15 +53,16 @@ int main()
 	// initialize gl
 	glInit();
 	
+	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
+	
+	// setup the rear plane
+	glClearColor(0,0,0,31); // BG must be opaque for AA to work
+	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
+	glClearDepth(0x7FFF);
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
-
-
-	glClearColor(0,0,0);
-	glClearDepth(0x7FFF);
-
 
 	//toon-table entry 0 is for completely unlit pixels, going up to entry 31 for completely lit
 	//We block-fill it in two halves, we get cartoony 2-tone lighting
