@@ -65,12 +65,12 @@ u32 uv[] =
 
 u32 normals[] =
 {
-	NORMAL_PACK(0,inttov10(-1),0),
-	NORMAL_PACK(0,inttov10(1),0),
-	NORMAL_PACK(inttov10(1),0,0),
-	NORMAL_PACK(0,0,inttov10(-1)),
-	NORMAL_PACK(inttov10(-1),0,0),
-	NORMAL_PACK(0,inttov10(1),0)
+	NORMAL_PACK(0,floattov10(-.97),0),
+	NORMAL_PACK(0,0,floattov10(.97)),
+	NORMAL_PACK(floattov10(.97),0,0),
+	NORMAL_PACK(0,0,floattov10(-.97)),
+	NORMAL_PACK(floattov10(-.97),0,0),
+	NORMAL_PACK(0,floattov10(.97),0)
 
 };
 
@@ -126,7 +126,7 @@ int main()
 	//irqs are nice
 	irqInit();
 	irqEnable(IRQ_VBLANK);
-
+	
 	// initialize gl
 	glInit();
 	
@@ -143,6 +143,18 @@ int main()
 
 	//this should work the same as the normal gl call
 	glViewPort(0,0,255,191);
+	
+	//ds uses a table for shinyness..this generates a half-ass one
+	glMaterialShinyness();
+	
+	// setup other material properties
+	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
+	glMaterialf(GL_DIFFUSE, RGB15(20,20,20));
+	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
+	glMaterialf(GL_EMISSION, RGB15(5,5,5));
+	
+	// setup the lighting
+	glLight(0, RGB15(31,31,31) , 0, floattov10(-.5), floattov10(-.85));
 	
 	vramSetBankA(VRAM_A_TEXTURE);
 
@@ -221,74 +233,37 @@ int main()
 	iprintf("\x1b[4;8HPaletted Cube");
 	iprintf("\x1b[6;2HRight/Left shoulder to switch");
 	
-	//any floating point gl call is being converted to fixed prior to being implemented
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
 	
-	gluLookAt(	0.0, 0.0, 1.0,		//camera possition 
+	gluLookAt(	0.0, 0.0, 2.0,		//camera possition 
 				0.0, 0.0, 0.0,		//look at
 				0.0, 1.0, 0.0);		//up
-
+	
+	//not a real gl function and will likely change
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0 | POLY_ID(1) ) ;
+	
+	glColor3f(1,1,1);
+	
+	glMatrixMode(GL_MODELVIEW);
+	
 	int nTexture = 0;
 	while(1)		
 	{
-		const char* texture_type;
-		switch(textures[nTexture].format)
-		{
-			case GL_RGB:case GL_RGBA:	texture_type="  GL_RGB   "; break;
-			case GL_RGB256:				texture_type=" GL_RGB256 "; break;
-			case GL_RGB16: 				texture_type="  GL_RGB16 "; break;
-			case GL_RGB4:				texture_type="  GL_RGB4  "; break;
-			case GL_RGB32_A3:			texture_type="GL_RGB32_A3"; break;
-			case GL_RGB8_A5:			texture_type="GL_RGB8_A5 "; break;
-			default:					texture_type="   None    "; break;
-		};
-		iprintf("\x1b[17;4HTex: %d(%s)",nTexture, texture_type);
-		iprintf("\x1b[18;4HSize: %dx%d, %d bytes     ", 128,128,textures[nTexture].size);
-	
-		
-		glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
-		glLight(1, RGB15(31,0,31),   0,				  floattov10(1) - 1,			 0);
-		glLight(2, RGB15(0,31,0) ,   floattov10(-1.0), 0,					 0);
-		glLight(3, RGB15(0,0,31) ,   floattov10(1.0) - 1,  0,					 0);
-
 		glPushMatrix();
-
-		//move it away from the camera
-		glTranslate3f32(0, 0, floattof32(-1));
 				
 		glRotateX(rotateX);
 		glRotateY(rotateY);
 		
-		glMatrixMode(GL_TEXTURE);
-		glIdentity();
-		
-		glMatrixMode(GL_MODELVIEW);
-
-		glMaterialf(GL_AMBIENT, RGB15(8,8,8));
-		glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
-		glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
-		glMaterialf(GL_EMISSION, RGB15(5,5,5));
-
-		//ds uses a table for shinyness..this generates a half-ass one
-		glMaterialShinyness();
-
-		//not a real gl function and will likely change
-		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0 | POLY_FORMAT_LIGHT1 | 
-													POLY_FORMAT_LIGHT2 | POLY_FORMAT_LIGHT3 ) ;
-		
 		scanKeys();
-		
 		u16 keys = keysHeld();
-		
 		if((keys & KEY_UP)) rotateX += 3;
 		if((keys & KEY_DOWN)) rotateX -= 3;
 		if((keys & KEY_LEFT)) rotateY += 3;
 		if((keys & KEY_RIGHT)) rotateY -= 3;
 		
 		u16 keysPressed = keysDown();
-		
 		if(!(keysPressed & KEY_R)) 
 		{
 			if( ++nTexture == 10 )	
@@ -310,14 +285,11 @@ int main()
 		glBegin(GL_QUAD);
 			for(i = 0; i < 6; i++)
 				drawQuad(i);
-		
 		glEnd();
 		
 		glPopMatrix(1);
 			
 		glFlush();
-
-		swiWaitForVBlank();
 	}
 
 	return 0;
