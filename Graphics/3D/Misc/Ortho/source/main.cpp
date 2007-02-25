@@ -104,7 +104,7 @@ int main()
 			gluPerspective(35, 256.0 / 192.0, 0.1, 100);
 		}
 		else
-			glOrtho(-3, 3,-2, 2,-8, 8);
+			glOrtho(-3, 3,-2, 2, 0.1, 100);
 		
 		// Set the current matrix to be the model matrix
 		glMatrixMode(GL_MODELVIEW);
