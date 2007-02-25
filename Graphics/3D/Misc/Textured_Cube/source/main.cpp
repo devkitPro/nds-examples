@@ -41,13 +41,13 @@ u32 uv[] =
 
 u32 normals[] =
 {
-	NORMAL_PACK(0,inttov10(-1),0),
-	NORMAL_PACK(0,inttov10(1),0),
-	NORMAL_PACK(inttov10(1),0,0),
-	NORMAL_PACK(0,0,inttov10(-1)),
-	NORMAL_PACK(inttov10(-1),0,0),
-	NORMAL_PACK(0,inttov10(1),0)
-
+	NORMAL_PACK(0,floattov10(-.97),0),
+	NORMAL_PACK(0,0,floattov10(.97)),
+	NORMAL_PACK(floattov10(.97),0,0),
+	NORMAL_PACK(0,0,floattov10(-.97)),
+	NORMAL_PACK(floattov10(-.97),0,0),
+	NORMAL_PACK(0,floattov10(.97),0)
+	
 };
 
 //draw a cube face at the specified color
