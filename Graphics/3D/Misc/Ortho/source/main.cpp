@@ -125,7 +125,7 @@ int main()
 		glPopMatrix(1);
 
 		// flush to screen	
-		glFlush();
+		glFlush(0);
 	}
 	
 	return 0;

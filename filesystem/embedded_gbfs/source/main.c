@@ -1,10 +1,13 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.9 2007-02-22 08:03:29 gabebear Exp $
+	$Id: main.c,v 1.10 2007-03-07 06:09:12 gabebear Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
 	$Log: not supported by cvs2svn $
+	Revision 1.9  2007/02/22 08:03:29  gabebear
+	oops, found the problem, this example wasn't enablign textures
+	
 	Revision 1.8  2007/02/22 07:09:07  gabebear
 	This doesn't load textures, which is the whole point of this example, but I don't have a GBA cart to test with.
 	- there was an extra glPush
@@ -289,7 +292,7 @@ int main()
 		glPopMatrix(1);
 
 		// flush to screen	
-		glFlush();
+		glFlush(0);
 	
 	}
 	

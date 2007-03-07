@@ -64,7 +64,7 @@ int main()
 		swiWaitForVBlank();
 		
 		// flush to screen	
-		glFlush();
+		glFlush(0);
 	
 	}
 	

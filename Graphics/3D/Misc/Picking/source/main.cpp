@@ -204,7 +204,7 @@ int main()
 		}
 		glPopMatrix(1); // restores the modelview matrix to its original state
 		
-		glFlush(); // wait for everything to be drawn before starting on the next frame
+		glFlush(0); // wait for everything to be drawn before starting on the next frame
 	}
 
 	return 0;

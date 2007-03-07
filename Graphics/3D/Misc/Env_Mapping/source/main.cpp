@@ -113,9 +113,7 @@ int main()
 		glBindTexture( 0, cafe_texid );
 		glCallList((u32*)teapot_bin);
 
-		glFlush();
-
-		swiWaitForVBlank();
+		glFlush(0);
 	}
 
 	return 0;

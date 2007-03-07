@@ -140,7 +140,7 @@ int main()
 		DrawGLScene();
 
 		// flush to screen	
-		glFlush();
+		glFlush(0);
 		
 		// wait for the screen to refresh
 		swiWaitForVBlank();

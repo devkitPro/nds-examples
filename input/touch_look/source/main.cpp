@@ -6,6 +6,9 @@
  *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
  *      $Log: not supported by cvs2svn $
+ *      Revision 1.10  2007/02/22 08:00:40  gabebear
+ *      updated for latest libnds changes
+ *
  *      Revision 1.9  2007/01/26 14:53:21  wntrmute
  *      update for latest libnds changes
  *
@@ -300,7 +303,7 @@ int main()
 		glPopMatrix(1);
 
 		// flush to screen
-		glFlush();
+		glFlush(0);
 
 	}
 

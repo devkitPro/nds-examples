@@ -178,7 +178,7 @@ int main()
 		
 		glPopMatrix(1);
 			
-		glFlush();
+		glFlush(0);
 
 		swiWaitForVBlank();
 	}

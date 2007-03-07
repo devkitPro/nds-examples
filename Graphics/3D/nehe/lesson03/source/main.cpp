@@ -52,10 +52,7 @@ int main()
 		DrawGLScene();
 		
 		// flush to screen	
-		glFlush();
-		
-		//a handy little built in function to wait for a screen refresh
-		swiWaitForVBlank();
+		glFlush(0);
 	}
 	
 	return 0;

@@ -220,10 +220,7 @@ int main()
 		printf("\nTouch screen to rotate cube");
 
 		// flush to the screen
-		glFlush();
-
-		//a handy little built in function to wait for a screen refresh
-		swiWaitForVBlank();
+		glFlush(0);
 
 	}
 

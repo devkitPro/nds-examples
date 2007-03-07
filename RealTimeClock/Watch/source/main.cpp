@@ -115,7 +115,7 @@ int main()
 		printf("\n%s %i %i", months[IPC->time.rtc.month - 1], IPC->time.rtc.day, IPC->time.rtc.year + 2000);
 		
 		// flush to screen    
-		glFlush(); 
+		glFlush(0); 
 	} 
 
 	return 0; 

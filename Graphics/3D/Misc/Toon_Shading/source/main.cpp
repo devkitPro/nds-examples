@@ -117,7 +117,7 @@ int main()
 			glCallList((u32*)statue_bin);
 			glPopMatrix(1);
 
-		glFlush();
+		glFlush(0);
 
 		swiWaitForVBlank();
 	}
