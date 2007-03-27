@@ -47,7 +47,7 @@ int main()
 	glViewPort(0,0,255,191); 
 
 	// Specify the Clear Color and Depth 
-	glClearColor(0,0,0); 
+	glClearColor(0,0,0,31); 
 	glClearDepth(0x7FFF); 
 
 	consoleDemoInit();
