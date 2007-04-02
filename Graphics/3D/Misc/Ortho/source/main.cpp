@@ -70,7 +70,7 @@ int main()
 	glLight(2, RGB15(31,31,31) , 0,				  0,	floattov10(1.0));
 	
 	glMatrixMode(GL_TEXTURE);
-	glIdentity();
+	glLoadIdentity();
 	
 	glMatrixMode(GL_MODELVIEW);
 	

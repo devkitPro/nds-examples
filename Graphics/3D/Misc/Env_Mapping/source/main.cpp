@@ -79,7 +79,7 @@ int main()
 	{
 		//TEXGEN_NORMAL helpfully pops our normals into this matrix and uses the result as texcoords
 		glMatrixMode(GL_TEXTURE);
-		glIdentity();
+		glLoadIdentity();
 		GLvector tex_scale = { 64<<16, -64<<16, 1<<16 };
 		glScalev( &tex_scale );		//scale normals up from (-1,1) range into texcoords
 		glRotateXi(rotateX>>3);		//rotate texture-matrix to match the camera
@@ -87,7 +87,7 @@ int main()
 
 
 		glMatrixMode(GL_POSITION);
-		glIdentity();
+		glLoadIdentity();
 		glTranslate3f32(0, 0, floattof32(-3));
 		glRotateXi(rotateX>>3);
 		glRotateYi(rotateY>>3);

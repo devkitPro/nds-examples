@@ -64,7 +64,7 @@ int main()
 		glRotateY(rotateY);
 		
 		glMatrixMode(GL_TEXTURE);
-		glIdentity();
+		glLoadIdentity();
 		
 		glMatrixMode(GL_MODELVIEW);
 		
