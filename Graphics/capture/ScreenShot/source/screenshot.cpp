@@ -5,27 +5,10 @@
 #include <fat.h>
 
 #include "screenshot.h"
+#include "bmp.h"
 
 void wait();
 
-typedef struct {
-	unsigned short int type;                 /* Magic identifier            */
-	unsigned int size;                       /* File size in bytes          */
-	unsigned short int reserved1, reserved2;
-	unsigned int offset;                     /* Offset to image data, bytes */
-} PACKED HEADER;
-
-typedef struct {
-	unsigned int size;               /* Header size in bytes      */
-	int width,height;                /* Width and height of image */
-	unsigned short int planes;       /* Number of colour planes   */
-	unsigned short int bits;         /* Bits per pixel            */
-	unsigned int compression;        /* Compression type          */
-	unsigned int imagesize;          /* Image size in bytes       */
-	int xresolution,yresolution;     /* Pixels per meter          */
-	unsigned int ncolours;           /* Number of colours         */
-	unsigned int importantcolours;   /* Important colours         */
-} PACKED INFOHEADER;
 
 void screenshot(u8* buffer) {
 
@@ -86,7 +69,7 @@ void screenshotbmp(char* filename) {
 	fatInitDefault();
 	FILE* file=fopen(filename, "wb");
 
-	DISP_CAPTURE=DCAP_BANK(1)|DCAP_ENABLE|DCAP_SIZE(3);
+	DISP_CAPTURE=DCAP_BANK(3)|DCAP_ENABLE|DCAP_SIZE(3);
 	while(DISP_CAPTURE & DCAP_ENABLE);
 
 	u8* temp=(u8*)malloc(256*192*3+sizeof(INFOHEADER)+sizeof(HEADER));
@@ -116,7 +99,7 @@ void screenshotbmp(char* filename) {
 	{
 		for(int x=0;x<256;x++)
 		{
-			u16 color=VRAM_B[256*192-y*256+x];
+			u16 color=VRAM_D[256*192-y*256+x];
 
 			u8 b=(color&31)<<3;
 			u8 g=((color>>5)&31)<<3;
