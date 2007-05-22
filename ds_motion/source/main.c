@@ -1,9 +1,12 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.c,v 1.4 2007-01-10 16:57:30 dovoto Exp $
+	$Id: main.c,v 1.5 2007-05-22 18:04:16 dovoto Exp $
 
 	Basic DS Motion example
 
 	$Log: not supported by cvs2svn $
+	Revision 1.4  2007/01/10 16:57:30  dovoto
+	Fixed a small bug with callibration code that prevented it from showing message
+	
 	Revision 1.3  2007/01/10 16:43:18  dovoto
 	Update motion example to demonstrate new calibration functionality
 	
@@ -25,12 +28,13 @@ void Calibrate();
 int main(void) {
 //---------------------------------------------------------------------------------
 
-	irqInit();
+	
+    irqInit();
 	irqEnable(IRQ_VBLANK);
 	
 	consoleDemoInit();
 	
-	motion_enable();
+	motion_init();
 
 	
 	
@@ -41,7 +45,7 @@ int main(void) {
 		if(keysDown() & KEY_A) Calibrate();
 		
 		consoleClear();
-		iprintf("Nds is%s inserted\n", motion_is_inserted() ? "" : " not");
+		iprintf("Nds is%s inserted\n", motion_init() ? "" : " not");
 		iprintf("X: raw %i  miliG %i\n", motion_read_x(), motion_acceleration_x());
 		iprintf("Y: raw %i  miliG %i\n", motion_read_y(), motion_acceleration_y());
 		iprintf("Z: raw %i  miliG %i\n", motion_read_z(), motion_acceleration_z());
