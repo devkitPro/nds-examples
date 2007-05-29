@@ -15,15 +15,15 @@
 int DrawGLScene();
 
 
-GLfloat	xrot;				// X Rotation
-GLfloat	yrot;				// Y Rotation
-GLfloat xspeed;				// X Rotation Speed
-GLfloat yspeed;				// Y Rotation Speed
-GLfloat	z=-5.0f;			// Depth Into The Screen
+float	xrot;				// X Rotation
+float	yrot;				// Y Rotation
+float xspeed;				// X Rotation Speed
+float yspeed;				// Y Rotation Speed
+float	z=-5.0f;			// Depth Into The Screen
 
-GLfloat LightAmbient[]=		{ 0.5f, 0.5f, 0.5f, 1.0f };
-GLfloat LightDiffuse[]=		{ 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
+float LightAmbient[]=		{ 0.5f, 0.5f, 0.5f, 1.0f };
+float LightDiffuse[]=		{ 1.0f, 1.0f, 1.0f, 1.0f };
+float LightPosition[]=	{ 0.0f, 0.0f, 2.0f, 1.0f };
 
 int	texture[3];			// Storage For 3 Textures (only going to use 1 on the DS for this demo)
 

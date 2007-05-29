@@ -22,9 +22,9 @@ int DrawGLScene();
 v16 points[64][32][3];    // The Array For The Points On The Grid Of Our "Wave"
 int wiggle_count = 0;		// Counter Used To Control How Fast Flag Waves
 
-GLfloat	xrot;				// X Rotation ( NEW )
-GLfloat	yrot;				// Y Rotation ( NEW )
-GLfloat	zrot;				// Z Rotation ( NEW )
+float	xrot;				// X Rotation ( NEW )
+float	yrot;				// Y Rotation ( NEW )
+float	zrot;				// Z Rotation ( NEW )
 v16 hold;				// Temporarily Holds A Floating Point Value
 
 int	texture[1];			// Storage For 3 Textures (only going to use 1 on the DS for this demo)

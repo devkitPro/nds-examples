@@ -25,17 +25,17 @@ const	u32 num=50;		// Number Of Stars To Draw
 typedef struct			// Create A Structure For Star
 {
 	int r, g, b;		// Stars Color
-	GLfloat dist,		// Stars Distance From Center
+	float dist,		// Stars Distance From Center
 			angle;		// Stars Current Angle
 }stars;
 
 stars star[num];		// Need To Keep Track Of 'num' Stars
 
-GLfloat	zoom=-15.0f;	// Distance Away From Stars
-GLfloat tilt=90.0f;		// Tilt The View
-GLfloat	spin;			// Spin Stars
+float	zoom=-15.0f;	// Distance Away From Stars
+float tilt=90.0f;		// Tilt The View
+float	spin;			// Spin Stars
 
-GLuint	loop;			// General Loop Variable
+int	loop;			// General Loop Variable
 int	texture[1];			// Storage For One textures
 
 

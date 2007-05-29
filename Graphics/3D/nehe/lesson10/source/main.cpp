@@ -24,10 +24,10 @@ float heading;
 float xpos;
 float zpos;
 
-GLfloat	yrot;				// Y Rotation
-GLfloat walkbias = 0;
-GLfloat walkbiasangle = 0;
-GLfloat lookupdown = 0.0f;
+float	yrot;				// Y Rotation
+float walkbias = 0;
+float walkbiasangle = 0;
+float lookupdown = 0.0f;
 
 int	texture[3];			// Storage For 3 Textures (only going to use 1 on the DS for this demo)
 
@@ -264,11 +264,11 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 {
 											// Reset The View
 
-	GLfloat x_m, y_m, z_m, u_m, v_m;
-	GLfloat xtrans = -xpos;
-	GLfloat ztrans = -zpos;
-	GLfloat ytrans = -walkbias-0.25f;
-	GLfloat sceneroty = 360.0f - yrot;
+	float x_m, y_m, z_m, u_m, v_m;
+	float xtrans = -xpos;
+	float ztrans = -zpos;
+	float ytrans = -walkbias-0.25f;
+	float sceneroty = 360.0f - yrot;
 	
 	glLoadIdentity();
 	
