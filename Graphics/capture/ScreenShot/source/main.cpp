@@ -140,7 +140,7 @@ int main() {
 			DISPLAY_CR=MODE_FB1;
 
 		}
-		
+
 		if(keysUp()&KEY_A) {
 		
 			videoSetMode(  MODE_0_2D | 

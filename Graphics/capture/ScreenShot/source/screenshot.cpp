@@ -18,8 +18,8 @@ void screenshot(u8* buffer) {
 	u8* vram_temp=(u8*)malloc(128*1024);
 	dmaCopy(VRAM_A, vram_temp, 128*1024);
 
-	DISP_CAPTURE=DCAP_BANK(0)|DCAP_ENABLE|DCAP_SIZE(3);
-	while(DISP_CAPTURE & DCAP_ENABLE);
+	REG_DISPCAPCNT=DCAP_BANK(0)|DCAP_ENABLE|DCAP_SIZE(3);
+	while(REG_DISPCAPCNT & DCAP_ENABLE);
 
 	dmaCopy(VRAM_A, buffer, 256*192*2);
 	dmaCopy(vram_temp, VRAM_A, 128*1024);
@@ -69,8 +69,8 @@ void screenshotbmp(char* filename) {
 	fatInitDefault();
 	FILE* file=fopen(filename, "wb");
 
-	DISP_CAPTURE=DCAP_BANK(3)|DCAP_ENABLE|DCAP_SIZE(3);
-	while(DISP_CAPTURE & DCAP_ENABLE);
+	REG_DISPCAPCNT=DCAP_BANK(3)|DCAP_ENABLE|DCAP_SIZE(3);
+	while(REG_DISPCAPCNT & DCAP_ENABLE);
 
 	u8* temp=(u8*)malloc(256*192*3+sizeof(INFOHEADER)+sizeof(HEADER));
 
