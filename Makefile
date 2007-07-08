@@ -10,19 +10,19 @@ all: examples
 	find ./ -name *.nds -exec cp -fv {} bin \;
 
 examples:
-	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE) -C $$i ; fi; done;
+	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE) -C $$i || { exit 1;} fi; done;
 
 #---------------------------------------------------------------------------------
 clean:
 #---------------------------------------------------------------------------------
 	@rm -fr bin
 	@rm -f *.bz2
-	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE)  -C $$i clean; fi; done;
+	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE)  -C $$i clean || { exit 1;} fi; done;
 
 #---------------------------------------------------------------------------------
 install:
 #---------------------------------------------------------------------------------
-	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE)  -C $$i install; fi; done;
+	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE)  -C $$i install || { exit 1;} fi; done;
 
 #---------------------------------------------------------------------------------
 dist: clean

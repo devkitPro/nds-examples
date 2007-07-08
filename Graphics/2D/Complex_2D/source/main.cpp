@@ -1,31 +1,7 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.8 2007-01-26 14:53:20 wntrmute Exp $
+	$Id: main.cpp,v 1.9 2007-07-08 04:43:38 wntrmute Exp $
 
 	-- dovoto
-
-	$Log: not supported by cvs2svn $
-	Revision 1.7  2005/10/11 05:09:42  dovoto
-	Updated makefile to more recent itteration
-	Converted complex 2D to load data from pcx file instead of preformated binary data.
-	
-	Revision 1.6  2005/10/05 21:10:39  wntrmute
-	*** empty log message ***
-	
-	Revision 1.5  2005/09/22 22:48:32  wntrmute
-	remove IF
-	
-	Revision 1.4  2005/09/05 00:32:19  wntrmute
-	removed references to IPC struct
-	replaced with API functions
-	
-	Revision 1.3  2005/07/29 04:50:24  wntrmute
-	added UltraEdit and Pnotepad project files
-	fixed Id macro
-	
-	Revision 1.2  2005/07/29 03:56:33  dovoto
-	Removed VAR_IN_EXRAM references.
-	Replaced instances of <nds/arm9/rand.h> with <stdlib.h>
-	Corrected spelling on glMaterialShinyness
 
 ---------------------------------------------------------------------------------*/
 
@@ -40,6 +16,8 @@
 
 SpriteEntry OAMCopySub[128];
 
+tOAM OAMCopySub1;
+
 
 //simple sprite struct
 typedef struct {
@@ -51,7 +29,7 @@ typedef struct {
 
 
 //---------------------------------------------------------------------------------
-void MoveSprite(Sprite* sp) {
+extern "C" void MoveSprite(Sprite* sp) {
 //---------------------------------------------------------------------------------
 	int x = sp->x >> 8;
 	int y = sp->y >> 8;
@@ -61,6 +39,18 @@ void MoveSprite(Sprite* sp) {
  
 	sp->oam->attribute[0] &= 0xFF00;
 	sp->oam->attribute[0] |= (y & 0x00FF);
+
+} 
+
+
+//---------------------------------------------------------------------------------
+extern "C" void MoveSprite2(Sprite* sp) {
+//---------------------------------------------------------------------------------
+	int x = sp->x >> 8;
+	int y = sp->y >> 8;
+
+	sp->oam->posX = x;
+	sp->oam->posY = y;
 
 } 
 
@@ -210,7 +200,7 @@ int main(void) {
 				sprites[i].dy = -sprites[i].dy;
 			
 			//reposition the sprites
-			MoveSprite(&sprites[i]);
+			MoveSprite2(&sprites[i]);
 		}
 		
 
