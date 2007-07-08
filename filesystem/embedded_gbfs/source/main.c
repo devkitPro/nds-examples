@@ -1,46 +1,12 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.10 2007-03-07 06:09:12 gabebear Exp $
+	$Id: main.c,v 1.11 2007-07-08 05:13:28 wntrmute Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
-	$Log: not supported by cvs2svn $
-	Revision 1.9  2007/02/22 08:03:29  gabebear
-	oops, found the problem, this example wasn't enablign textures
-	
-	Revision 1.8  2007/02/22 07:09:07  gabebear
-	This doesn't load textures, which is the whole point of this example, but I don't have a GBA cart to test with.
-	- there was an extra glPush
-	- updated 3d code for ne libnds
-	
-	Revision 1.7  2007/01/26 14:53:21  wntrmute
-	update for latest libnds changes
-	
-	Revision 1.6  2007/01/14 11:31:58  wntrmute
-	bogus fixed types removed from libnds
-	
-	Revision 1.5  2007/01/11 05:33:41  dovoto
-	Applied gabebear patch #1632896
-	
-	Revision 1.4  2005/11/26 21:26:59  joatski
-	Changed to use corrected fixed-point macro names
-	
-	Revision 1.3  2005/09/05 00:32:19  wntrmute
-	removed references to IPC struct
-	replaced with API functions
-	
-	Revision 1.2  2005/08/31 03:02:39  wntrmute
-	updated for new stdio support
-	
-	Revision 1.1  2005/08/05 02:34:21  wntrmute
-	*** empty log message ***
-	
- 
 ---------------------------------------------------------------------------------*/
 
 #include <nds.h>				// include your ndslib
-#include <nds/arm9/image.h>		// needed to load pcx files
-#include <nds/arm9/trig_lut.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -56,10 +22,10 @@ float heading;
 float xpos;
 float zpos;
 
-GLfloat	yrot;				// Y Rotation
-GLfloat walkbias = 0;
-GLfloat walkbiasangle = 0;
-GLfloat lookupdown = 0.0f;
+float yrot;				// Y Rotation
+float walkbias = 0;
+float walkbiasangle = 0;
+float lookupdown = 0.0f;
 
 int	texture[3];			// Storage For 3 Textures (only going to use 1 on the DS for this demo)
 
@@ -306,11 +272,11 @@ int DrawGLScene() {
 //---------------------------------------------------------------------------------
 
 	// Reset The View
-	GLfloat x_m, y_m, z_m, u_m, v_m;
-	GLfloat xtrans = -xpos;
-	GLfloat ztrans = -zpos;
-	GLfloat ytrans = -walkbias-0.25f;
-	GLfloat sceneroty = 360.0f - yrot;
+	float x_m, y_m, z_m, u_m, v_m;
+	float xtrans = -xpos;
+	float ztrans = -zpos;
+	float ytrans = -walkbias-0.25f;
+	float sceneroty = 360.0f - yrot;
 	
 	glLoadIdentity();
 	
