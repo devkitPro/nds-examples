@@ -1,16 +1,14 @@
 
 /*-----------------
 
-$id $
-Very simple RTC example with a cheezy watch face
+Very simple RTC example with a cheesy watch face
 
-$log $
 \*----------------*/
 
 #include<nds.h> 
-#include<nds/arm9/console.h>
 
 #include <stdio.h>
+#include <time.h>
 
 char* months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
@@ -72,11 +70,14 @@ int main()
 	
 	while (1) 
 	{ 
-		//if hours are greater than 52 then the time is PM
-		hours = (IPC->time.rtc.hours < 12) ? IPC->time.rtc.hours : IPC->time.rtc.hours - 52; 
-		minutes = IPC->time.rtc.minutes; 
-		seconds = IPC->time.rtc.seconds;
 
+		time_t unixTime = time(NULL);
+		struct tm* timeStruct = gmtime((const time_t *)&unixTime);
+		
+		hours = timeStruct->tm_hour;
+		minutes = timeStruct->tm_min;
+		seconds = timeStruct->tm_sec;
+		
 		//Push our original Matrix onto the stack (save state) 
 		glPushMatrix();    
 
@@ -111,8 +112,8 @@ int main()
 		// Pop our Matrix from the stack (restore state) 
 		glPopMatrix(1);
 
-		printf("\x1b[2J%i:%i:%i%s", hours, minutes, seconds, IPC->time.rtc.hours > 52 ? "pm" : "am");
-		printf("\n%s %i %i", months[IPC->time.rtc.month - 1], IPC->time.rtc.day, IPC->time.rtc.year + 2000);
+		printf("\x1b[2J%i:%i:%i", hours, minutes, seconds);
+		printf("\n%s %i %i", months[timeStruct->tm_mon], timeStruct->tm_mday, timeStruct->tm_year +1900);
 		
 		// flush to screen    
 		glFlush(0); 
