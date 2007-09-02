@@ -22,7 +22,7 @@ u16 startTimer(int timer)
 
 	TIMER_CR(timer) = 0;
 	TIMER_DATA(0) = 0;
-	TIMER_CR(timer) = TIMER_DIV_1;
+	TIMER_CR(timer) = TIMER_DIV_1 | TIMER_ENABLE;
 	return TIMER_DATA(0);
 }
 
@@ -97,7 +97,7 @@ int main()
 
 	// IRQ basic setup
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 
 	// initialize gl
 	glInit();
@@ -111,7 +111,7 @@ int main()
 	glClearDepth(0x7FFF);
 	
 	// Set our view port to be the same size as the screen
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	//camera
 	float rotX = 0, rotY = 0;
@@ -165,7 +165,7 @@ int main()
 		if(keysHeld() & KEY_B)
 			glOrtho(-4,4,-3,3,0.1,10);	
 		else {
-			gluPerspective(35, 256.0 / 192.0, 0.1, 10);
+			gluPerspective(70, 256.0 / 192.0, 0.1, 10);
 		}
 		//change cull mode
 		if(keysHeld() & KEY_A)
@@ -188,6 +188,7 @@ int main()
 
 		DrawBox(-1,-1,-1,2,2,2);
 
+		swiWaitForVBlank();
 		printf("\x1b[2JBox test cycle count");
 
 		time = startTimer(0);
