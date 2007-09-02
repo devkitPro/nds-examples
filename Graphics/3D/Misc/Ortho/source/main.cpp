@@ -84,7 +84,7 @@ int main()
 	glMaterialShinyness();
 
 	// Set our viewport to be the same size as the screen
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	LoadGLTextures();
 	
@@ -101,7 +101,7 @@ int main()
 		
 		// set the projection matrix as either ortho or perspective
 		if(!(keysHeld() & KEY_R)) {
-			gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+			gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 		}
 		else
 			glOrtho(-3, 3,-2, 2, 0.1, 100);

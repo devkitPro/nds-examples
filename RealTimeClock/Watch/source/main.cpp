@@ -42,7 +42,7 @@ int main()
 	irqSet(IRQ_VBLANK, 0); 
 
 	// Set our viewport to be the same size as the screen 
-	glViewPort(0,0,255,191); 
+	glViewport(0,0,255,191); 
 
 	// Specify the Clear Color and Depth 
 	glClearColor(0,0,0,31); 
@@ -63,7 +63,7 @@ int main()
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 	gluLookAt(	0.0, 0.0, 3.0,		//camera possition 
 				0.0, 0.0, 0.0,		//look at
 				0.0, 1.0, 0.0);		//up

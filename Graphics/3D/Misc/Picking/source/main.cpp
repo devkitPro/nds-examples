@@ -120,12 +120,12 @@ int main()
 		// get touchscreen position
 		touchXY=touchReadXY();
 		
-		glViewPort(0,0,255,191); // set the viewport to fullscreen
+		glViewport(0,0,255,191); // set the viewport to fullscreen
 		
 		// setup the projection matrix for regular drawing
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(30, 256.0 / 192.0, 0.1, 20); 
+		gluPerspective(60, 256.0 / 192.0, 0.1, 20); 
 		
 		glMatrixMode(GL_MODELVIEW); // use the modelview matrix while drawing
 		
@@ -175,13 +175,13 @@ int main()
 				closeW = 0x7FFFFFFF; //reset the distance
 				
 				//set the viewport to just off-screen, this hides all rendering that will be done during picking
-				glViewPort(0,192,0,192);
+				glViewport(0,192,0,192);
 				
 				// setup the projection matrix for picking
 				glMatrixMode(GL_PROJECTION);
 				glLoadIdentity();
 				gluPickMatrix((touchXY.px),(191-touchXY.py),4,4,viewport); // render only what is below the cursor
-				gluPerspective(30, 256.0 / 192.0, 0.1, 20); // this must be the same as the original perspective matrix
+				gluPerspective(60, 256.0 / 192.0, 0.1, 20); // this must be the same as the original perspective matrix
 				
 				glMatrixMode(GL_MODELVIEW); // switch back to modifying the modelview matrix for drawing
 				

@@ -59,7 +59,7 @@ int main()
 	glClearDepth(0x7FFF);
 
 	//this should work the same as the normal gl call
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 
 	vramSetBankA(VRAM_A_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
@@ -73,7 +73,7 @@ int main()
 	//any floating point gl call is being converted to fixed prior to being implemented
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
 	
 	while(1)
 	{

@@ -5,42 +5,6 @@
  * 		Author: revo																		*
  *		Updated by revo (from 10b) - added camera moving by touching touch screen
  *
- *      $Log: not supported by cvs2svn $
- *      Revision 1.10  2007/02/22 08:00:40  gabebear
- *      updated for latest libnds changes
- *
- *      Revision 1.9  2007/01/26 14:53:21  wntrmute
- *      update for latest libnds changes
- *
- *      Revision 1.8  2007/01/14 11:31:58  wntrmute
- *      bogus fixed types removed from libnds
- *
- *      Revision 1.7  2007/01/11 05:33:41  dovoto
- *      Applied gabebear patch #1632896
- *
- *      Revision 1.6  2005/11/26 21:26:59  joatski
- *      Changed to use corrected fixed-point macro names
- *
- *      Revision 1.5  2005/09/07 20:06:06  wntrmute
- *      updated for latest libnds changes
- *
- *      Revision 1.4  2005/09/05 00:32:20  wntrmute
- *      removed references to IPC struct
- *      replaced with API functions
- *
- *      Revision 1.3  2005/08/31 03:02:39  wntrmute
- *      updated for new stdio support
- *
- *      Revision 1.2  2005/08/11 15:51:33  desktopman
- *      Added strafe
- *      Added mirror controls for lefties
- *      Added filtering of small changes to prevent flickering
- *      Slowed down movement a bit
- *      Now destroys the pcx struct after use
- *
- *      Revision 1.1  2005/07/31 18:25:36  dovoto
- *      Added the touch look demo by revo to demonstrate camera control by touch pad in a 3D scene
- *
  ********************************************************************************************/
 
 // include your ndslib
@@ -188,12 +152,12 @@ int main()
 	glEnable(GL_TEXTURE_2D);
 	
 	// Set our viewport to be the same size as the screen
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	// setup the projection matrix
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 	
 	glLight(0, RGB15(31,31,31) , 0,	floattov10(-1.0), 0);
 	

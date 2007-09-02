@@ -66,13 +66,13 @@ int main()
 	glClearDepth(0x7FFF);
 	
 	// Set our viewport to be the same size as the screen
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	LoadGLTextures();
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 	
 	// Set the current matrix to be the model matrix
 	glMatrixMode(GL_MODELVIEW);

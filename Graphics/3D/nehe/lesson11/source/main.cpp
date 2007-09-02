@@ -81,7 +81,7 @@ void InitGL(void)
 	glEnable(GL_TEXTURE_2D);
 	
 	// Set our viewport to be the same size as the screen
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
@@ -95,7 +95,7 @@ void InitGL(void)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 	
 	//need to set up some material properties since DS does not have them set by default
 	glMaterialf(GL_AMBIENT, RGB15(31,31,31));

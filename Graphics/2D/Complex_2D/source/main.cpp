@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.9 2007-07-08 04:43:38 wntrmute Exp $
+	$Id: main.cpp,v 1.10 2007-09-02 23:29:50 wntrmute Exp $
 
 	-- dovoto
 
@@ -21,10 +21,10 @@ tOAM OAMCopySub1;
 
 //simple sprite struct
 typedef struct {
-	int x,y;				//location 
-	int dx, dy;			//speed
-	SpriteEntry* oam;	
-	int gfxID; 				//graphics lovation
+	int x,y;			// screen co-ordinates 
+	int dx, dy;			// velocity
+	SpriteEntry* oam;	// pointer to the sprite attributes in OAM
+	int gfxID; 			// graphics lovation
 }Sprite;
 
 

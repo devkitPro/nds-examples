@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.11 2007-07-08 05:13:28 wntrmute Exp $
+	$Id: main.c,v 1.12 2007-09-02 23:32:43 wntrmute Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
@@ -163,7 +163,7 @@ int main()
 	irqSet(IRQ_VBLANK, 0);
 
 	// Set our viewport to be the same size as the screen
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	// Reset the screen and setup the view
 	glInit();
@@ -174,7 +174,7 @@ int main()
 	//setup the projection matrix
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 100);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 	
 	//setup a light
 	glLight(0, RGB15(31,31,31), 0, floattov10(-1.0), 0);

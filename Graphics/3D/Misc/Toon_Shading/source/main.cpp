@@ -62,7 +62,7 @@ int main()
 	glClearDepth(0x7FFF);
 
 	//this should work the same as the normal gl call
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 
 	//toon-table entry 0 is for completely unlit pixels, going up to entry 31 for completely lit
 	//We block-fill it in two halves, we get cartoony 2-tone lighting
@@ -72,7 +72,7 @@ int main()
 	//any floating point gl call is being converted to fixed prior to being implemented
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
 	
 	//NB: When toon-shading, the hw ignores lights 2 and 3
 	//Also note that the hw uses the RED component of the lit vertex to index the toon-table

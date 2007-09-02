@@ -142,7 +142,7 @@ int main()
 	glClearDepth(0x7FFF);
 
 	//this should work the same as the normal gl call
-	glViewPort(0,0,255,191);
+	glViewport(0,0,255,191);
 	
 	//ds uses a table for shinyness..this generates a half-ass one
 	glMaterialShinyness();
@@ -235,7 +235,7 @@ int main()
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(35, 256.0 / 192.0, 0.1, 40);
+	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
 	
 	gluLookAt(	0.0, 0.0, 2.0,		//camera possition 
 				0.0, 0.0, 0.0,		//look at
