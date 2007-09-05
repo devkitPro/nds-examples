@@ -1,24 +1,20 @@
 /*---------------------------------------------------------------------------------
-
-	$id $
 	
 	Box test to demonstrate 3D bounding box es.  also shows the effect of culling and
 	clipping on vertex usage
-	$log $
 *--------------------------------------------------------------------------------*/
 
 
 #include <nds.h>
-#include <nds/arm9/console.h>
-#include <nds/arm9/boxtest.h>
 
 #include <stdio.h>
 
 
 
 //some code for profiling
-u16 startTimer(int timer)
-{
+//---------------------------------------------------------------------------------
+u16 startTimer(int timer) {
+//---------------------------------------------------------------------------------
 
 	TIMER_CR(timer) = 0;
 	TIMER_DATA(0) = 0;
@@ -28,9 +24,11 @@ u16 startTimer(int timer)
 
 #define getTimer(timer) (TIMER_DATA(timer))
 
+//---------------------------------------------------------------------------------
 //draws a box...same signature as boxTest
-void DrawBox(float x, float y, float z, float height, float width, float depth)
-{
+//---------------------------------------------------------------------------------
+void DrawBox(float x, float y, float z, float width, float height, float depth) {
+//---------------------------------------------------------------------------------
 	glBegin(GL_QUADS);
 	//z  face
 	glColor3f(1,0,0);
@@ -79,13 +77,12 @@ void DrawBox(float x, float y, float z, float height, float width, float depth)
 
 }
 
-//draw the clock
-int main()
-{	
+//---------------------------------------------------------------------------------
+int main() {	
+//---------------------------------------------------------------------------------
 
-	// Turn on everything
-	powerON(POWER_ALL);
-
+	// Enable the 3D core
+	powerON(POWER_3D_CORE | POWER_MATRIX);
 	//put 3D on top
 	lcdMainOnTop();
 
@@ -128,30 +125,38 @@ int main()
 	int rx = 50, ry = 15;
 	int oldx = 0, oldy = 0;
 
+
+	printf("\x1b[10;0HPress A to change culling");
+	printf("\n\nPress B to change Ortho vs Persp");
+	printf("\nLeft/Right/Up/Down to rotate");
+	printf("\nPress L and R to zoom");
+	printf("\nTouch screen to rotate cube");
+
 	//main loop
-	while (1) 
-	{
+	while (1) {
 
 		scanKeys();
 
 		//process input
-		if(keysHeld() & KEY_LEFT) rotY++;
-		if(keysHeld() & KEY_RIGHT) rotY--;
-		if(keysHeld() & KEY_UP) rotX ++;
-		if(keysHeld() & KEY_DOWN) rotX --;
-		if(keysHeld() & KEY_L) translate += .1;
-		if(keysHeld() & KEY_R) translate -= .1;
+		
+		int held = keysHeld();
+		int pressed = keysDown();
+		
+		if( held & KEY_LEFT) rotY++;
+		if( held & KEY_RIGHT) rotY--;
+		if( held & KEY_UP) rotX ++;
+		if( held & KEY_DOWN) rotX --;
+		if( held & KEY_L) translate += .1;
+		if( held & KEY_R) translate -= .1;
 
 		//reset x and y when user touches screen
-		if(keysDown() & KEY_TOUCH) 
-		{
+		if( pressed & KEY_TOUCH)  {
 			oldx = touchReadXY().px;
 			oldy = touchReadXY().py;
 		}
 
 		//if user drags then grab the delta
-		if(keysHeld() & KEY_TOUCH) 
-		{
+		if( held & KEY_TOUCH) {
 			rx += touchReadXY().px - oldx; 
 			ry += touchReadXY().py - oldy;
 			oldx = touchReadXY().px;
@@ -168,7 +173,7 @@ int main()
 			gluPerspective(70, 256.0 / 192.0, 0.1, 10);
 		}
 		//change cull mode
-		if(keysHeld() & KEY_A)
+		if( held & KEY_A)
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE );
 		else
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_FRONT );
@@ -189,7 +194,7 @@ int main()
 		DrawBox(-1,-1,-1,2,2,2);
 
 		swiWaitForVBlank();
-		printf("\x1b[2JBox test cycle count");
+		printf("\x1b[0;0HBox test cycle count");
 
 		time = startTimer(0);
 		int hit = BoxTestf(-1,-1,-1,2,2,2);
@@ -211,14 +216,9 @@ int main()
 		glGetInt(GL_GET_VERTEX_RAM_COUNT, &vertex_count);
 		glGetInt(GL_GET_POLYGON_RAM_COUNT, &polygon_count);
 
-		printf("\n\nRam usage: Culling %s", (keysHeld() & KEY_A) ? "none" : "back faces" );
+		printf("\n\nRam usage: Culling %s", ( held & KEY_A) ? "none" : "back faces" );
 		printf("\nVertex ram: %i", vertex_count);
 		printf("\nPolygon ram: %i", polygon_count);
-		printf("\n\nPress A to change culling");
-		printf("\n\nPress B to change Ortho vs Persp");
-		printf("\nPress Left and Right Up and Down to rotate");
-		printf("\nPress L and R to zoom");
-		printf("\nTouch screen to rotate cube");
 
 		// flush to the screen
 		glFlush(0);
