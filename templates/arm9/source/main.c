@@ -1,21 +1,9 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.4 2005-09-17 23:15:13 wntrmute Exp $
+	$Id: main.c,v 1.5 2007-10-23 00:46:29 wntrmute Exp $
 
 	Simple console print demo
 	-- dovoto
-
-	$Log: not supported by cvs2svn $
-	Revision 1.3  2005/09/05 00:32:20  wntrmute
-	removed references to IPC struct
-	replaced with API functions
-	
-	Revision 1.2  2005/08/31 01:26:30  wntrmute
-	updated to work with new stdio support
-
-	Revision 1.1  2005/08/03 06:29:56  wntrmute
-	added templates
-
 
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
@@ -23,12 +11,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <nds/arm9/console.h> //basic print funcionality
-
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
 	touchPosition touchXY;
+
+	irqInit();
+	irqEnable(IRQ_VBLANK);
 
 	videoSetMode(0);	//not using the main screen
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
@@ -50,6 +39,7 @@ int main(void) {
 		iprintf("\x1b[10;0HTouch x = %04X, %04X\n", touchXY.x, touchXY.px);
 		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);
 
+		swiWaitForVBlank();
 	}
 
 	return 0;
