@@ -1,13 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.2 2006-06-19 19:10:03 wntrmute Exp $
-
 	demo of ansi escape sequences
-
-	$Log: not supported by cvs2svn $
-	Revision 1.1  2005/09/13 15:01:07  wntrmute
-	added ansi escape sequences demo
-
 
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
