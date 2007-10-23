@@ -78,22 +78,22 @@ void screenshotbmp(char* filename) {
 	INFOHEADER* infoheader=(INFOHEADER*)(temp+sizeof(HEADER));
 
 	write16(&header->type, 0x4D42);
-	write32((u32*)&header->size, 256*192*3+sizeof(INFOHEADER)+sizeof(HEADER));
-	write32((u32*)&header->offset, sizeof(INFOHEADER)+sizeof(HEADER));
+	write32(&header->size, 256*192*3+sizeof(INFOHEADER)+sizeof(HEADER));
+	write32(&header->offset, sizeof(INFOHEADER)+sizeof(HEADER));
 	write16(&header->reserved1, 0);
 	write16(&header->reserved2, 0);
 
 	write16(&infoheader->bits, 24);
-	write32((u32*)&infoheader->size, sizeof(INFOHEADER));
-	write32((u32*)&infoheader->compression, 0);
-	write32((u32*)&infoheader->width, 256);
-	write32((u32*)&infoheader->height, 192);
+	write32(&infoheader->size, sizeof(INFOHEADER));
+	write32(&infoheader->compression, 0);
+	write32(&infoheader->width, 256);
+	write32(&infoheader->height, 192);
 	write16(&infoheader->planes, 1);
-	write32((u32*)&infoheader->imagesize, 256*192*3);
-	write32((u32*)&infoheader->xresolution, 0);
-	write32((u32*)&infoheader->yresolution, 0);
-	write32((u32*)&infoheader->importantcolours, 0);
-	write32((u32*)&infoheader->ncolours, 0);
+	write32(&infoheader->imagesize, 256*192*3);
+	write32(&infoheader->xresolution, 0);
+	write32(&infoheader->yresolution, 0);
+	write32(&infoheader->importantcolours, 0);
+	write32(&infoheader->ncolours, 0);
 
 	for(int y=0;y<192;y++)
 	{

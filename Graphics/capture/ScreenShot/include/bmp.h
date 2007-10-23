@@ -2,22 +2,22 @@
 #define _bmp_h_
 
 typedef struct {
-	unsigned short int type;                 /* Magic identifier            */
-	unsigned int size;                       /* File size in bytes          */
-	unsigned short int reserved1, reserved2;
-	unsigned int offset;                     /* Offset to image data, bytes */
+	u16 type;						/* Magic identifier            */
+	u32 size;                       /* File size in bytes          */
+	u16 reserved1, reserved2;
+	u32 offset;                     /* Offset to image data, bytes */
 } PACKED HEADER;
 
 typedef struct {
-	unsigned int size;               /* Header size in bytes      */
-	int width,height;                /* Width and height of image */
-	unsigned short int planes;       /* Number of colour planes   */
-	unsigned short int bits;         /* Bits per pixel            */
-	unsigned int compression;        /* Compression type          */
-	unsigned int imagesize;          /* Image size in bytes       */
-	int xresolution,yresolution;     /* Pixels per meter          */
-	unsigned int ncolours;           /* Number of colours         */
-	unsigned int importantcolours;   /* Important colours         */
+	u32 size;						/* Header size in bytes      */
+	u32 width,height;				/* Width and height of image */
+	u16 planes;						/* Number of colour planes   */
+	u16 bits;						/* Bits per pixel            */
+	u32 compression;				/* Compression type          */
+	u32 imagesize;					/* Image size in bytes       */
+	u32 xresolution,yresolution;	/* Pixels per meter          */
+	u32 ncolours;					/* Number of colours         */
+	u32 importantcolours;			/* Important colours         */
 } PACKED INFOHEADER;
 
 #endif //_bmp_h_
