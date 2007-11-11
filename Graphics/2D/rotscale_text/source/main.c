@@ -15,11 +15,11 @@ int main(void) {
 	videoSetMode(0);	
 
 	// 16bit tilemaps for rot scale text backgrounds require extended palettes
-	videoSetModeSub(MODE_5_2D | DISPLAY_BG3_ACTIVE | DISPLAY_BG_EXT_PALETTE);	
+	videoSetModeSub(MODE_5_2D | DISPLAY_BG3_ACTIVE);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
 	// rot scale backgrounds have a different size code
-	SUB_BG3_CR = BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base) | ROTBG_SIZE_256x256;
+	SUB_BG3_CR = BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base) | BG_RS_32x32;
 	
 	u16* sub_tile = (u16*)CHAR_BASE_BLOCK_SUB(char_base);
 	u16* sub_map = (u16*)SCREEN_BASE_BLOCK_SUB(screen_base);
@@ -33,20 +33,15 @@ int main(void) {
 		sub_tile[i] = fontData[i];
 	}
 
-	// extended palettes are written with bank mapped to lcd
-	vramSetBankH(VRAM_H_LCD); 
-
 	// each background has it's own set of 16 256 color palettes
 	for(i = 0; i < fontPaletteSize; ++i) {
-		VRAM_H_EXT_PALETTE[3][0][i]= fontPalette[i];
+		BG_PALETTE_SUB[i] = fontPalette[i];
 	}
 
-	// map bank to extended palette after writing data
-	vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE); 
 
 	iprintf("Custom Font Demo\n");
 	iprintf("   by Poffy\n");
-	iprintf("modified by WinterMute\n");
+	iprintf("modified by WinterMute and dovoto\n");
 	iprintf("for libnds examples\n");
 
 	//scale is fixed point
