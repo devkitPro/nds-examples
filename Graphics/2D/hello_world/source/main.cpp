@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.7 2006-06-18 21:32:41 wntrmute Exp $
+	$Id: main.cpp,v 1.8 2007-11-11 15:36:51 dovoto Exp $
 
 	Simple console print demo
 	-- dovoto
 
 	$Log: not supported by cvs2svn $
+	Revision 1.7  2006/06/18 21:32:41  wntrmute
+	tidy up examples
+	
 	Revision 1.6  2005/09/16 12:20:32  wntrmute
 	corrected iprintfs
 	
@@ -58,8 +61,8 @@ int main(void) {
 
 	iprintf("      Hello DS dev'rs\n");
 	iprintf("     www.devkitpro.org\n");
-	iprintf("   www.drunkencoders.com");
-
+	iprintf("   \x1b[42mwww.drunkencoders.com\x1b[39m");
+ 
 	while(1) {
 	
 		swiWaitForVBlank();
