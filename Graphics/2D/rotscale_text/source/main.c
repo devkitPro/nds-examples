@@ -71,19 +71,25 @@ int main(void) {
 		angle &= 0x1ff;
 
 		// Compute sin and cos
-		s16 angleSin = SIN[angle] >> 4;
-		s16 angleCos = COS[angle] >> 4;
+		s16 angleSin = SIN[angle];
+		s16 angleCos = COS[angle];
  
 		swiWaitForVBlank();
 
-		// Set the background registers
-		SUB_BG3_XDX = ( angleCos * scaleX ) >> 8;
-		SUB_BG3_XDY = (-angleSin * scaleX ) >> 8;
-		SUB_BG3_YDX = ( angleSin * scaleY ) >> 8;
-		SUB_BG3_YDY = ( angleCos * scaleY ) >> 8;
 
-		SUB_BG3_CX = (scrollX<<8) - rcX * ( angleCos - angleSin);
-		SUB_BG3_CY = (scrollY<<8) - rcY * ( angleSin + angleCos);
+		// Set the background registers
+		s16 pa = ( angleCos * scaleX ) >> 12;
+		s16 pb = (-angleSin * scaleX ) >> 12;
+		s16 pc = ( angleSin * scaleY ) >> 12;
+		s16 pd = ( angleCos * scaleY ) >> 12;
+		
+		SUB_BG3_XDX = pa;
+		SUB_BG3_XDY = pb;
+		SUB_BG3_YDX = pc;
+		SUB_BG3_YDY = pd;
+
+		SUB_BG3_CX = (scrollX<<8) - ((rcX * pa + rcY * pb));
+		SUB_BG3_CY = (scrollY<<8) - ((rcX * pc + rcY * pd));
 
 	}
 
