@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.10 2007-09-02 23:29:50 wntrmute Exp $
+	$Id: main.cpp,v 1.11 2008-02-05 23:48:14 dovoto Exp $
 
 	-- dovoto
 
@@ -16,9 +16,6 @@
 
 SpriteEntry OAMCopySub[128];
 
-tOAM OAMCopySub1;
-
-
 //simple sprite struct
 typedef struct {
 	int x,y;			// screen co-ordinates 
@@ -30,21 +27,6 @@ typedef struct {
 
 //---------------------------------------------------------------------------------
 extern "C" void MoveSprite(Sprite* sp) {
-//---------------------------------------------------------------------------------
-	int x = sp->x >> 8;
-	int y = sp->y >> 8;
-
-	sp->oam->attribute[1] &= 0xFE00;
-	sp->oam->attribute[1] |= (x & 0x01FF);
- 
-	sp->oam->attribute[0] &= 0xFF00;
-	sp->oam->attribute[0] |= (y & 0x00FF);
-
-} 
-
-
-//---------------------------------------------------------------------------------
-extern "C" void MoveSprite2(Sprite* sp) {
 //---------------------------------------------------------------------------------
 	int x = sp->x >> 8;
 	int y = sp->y >> 8;
@@ -69,19 +51,10 @@ void initOAM(void) {
 //---------------------------------------------------------------------------------
 void updateOAM(void) {
 //---------------------------------------------------------------------------------
-	unsigned int i;
-	
-	for(i = 0; i < 128 * sizeof(SpriteEntry) / 4 ; i++)
-	{
-		((uint32*)OAM_SUB)[i] = ((uint32*)OAMCopySub)[i];
-	}
+	memcpy(OAM_SUB, OAMCopySub, 128 * sizeof(SpriteEntry));
 }
 
 
-//---------------------------------------------------------------------------------
-void irqVBlank(void) {	
-//---------------------------------------------------------------------------------
-}
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -119,7 +92,7 @@ int main(void) {
 	// a vblank interrupt is needed to use swiWaitForVBlank()
 	// since the dispatcher handles the flags no handler is required
 	irqInit();
-	irqSet(IRQ_VBLANK, irqVBlank);
+	irqEnable(IRQ_VBLANK);
 	
 
 	sImage ball;
@@ -200,7 +173,7 @@ int main(void) {
 				sprites[i].dy = -sprites[i].dy;
 			
 			//reposition the sprites
-			MoveSprite2(&sprites[i]);
+			MoveSprite(&sprites[i]);
 		}
 		
 
