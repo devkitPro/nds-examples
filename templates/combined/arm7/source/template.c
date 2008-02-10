@@ -116,6 +116,7 @@ void VblankHandler(void) {
 int main(int argc, char ** argv) {
 //---------------------------------------------------------------------------------
 
+
 	// read User Settings from firmware
 	readUserSettings();
 
@@ -123,6 +124,7 @@ int main(int argc, char ** argv) {
 	powerON(POWER_SOUND);
 	writePowerManagement(PM_CONTROL_REG, ( readPowerManagement(PM_CONTROL_REG) & ~PM_SOUND_MUTE ) | PM_SOUND_AMP );
 	SOUND_CR = SOUND_ENABLE | SOUND_VOL(0x7F);
+
 
 	irqInit();
 
