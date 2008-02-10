@@ -10,7 +10,7 @@ Very simple RTC example with a cheesy watch face
 #include <stdio.h>
 #include <time.h>
 
-char* months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+const char* months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 //draw a watch hands
 void DrawQuad(float x, float y, float width, float height) 
@@ -112,11 +112,13 @@ int main()
 		// Pop our Matrix from the stack (restore state) 
 		glPopMatrix(1);
 
-		printf("\x1b[2J%i:%i:%i", hours, minutes, seconds);
+		printf("\x1b[2J%02i:%02i:%02i", hours, minutes, seconds);
 		printf("\n%s %i %i", months[timeStruct->tm_mon], timeStruct->tm_mday, timeStruct->tm_year +1900);
 		
 		// flush to screen    
-		glFlush(0); 
+		glFlush(0);
+		
+		swiWaitForVBlank();
 	} 
 
 	return 0; 
