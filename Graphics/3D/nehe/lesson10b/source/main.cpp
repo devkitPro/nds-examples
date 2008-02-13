@@ -210,17 +210,17 @@ int main()
 		if (keysHeld() & KEY_DOWN)
 		{
 			
-			xpos -= SIN[heading & LUT_MASK]>>4;
-			zpos += COS[heading & LUT_MASK]>>4;
+			xpos -= sinFixed(heading)>>4;
+			zpos += cosFixed(heading)>>4;
 			
 			walkbiasangle+= 10;
 			
-			walkbias = SIN[walkbiasangle & LUT_MASK]>>4;
+			walkbias = sinFixed(walkbiasangle)>>4;
 		}
 		if (keysHeld() & KEY_UP)
 		{
-			xpos += SIN[heading& LUT_MASK] >> 4;
-			zpos -= COS[heading& LUT_MASK] >> 4;
+			xpos += sinFixed(heading)>>4;
+			zpos -= sinFixed(heading)>>4;
 
 			if (walkbiasangle <= 0)
 			{
@@ -230,7 +230,7 @@ int main()
 			{
 				walkbiasangle-= 10;
 			}
-			walkbias = SIN[walkbiasangle & LUT_MASK]>>4;
+			walkbias = sinFixed(walkbiasangle)>>4;
 		}
 		
 		DrawGLScene();

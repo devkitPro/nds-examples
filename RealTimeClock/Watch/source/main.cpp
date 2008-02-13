@@ -39,7 +39,8 @@ int main()
 
 	// IRQ basic setup 
 	irqInit(); 
-	irqSet(IRQ_VBLANK, 0); 
+	irqEnable(IRQ_VBLANK);
+
 
 	// Set our viewport to be the same size as the screen 
 	glViewport(0,0,255,191); 

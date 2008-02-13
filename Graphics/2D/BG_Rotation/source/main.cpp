@@ -104,8 +104,8 @@ int main(void)
 		if( keys & KEY_Y ) scaleY--;
 
 	// Compute sin and cos
-		s16 s = SIN[angle & 0x1FF] >> 4;
-		s16 c = COS[angle & 0x1FF] >> 4;
+		s16 s = sinFixed(angle) >> 4;
+		s16 c = cosFixed(angle) >> 4;
 
 		swiWaitForVBlank();
 

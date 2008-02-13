@@ -122,8 +122,8 @@ int main() {
 	{
 		angle++;
 		
-		spriteRotations[0].hdx = COS[angle & 0x1FF] >> 4;
-		spriteRotations[0].hdy = SIN[angle & 0x1FF] >> 4;
+		spriteRotations[0].hdx = cosFixed(angle) >> 4;
+		spriteRotations[0].hdy = sinFixed(angle) >> 4;
 		spriteRotations[0].vdx = -spriteRotations[0].hdy;
 		spriteRotations[0].vdy = spriteRotations[0].hdx;
 		

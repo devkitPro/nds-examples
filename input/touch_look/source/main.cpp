@@ -196,28 +196,28 @@ int main()
 
 		if (keysHeld() & (KEY_LEFT|KEY_Y))
 		{
-			xpos -= SIN[(heading+128)& LUT_MASK] >> 5;
-			zpos += COS[(heading+128)& LUT_MASK] >> 5;
+			xpos -= sinFixed((heading+128)& LUT_MASK) >> 5;
+			zpos += cosFixed((heading+128)& LUT_MASK) >> 5;
 		}
 		if (keysHeld() & (KEY_RIGHT|KEY_A))
 		{
-			xpos += SIN[(heading+128)& LUT_MASK] >> 5;
-			zpos -= COS[(heading+128)& LUT_MASK] >> 5;
+			xpos += sinFixed((heading+128)& LUT_MASK) >> 5;
+			zpos -= cosFixed((heading+128)& LUT_MASK) >> 5;
 		}
 		if (keysHeld() & (KEY_DOWN|KEY_B))
 		{
 
-			xpos -= SIN[heading & LUT_MASK]>>5;
-			zpos += COS[heading & LUT_MASK]>>5;
+			xpos -= sinFixed(heading & LUT_MASK)>>5;
+			zpos += cosFixed(heading & LUT_MASK)>>5;
 
 			walkbiasangle+= 10;
 
-			walkbias = SIN[walkbiasangle & LUT_MASK]>>4;
+			walkbias = sinFixed(walkbiasangle)>>4;
 		}
 		if (keysHeld() & (KEY_UP|KEY_X))
 		{
-			xpos += SIN[heading& LUT_MASK] >> 5;
-			zpos -= COS[heading& LUT_MASK] >> 5;
+			xpos += sinFixed(heading& LUT_MASK) >> 5;
+			zpos -= cosFixed(heading& LUT_MASK) >> 5;
 
 			if (walkbiasangle <= 0)
 			{
@@ -227,7 +227,7 @@ int main()
 			{
 				walkbiasangle-= 10;
 			}
-			walkbias = SIN[walkbiasangle & LUT_MASK]>>4;
+			walkbias = sinFixed(walkbiasangle & LUT_MASK)>>4;
 		}
 
 		// Camera rotation by touch screen

@@ -53,14 +53,14 @@ typedef struct tagSECTOR
 
 float sin(float angle)
 {
-	int32 s = SIN[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
+	int32 s = sinFixed((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
 
 	return f32tofloat(s);
 }
 
 float cos(float angle)
 {
-	int32 c = COS[(int)((angle * LUT_SIZE) / 360.0) & LUT_MASK];
+	int32 c = cosFixed((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
 
 	return f32tofloat(c);
 }

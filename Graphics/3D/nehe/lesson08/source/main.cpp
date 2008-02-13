@@ -58,7 +58,7 @@ int main()
 
 	// IRQ basic setup
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 
 	// initialize the geometry engine
 	glInit();

@@ -71,8 +71,8 @@ int main(void) {
 		angle &= 0x1ff;
 
 		// Compute sin and cos
-		s16 angleSin = SIN[angle];
-		s16 angleCos = COS[angle];
+		s16 angleSin = sinFixed(angle);
+		s16 angleCos = cosFixed(angle);
  
 		swiWaitForVBlank();
 

@@ -1,31 +1,10 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.8 2007-11-11 15:36:51 dovoto Exp $
+	$Id: main.cpp,v 1.9 2008-02-13 21:12:32 dovoto Exp $
 
 	Simple console print demo
 	-- dovoto
 
-	$Log: not supported by cvs2svn $
-	Revision 1.7  2006/06/18 21:32:41  wntrmute
-	tidy up examples
-	
-	Revision 1.6  2005/09/16 12:20:32  wntrmute
-	corrected iprintfs
-	
-	Revision 1.5  2005/09/12 18:32:38  wntrmute
-	removed *printAt replaced with ansi escape sequences
-	
-	Revision 1.4  2005/09/05 00:32:19  wntrmute
-	removed references to IPC struct
-	replaced with API functions
-	
-	Revision 1.3  2005/08/31 03:02:39  wntrmute
-	updated for new stdio support
-	
-	Revision 1.2  2005/08/03 06:36:30  wntrmute
-	added logging
-	added display of pixel co-ords
-	
 
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
@@ -60,8 +39,8 @@ int main(void) {
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 
 	iprintf("      Hello DS dev'rs\n");
-	iprintf("     www.devkitpro.org\n");
-	iprintf("   \x1b[42mwww.drunkencoders.com\x1b[39m");
+	iprintf("     \x1b[32mwww.devkitpro.org\n");
+	iprintf("   \x1b[32;1mwww.drunkencoders.com\x1b[39m");
  
 	while(1) {
 	
