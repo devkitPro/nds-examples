@@ -8,21 +8,23 @@
 static void get_pen_delta( int *dx, int *dy )
 {
 	static int prev_pen[2] = { 0x7FFFFFFF, 0x7FFFFFFF };
-
+	touchPosition touchXY;
+	
 	u32 keys = keysHeld();
 
 	if( keys & KEY_TOUCH )
 	{
-		touchPosition touchXY=touchReadXY();
+		
+		touchRead(&touchXY);
 
 		if( prev_pen[0] != 0x7FFFFFFF )
 		{
-			*dx = (prev_pen[0] - touchXY.x);
-			*dy = (prev_pen[1] - touchXY.y);
+			*dx = (prev_pen[0] - touchXY.rawx);
+			*dy = (prev_pen[1] - touchXY.rawy);
 		}
 
-		prev_pen[0] = touchXY.x;
-		prev_pen[1] = touchXY.y;
+		prev_pen[0] = touchXY.rawx;
+		prev_pen[1] = touchXY.rawy;
 	}
 	else
 	{

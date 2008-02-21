@@ -118,7 +118,7 @@ int main()
 		if(!(keys & KEY_RIGHT)) rotateY -= 3;
 		
 		// get touchscreen position
-		touchXY=touchReadXY();
+		touchRead(&touchXY);
 		
 		glViewport(0,0,255,191); // set the viewport to fullscreen
 		

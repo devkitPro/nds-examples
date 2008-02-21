@@ -6,7 +6,7 @@
 //a global copy of sprite attribute memory
   SpriteEntry sprites[128];
 //rotation attributes overlap so assign then to the same location
-pSpriteRotation spriteRotations = (pSpriteRotation)sprites;
+pSpriteRotation spriteRotations = (pSpriteRotation)&sprites[0];
 
 
 //turn off all the sprites

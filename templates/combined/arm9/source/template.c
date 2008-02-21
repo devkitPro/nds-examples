@@ -22,9 +22,9 @@ int main(void) {
 
 	while(1) {
 
-		touchXY=touchReadXY();
-		iprintf("\x1b[10;0HTouch x = %04X, %04X\n", touchXY.x, touchXY.px);
-		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);
+		touchRead(&touchXY);
+		iprintf("\x1b[10;0HTouch x = %04X, %04X\n", touchXY.rawx, touchXY.px);
+		iprintf("Touch y = %04X, %04X\n", touchXY.rawy, touchXY.py);
 
 		swiWaitForVBlank();
 	}

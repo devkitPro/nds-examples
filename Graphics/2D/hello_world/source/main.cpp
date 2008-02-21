@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.9 2008-02-13 21:12:32 dovoto Exp $
+	$Id: main.cpp,v 1.10 2008-02-21 23:40:00 dovoto Exp $
 
 	Simple console print demo
 	-- dovoto
@@ -45,12 +45,12 @@ int main(void) {
 	while(1) {
 	
 		swiWaitForVBlank();
-		touchXY=touchReadXY();
+		touchRead(&touchXY);
 
 		// print at using ansi escape sequence \x1b[line;columnH 
 		iprintf("\x1b[10;0HFrame = %d",frame);
-		iprintf("\x1b[16;0HTouch x = %04X, %04X\n", touchXY.x, touchXY.px);
-		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);		
+		iprintf("\x1b[16;0HTouch x = %04X, %04X\n", touchXY.rawx, touchXY.px);
+		iprintf("Touch y = %04X, %04X\n", touchXY.rawy, touchXY.py);		
 	
 	}
 

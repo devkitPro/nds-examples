@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.6 2008-01-27 18:40:49 dovoto Exp $
+	$Id: main.c,v 1.7 2008-02-21 23:40:01 dovoto Exp $
 
 	Simple console print demo
 	-- dovoto
@@ -27,9 +27,9 @@ int main(void) {
 
 	while(1) {
 
-		touchXY=touchReadXY();
-		iprintf("\x1b[10;0HTouch x = %04X, %04X\n", touchXY.x, touchXY.px);
-		iprintf("Touch y = %04X, %04X\n", touchXY.y, touchXY.py);
+		touchRead(&touchXY);
+		iprintf("\x1b[10;0HTouch x = %04X, %04X\n", touchXY.rawx, touchXY.px);
+		iprintf("Touch y = %04X, %04X\n", touchXY.rawy, touchXY.py);
 
 		swiWaitForVBlank();
 	}

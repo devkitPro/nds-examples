@@ -19,11 +19,8 @@ void initOAM(void) {
 //---------------------------------------------------------------------------------
 void updateOAM(void) {
 //---------------------------------------------------------------------------------
-	unsigned int i;
 	
-	for(i = 0; i < 128 * sizeof(SpriteEntry) / 4 ; i++) {
-		((uint32*)OAM)[i] = ((uint32*)OAMCopy)[i];
-	}
+	memcpy(OAM, OAMCopy, 128 * sizeof(SpriteEntry));
 }
 
 
@@ -102,7 +99,7 @@ int main(void) {
 		scanKeys();
 
 		// read the touchscreen coordinates
-		touch=touchReadXY();
+		touchRead(&touch);
 		
 		int pressed = keysDown();	// buttons pressed this loop
 		int held = keysHeld();		// buttons currently held
@@ -112,25 +109,25 @@ int main(void) {
 
 		iprintf("\x1b[14;4HTouch mode: %s",TouchType==CONTINUOUS?"CONTINUOUS ":"SINGLE SHOT");
 
-		iprintf("\x1b[6;5HTouch x = %04X, %04X\n", touch.x, touch.px);
-		iprintf("\x1b[7;5HTouch y = %04X, %04X\n", touch.y, touch.py);		
+		iprintf("\x1b[6;5HTouch x = %04X, %04X\n", touch.rawx, touch.px);
+		iprintf("\x1b[7;5HTouch y = %04X, %04X\n", touch.rawy, touch.py);		
 
 		iprintf("\x1b[0;18Hkeys: %08X\n", keysHeld());
 		iprintf("\x1b[9;10HFrame %d\n", frame);
 
 		if ( TouchType == SINGLE && !(pressed & KEY_TOUCH) ) continue;
 
-		if ( !(held & KEY_TOUCH) || touch.x == 0 || touch.y == 0) continue;
+		if ( !(held & KEY_TOUCH) || touch.rawx == 0 || touch.rawy == 0) continue;
 		
 		iprintf("\x1b[12;12H(%d,%d)      ",touch.px,touch.py);
 
-		if ( touch.x > max_x)		max_x = touch.x;
-		if ( touch.y > max_y)		max_y = touch.y;
+		if ( touch.rawx > max_x)		max_x = touch.rawx;
+		if ( touch.rawy > max_y)		max_y = touch.rawy;
 		if ( touch.px > max_px)	max_px = touch.px;
 		if ( touch.py > max_py)	max_py = touch.py;
 
-		if ( touch.x < min_x)		min_x = touch.x;
-		if ( touch.y < min_y)		min_y = touch.y;
+		if ( touch.rawx < min_x)		min_x = touch.rawx;
+		if ( touch.rawy < min_y)		min_y = touch.rawy;
 		if ( touch.px < min_px)	min_px = touch.px;
 		if ( touch.py < min_py)	min_py = touch.py;
 

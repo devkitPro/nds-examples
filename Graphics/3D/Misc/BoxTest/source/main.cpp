@@ -81,6 +81,8 @@ void DrawBox(float x, float y, float z, float width, float height, float depth) 
 int main() {	
 //---------------------------------------------------------------------------------
 
+	touchPosition touchXY;
+
 	// Enable the 3D core
 	powerON(POWER_3D_CORE | POWER_MATRIX);
 	//put 3D on top
@@ -135,9 +137,11 @@ int main() {
 	//main loop
 	while (1) {
 
+		//process input
 		scanKeys();
 
-		//process input
+		touchRead(&touchXY);
+
 		
 		int held = keysHeld();
 		int pressed = keysDown();
@@ -151,16 +155,16 @@ int main() {
 
 		//reset x and y when user touches screen
 		if( pressed & KEY_TOUCH)  {
-			oldx = touchReadXY().px;
-			oldy = touchReadXY().py;
+			oldx = touchXY.px;
+			oldy = touchXY.py;
 		}
 
 		//if user drags then grab the delta
 		if( held & KEY_TOUCH) {
-			rx += touchReadXY().px - oldx; 
-			ry += touchReadXY().py - oldy;
-			oldx = touchReadXY().px;
-			oldy = touchReadXY().py;
+			rx += touchXY.px - oldx; 
+			ry += touchXY.py - oldy;
+			oldx = touchXY.px;
+			oldy = touchXY.py;
 		}
 
 		

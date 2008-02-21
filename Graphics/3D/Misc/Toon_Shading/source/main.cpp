@@ -13,18 +13,20 @@ static void get_pen_delta( int *dx, int *dy )
 
 	u32 keys = keysHeld();
 
+	touchPosition touchXY;
+
 	if( keys & KEY_TOUCH )
 	{
-		touchPosition touchXY=touchReadXY();
-
+		
+		touchRead(&touchXY);
 		if( prev_pen[0] != 0x7FFFFFFF )
 		{
-			*dx = (prev_pen[0] - touchXY.x);
-			*dy = (prev_pen[1] - touchXY.y);
+			*dx = (prev_pen[0] - touchXY.rawx);
+			*dy = (prev_pen[1] - touchXY.rawy);
 		}
 
-		prev_pen[0] = touchXY.x;
-		prev_pen[1] = touchXY.y;
+		prev_pen[0] = touchXY.rawx;
+		prev_pen[1] = touchXY.rawy;
 	}
 	else
 	{

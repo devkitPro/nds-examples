@@ -234,7 +234,7 @@ int main()
 
 		if (keysHeld() & KEY_TOUCH)
 		{
-			thisXY = touchReadXY();
+			touchRead(&thisXY);
 
 			int16 dx = thisXY.px - lastXY.px;
 			int16 dy = thisXY.py - lastXY.py;
