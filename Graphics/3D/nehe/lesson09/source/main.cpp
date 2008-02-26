@@ -20,7 +20,7 @@ int DrawGLScene();
 bool	twinkle;		// Twinkling Stars
 bool	tp;				// 'T' Key Pressed?
 
-const	u32 num=50;		// Number Of Stars To Draw
+const	int num=50;		// Number Of Stars To Draw
 
 typedef struct			// Create A Structure For Star
 {
@@ -68,7 +68,7 @@ int main()
 
 	// IRQ basic setup
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 	
 	// initialize the geometry engine
 	glInit();
