@@ -20,7 +20,7 @@ int main()
 	
 	// IRQ basic setup
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
 	
 	// initialize the geometry engine
 	glInit();
@@ -53,6 +53,7 @@ int main()
 		
 		// flush to screen	
 		glFlush(0);
+		swiWaitForVBlank();
 	}
 	
 	return 0;
