@@ -1,21 +1,9 @@
 #include <nds.h>
 #include <stdio.h>
+#include <nds/decompress.h>
 
 // git outputs a nice header to reference data
 #include "drunkenlogo.h"
-
-int getSize(uint8 *source, uint16 *dest, uint32 arg) {
-	return *(uint32*)source;
-}
-
-uint8 readByte(uint8 *source) {
- 	return *source;
-}
-TDecompressionStream drunkenlogo_decomp = {
-  getSize,
-  NULL,
-  readByte
-};
 
 int main(void) {
 	// irqs are nice
@@ -62,7 +50,8 @@ int main(void) {
 	BG3_CX = 0;
 	BG3_CY = 0;
 
-	swiDecompressLZSSVram((void*)drunkenlogoBitmap, BG_GFX, 0, &drunkenlogo_decomp);
+	decompress(BG_GFX, drunkenlogoBitmap, LZ77Vram);
+	
 	while(1) swiWaitForVBlank();
 
 	return 0;
