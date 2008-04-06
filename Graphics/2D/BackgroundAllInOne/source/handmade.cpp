@@ -99,7 +99,7 @@ void HandMadeTiles(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_256x256, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x256, 0,1);
 	
 	dmaCopy(tiles, bgGetGfxPtr(bg), sizeof(tiles));
 	dmaCopy(map32x32, bgGetMapPtr(bg),  sizeof(map32x32));

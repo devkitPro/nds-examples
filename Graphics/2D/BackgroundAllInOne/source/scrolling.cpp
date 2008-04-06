@@ -54,7 +54,7 @@ void scrollText(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_256x512, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x512, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(Layer256x512Map, bgGetMapPtr(bg),  Layer256x512MapLen);
@@ -150,7 +150,7 @@ void scrollVertical(void)
 	
 	int scroll_y = 0;
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_256x256, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x256, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(TextBackgroundsPal, BG_PALETTE, sizeof(TextBackgroundsPal));
@@ -199,7 +199,7 @@ void scrollHorizontalText(void)
 	
 	int scroll_x = 0;
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_512x256, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_512x256, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(TextBackgroundsPal, BG_PALETTE, sizeof(TextBackgroundsPal));

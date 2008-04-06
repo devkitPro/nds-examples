@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.11 2008-02-05 23:48:14 dovoto Exp $
+	$Id: main.cpp,v 1.12 2008-04-06 06:27:00 dovoto Exp $
 
 	-- dovoto
 
@@ -31,8 +31,8 @@ extern "C" void MoveSprite(Sprite* sp) {
 	int x = sp->x >> 8;
 	int y = sp->y >> 8;
 
-	sp->oam->posX = x;
-	sp->oam->posY = y;
+	sp->oam->x = x;
+	sp->oam->y = y;
 
 } 
 

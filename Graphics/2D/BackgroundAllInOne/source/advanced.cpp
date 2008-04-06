@@ -14,7 +14,7 @@ void advMosaic(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_256x256, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x256, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(Layer256x256Map, bgGetMapPtr(bg),  Layer256x256MapLen);
@@ -152,8 +152,8 @@ void advMultipleLayers(void)
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
 	//initialize the backgrounds
-	int bg1 = bgInit(0, BgType_Text, BgSize_ER_256x256, 0,1);
-	int bg2 = bgInit(1, BgType_Text, BgSize_ER_256x256, 1,1);
+	int bg1 = bgInit(0, BgType_Text8bpp, BgSize_ER_256x256, 0,1);
+	int bg2 = bgInit(1, BgType_Text8bpp, BgSize_ER_256x256, 1,1);
 	int bg3 = bgInit(2, BgType_ExRotation, BgSize_ER_256x256, 2,1);
 	
 	//make sure the floor is on the bottom (by default hardware layer 0 will be rendered last)

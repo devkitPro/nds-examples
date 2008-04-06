@@ -35,7 +35,7 @@ int main()
 
     //irqs are nice
 	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+	irqEnable(IRQ_VBLANK);
     
     //enable vram and map it to the right places
     vramSetMainBanks(   VRAM_A_MAIN_SPRITE,        //A and B maped consecutivly as sprite memory

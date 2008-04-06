@@ -115,8 +115,9 @@ int main(void)
 		BG3_YDX = ( s * scaleY ) >> 8;
 		BG3_YDY = ( c * scaleY ) >> 8;
 
-		BG3_CX = (scrollX<<8) - rcX * (c - s);
-		BG3_CY = (scrollY<<8) - rcY * (s + c);
+		BG3_CX = (scrollX<<8) - rcX*c + rcY*-s;
+		BG3_CY = (scrollY<<8) - rcX*s + rcY*+c;
+
 
 		// clear the console screen (ansi escape sequence)
 		iprintf("\x1b[2J");

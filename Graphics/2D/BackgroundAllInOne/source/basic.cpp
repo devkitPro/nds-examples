@@ -14,7 +14,7 @@ void Text256x256(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_256x256, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x256, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(Layer256x256Map, bgGetMapPtr(bg),  Layer256x256MapLen);
@@ -28,7 +28,7 @@ void Text256x512(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_256x512, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x512, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(Layer256x512Map, bgGetMapPtr(bg),  Layer256x512MapLen);
@@ -43,7 +43,7 @@ void Text512x256(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_512x256, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_512x256, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(TextBackgroundsPal, BG_PALETTE, sizeof(TextBackgroundsPal));
@@ -67,7 +67,7 @@ void Text512x512(void)
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(0, BgType_Text, BgSize_T_512x512, 0,1);
+	int bg = bgInit(0, BgType_Text8bpp, BgSize_T_512x512, 0,1);
 	
 	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
 	dmaCopy(TextBackgroundsPal, BG_PALETTE, sizeof(TextBackgroundsPal));
