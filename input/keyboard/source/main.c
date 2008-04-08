@@ -26,11 +26,11 @@ int main(void)
    {
       char myName[256];
 	
-      printf("What is your name?\n");
-       
+      iprintf("What is your name?\n");
+      
       scanf("%s", myName);
 	
-	   printf("\nHello %s", myName);
+	   iprintf("\nHello %s", myName);
 
       scanKeys();
       while(!keysDown())scanKeys();
