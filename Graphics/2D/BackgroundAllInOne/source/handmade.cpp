@@ -7,7 +7,7 @@ void scroll(int id, int width, int height);
 
 u8 tiles[] =
 {
-//Tile 0: transperent tile
+//Tile 0: transparent tile
 	0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,
