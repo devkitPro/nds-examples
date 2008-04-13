@@ -22,6 +22,7 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
+DEPENDS		:=	deps
 SOURCES		:=	source
 DATA		:=	data  
 INCLUDES	:=	include
@@ -70,7 +71,7 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir))
 
-export DEPSDIR	:=	$(CURDIR)/$(BUILD)
+export DEPSDIR	:=	$(CURDIR)/$(DEPENDS)
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
@@ -105,10 +106,13 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 .PHONY: $(BUILD) clean
  
 #---------------------------------------------------------------------------------
-$(BUILD):
+$(BUILD): $(DEPENDS)
 	@[ -d $@ ] || mkdir -p $@
 	@make BUILDDIR=`cd $(BUILD) && pwd` --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
- 
+
+$(DEPENDS) :
+	@[ -d $@ ] || mkdir -p $@
+
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
@@ -117,8 +121,6 @@ clean:
  
 #---------------------------------------------------------------------------------
 else
- 
-DEPENDS	:=	$(OFILES:.o=.d)
  
 #---------------------------------------------------------------------------------
 # main targets
@@ -160,7 +162,7 @@ $(OUTPUT).elf	:	$(OFILES)
 	grit $< -fts -o$*
 
  
--include $(DEPENDS)
+-include $(DEPSDIR)/*.d
  
 #---------------------------------------------------------------------------------------
 endif

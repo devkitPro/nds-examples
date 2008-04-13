@@ -18,7 +18,7 @@ void initSprites(void) {
 	   sprites[i].attribute[0] = ATTR0_DISABLED;
 	   sprites[i].attribute[1] = 0;
 	   sprites[i].attribute[2] = 0;
-	   sprites[i].attribute[3] = 0;
+	   sprites[i].filler = 0;
     }
 }
 //copy our sprite to object attribute memory
@@ -57,7 +57,7 @@ int main() {
 	BG_PALETTE[0]=RGB15(0,0,0);
 
     
-    BG0_CR = BG_MAP_BASE(31);//use bg0 for the text
+    REG_BG0CNT = BG_MAP_BASE(31);//use bg0 for the text
 	
     BG_PALETTE[255] = RGB15(31,31,31);//by default font rendered with color 255
 	

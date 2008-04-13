@@ -19,7 +19,7 @@ int main(void) {
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	SUB_BG0_CR = BG_16_COLOR | BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base);
+	REG_BG0CNT_SUB = BG_16_COLOR | BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base);
 
 	u16* sub_tile = (u16*)CHAR_BASE_BLOCK_SUB(char_base);
 	u16* sub_map = (u16*)SCREEN_BASE_BLOCK_SUB(screen_base);

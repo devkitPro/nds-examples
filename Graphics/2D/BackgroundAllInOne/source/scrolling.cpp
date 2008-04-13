@@ -84,8 +84,8 @@ void scrollText(void)
 		//scrolling rotation and text backgrounds we will use
 		//direct register access
 		
-		BG0_X0 = sx;
-		BG0_Y0 = sy;
+		REG_BG0HOFS = sx;
+		REG_BG0VOFS = sy;
 		
 		consoleClear();
 		iprintf("Scroll x: %d Scroll y: %d\n", sx, sy);
@@ -133,8 +133,8 @@ void scrollRotation(void)
 		//scrolling rotation and text backgrounds we will use
 		//direct register access
 		
-		BG3_CX = sx << 8;
-		BG3_CY = sy << 8;
+		REG_BG3X = sx << 8;
+		REG_BG3Y = sy << 8;
 		
 		consoleClear();
 		iprintf("Scroll x: %d Scroll y: %d\n", sx, sy);

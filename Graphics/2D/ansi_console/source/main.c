@@ -18,7 +18,7 @@ int main(void) {
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
 	vramSetBankC(VRAM_C_SUB_BG);
 
-	SUB_BG0_CR = BG_MAP_BASE(31);
+	REG_BG0CNT_SUB = BG_MAP_BASE(31);
 
 	BG_PALETTE_SUB[255] = RGB15(31,31,31);	//by default font will be rendered with color 255
 

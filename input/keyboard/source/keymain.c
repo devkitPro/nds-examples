@@ -20,7 +20,7 @@ int main(void)
 
    kbd->OnKeyPressed = OnKeyPressed;
 
-   kbd->offsetY = 0;
+//   kbd->offsetY = 0;
 
    keyboardInit(kbd);
 

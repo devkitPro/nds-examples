@@ -1,11 +1,14 @@
 /*---------------------------------------------------------------------------------
-	$Id: simplesound.c,v 1.2 2005-09-17 02:47:56 wntrmute Exp $
+	$Id: simplesound.c,v 1.3 2008-04-13 15:52:49 wntrmute Exp $
 
 	Simple Sound Demo
 
 	- Dave Murphy (WinterMute)
 
 	$Log: not supported by cvs2svn $
+	Revision 1.2  2005/09/17 02:47:56  wntrmute
+	added use of playSound
+	
 	Revision 1.1  2005/09/17 02:29:02  wntrmute
 	renamed source file
 	added irq support for swi
@@ -50,7 +53,7 @@ int main(void) {
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	SUB_BG0_CR = BG_MAP_BASE(31);
+	REG_BG0CNT_SUB = BG_MAP_BASE(31);
 	
 	BG_PALETTE_SUB[255] = RGB15(31,31,31);	//by default font will be rendered with color 255
 	

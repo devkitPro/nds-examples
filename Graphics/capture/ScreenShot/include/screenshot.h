@@ -1,2 +1,2 @@
-void screenshot(char* filename);
-void screenshotbmp(char* filename);
+void screenshot(const char* filename);
+void screenshotbmp(const char* filename);

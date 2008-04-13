@@ -18,8 +18,8 @@ int main() {
 	vramSetBankC(VRAM_C_MAIN_BG_0x06000000);
  
 	BG_PALETTE[255] = 0xFFFF;
-    BG1_CR = BG_MAP_BASE(31) | BG_PRIORITY(0); // use bg 1 for text, set to highest priority
-	BG0_CR = BG_PRIORITY(1); //set bg 0 (3d background) to be a lower priority than bg 1
+    REG_BG1CNT = BG_MAP_BASE(31) | BG_PRIORITY(0); // use bg 1 for text, set to highest priority
+	REG_BG0CNT = BG_PRIORITY(1); //set bg 0 (3d background) to be a lower priority than bg 1
  
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK(31), (u16*)CHAR_BASE_BLOCK(0), 16);
  

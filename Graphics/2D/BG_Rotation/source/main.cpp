@@ -32,7 +32,7 @@ int main(void)
 						VRAM_C_SUB_BG , VRAM_D_LCD);
 
 	// set up text background for text
-	SUB_BG0_CR = BG_MAP_BASE(31);
+	REG_BG0CNT_SUB = BG_MAP_BASE(31);
 
 	BG_PALETTE_SUB[255] = RGB15(31,31,31);//by default font will be rendered with color 255
 
@@ -43,18 +43,18 @@ int main(void)
 
 	// set up our bitmap background
 
-	BG3_CR = BG_BMP8_256x256;
+	REG_BG3CNT = BG_BMP8_256x256;
 
 	// these are rotation backgrounds so you must set the rotation attributes:
-	// these are fixed point numbers with the low 8 bits the fractional part
-	// this basicaly gives it a 1:1 translation in x and y so you get a nice flat bitmap
-		BG3_XDX = 1 << 8;
-		BG3_XDY = 0;
-		BG3_YDX = 0;
-		BG3_YDY = 1 << 8;
-	// our bitmap looks a bit better if we center it so scroll down (256 - 192) / 2
-		BG3_CX = 0;
-		BG3_CY = 32 << 8;
+    // these are fixed point numbers with the low 8 bits the fractional part
+    // this basicaly gives it a 1:1 translation in x and y so you get a nice flat bitmap
+        REG_BG3PA = 1 << 8;
+        REG_BG3PB = 0;
+        REG_BG3PC = 0;
+        REG_BG3PD = 1 << 8;
+    // our bitmap looks a bit better if we center it so scroll down (256 - 192) / 2
+        REG_BG3X = 0;
+        REG_BG3Y = 32 << 8;
 
 	dmaCopy(drunkenlogo_bin, BG_GFX, 256*256);
 	dmaCopy(palette_bin, BG_PALETTE, 256*2);
@@ -110,13 +110,13 @@ int main(void)
 		swiWaitForVBlank();
 
 	// Set the background registers
-		BG3_XDX = ( c * scaleX ) >> 8;
-		BG3_XDY = (-s * scaleX ) >> 8;
-		BG3_YDX = ( s * scaleY ) >> 8;
-		BG3_YDY = ( c * scaleY ) >> 8;
+		REG_BG3PA = ( c * scaleX ) >> 8;
+		REG_BG3PB = (-s * scaleX ) >> 8;
+		REG_BG3PC = ( s * scaleY ) >> 8;
+		REG_BG3PD = ( c * scaleY ) >> 8;
 
-		BG3_CX = (scrollX<<8) - rcX*c + rcY*-s;
-		BG3_CY = (scrollY<<8) - rcX*s + rcY*+c;
+		REG_BG3X = (scrollX<<8) - rcX*c + rcY*-s;
+		REG_BG3Y = (scrollY<<8) - rcX*s + rcY*+c;
 
 
 		// clear the console screen (ansi escape sequence)

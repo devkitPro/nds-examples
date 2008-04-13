@@ -64,7 +64,7 @@ void write32(u32* address, u32 value) {
 	*fourth=(value>>24)&0xff;
 }
 
-void screenshotbmp(char* filename) {
+void screenshotbmp(const char* filename) {
 
 	fatInitDefault();
 	FILE* file=fopen(filename, "wb");

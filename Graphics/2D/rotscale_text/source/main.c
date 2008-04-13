@@ -19,7 +19,7 @@ int main(void) {
 	vramSetBankC(VRAM_C_SUB_BG); 
 
 	// rot scale backgrounds have a different size code
-	SUB_BG3_CR = BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base) | BG_RS_32x32;
+	REG_BG3CNT_SUB = BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base) | BG_RS_32x32;
 	
 	u16* sub_tile = (u16*)CHAR_BASE_BLOCK_SUB(char_base);
 	u16* sub_map = (u16*)SCREEN_BASE_BLOCK_SUB(screen_base);
@@ -83,13 +83,13 @@ int main(void) {
 		s16 pc = ( angleSin * scaleY ) >> 12;
 		s16 pd = ( angleCos * scaleY ) >> 12;
 		
-		SUB_BG3_XDX = pa;
-		SUB_BG3_XDY = pb;
-		SUB_BG3_YDX = pc;
-		SUB_BG3_YDY = pd;
+		REG_BG3PA = pa;
+		REG_BG3PB = pb;
+		REG_BG3PC = pc;
+		REG_BG3PD = pd;
 
-		SUB_BG3_CX = (scrollX<<8) - ((rcX * pa + rcY * pb));
-		SUB_BG3_CY = (scrollY<<8) - ((rcX * pc + rcY * pd));
+		REG_BG3X = (scrollX<<8) - ((rcX * pa + rcY * pb));
+		REG_BG3Y = (scrollY<<8) - ((rcX * pc + rcY * pd));
 
 	}
 

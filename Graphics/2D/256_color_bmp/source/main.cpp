@@ -25,7 +25,7 @@ int main(void)
                      VRAM_C_SUB_BG , VRAM_D_LCD);
 
 	// set up background for text
-    SUB_BG0_CR = BG_MAP_BASE(31);
+    REG_BG0CNT_SUB = BG_MAP_BASE(31);
 
 	BG_PALETTE_SUB[255] = RGB15(31,31,31);//by default font will be rendered with color 255
 
@@ -37,18 +37,18 @@ int main(void)
 	iprintf("\t256 color bitmap demo");
 
 	// set up our bitmap background
-	BG3_CR = BG_BMP8_256x256;
+	REG_BG3CNT = BG_BMP8_256x256;
 
 	// these are rotation backgrounds so you must set the rotation attributes:
     // these are fixed point numbers with the low 8 bits the fractional part
     // this basicaly gives it a 1:1 translation in x and y so you get a nice flat bitmap
-        BG3_XDX = 1 << 8;
-        BG3_XDY = 0;
-        BG3_YDX = 0;
-        BG3_YDY = 1 << 8;
+        REG_BG3PA = 1 << 8;
+        REG_BG3PB = 0;
+        REG_BG3PC = 0;
+        REG_BG3PD = 1 << 8;
     // our bitmap looks a bit better if we center it so scroll down (256 - 192) / 2
-        BG3_CX = 0;
-        BG3_CY = 32 << 8;
+        REG_BG3X = 0;
+        REG_BG3Y = 32 << 8;
 
 	dmaCopy(drunkenlogoBitmap, BG_GFX, 256*256);
 	dmaCopy(drunkenlogoPal, BG_PALETTE, 256*2);

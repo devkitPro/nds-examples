@@ -57,7 +57,7 @@ int main()
 	BG_PALETTE[0]=RGB15(0,0,0);
 
     
-    BG0_CR = BG_MAP_BASE(31);//use bg0 for the text
+    REG_BG0CNT = BG_MAP_BASE(31);//use bg0 for the text
 	
     BG_PALETTE[255] = RGB15(31,31,31);//by default font rendered with color 255
 	
