@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.13 2008-04-13 15:50:50 wntrmute Exp $
+	$Id: main.cpp,v 1.14 2008-04-15 21:04:07 dovoto Exp $
 
 	-- dovoto
 
@@ -135,8 +135,8 @@ int main(void) {
 		}
 
 	//set up two backgrounds to scroll around
-	REG_BG0CNT_SUB = BG_COLOR_256 | (1 << SCREEN_SHIFT);
-	REG_BG1CNT_SUB = BG_COLOR_256 | (2 << SCREEN_SHIFT);
+	REG_BG0CNT_SUB = BG_COLOR_256 | (1 << MAP_BASE_SHIFT);
+	REG_BG1CNT_SUB = BG_COLOR_256 | (2 << MAP_BASE_SHIFT);
 
 	BG_PALETTE_SUB[0] = RGB15(10,10,10);
 	BG_PALETTE_SUB[1] = RGB15(0,16,0);
