@@ -45,7 +45,7 @@ u32 allocationCount = 0;
 u32 spriteMemSize = 128 * 1024;
 
 bool oom = false;
-OamState *oam = &oamSub;
+OamState *oam = &oamMain;
 
 //a sprite constructor (personally i would c++ this)
 void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColorFormat format, int dx, int dy)
@@ -105,7 +105,7 @@ int zsort(const void* a, const void* b)
 	if(!first && second) return -1;
 	if(first && !second) return 1;
 
-	//a dead sprite is allways after a living one in the sort
+	//a dead sprite is always after a living one in the sort
 	if(!first->alive && second->alive) return -1;
 	if(first->alive && !second->alive) return 1;
 	if(!first->alive && !second->alive) return 0;
@@ -131,7 +131,7 @@ void updateSprites(void)
 	for(i = 0; i < SPRITE_MAX; i++)
 	{
 		//an api function: void oamSet(int id, SpriteSize size, int x, int y, SpriteColorFormat format, const void* gfxOffset, bool hide);
-		oamSet(oam, i, sprites[i].x, sprites[i].y, 0, sprites[i].size,sprites[i].format, sprites[i].gfx, !sprites[i].alive);
+		oamSet(oam, i, sprites[i].x, sprites[i].y, 0, sprites[i].size,sprites[i].format, sprites[i].gfx, -1, false, !sprites[i].alive);
 	}
 }
 
@@ -192,7 +192,8 @@ int main(void)
 	irqInit();
 	irqEnable(IRQ_VBLANK);
 
-	videoSetMode(MODE_0_2D);	
+	videoSetMode(MODE_0_2D);
+   videoSetModeSub(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_SPRITE);
 	vramSetBankB(VRAM_B_MAIN_SPRITE);
    vramSetBankD(VRAM_D_SUB_SPRITE);
