@@ -152,6 +152,7 @@ int main(void) {
 		int catCount = sizeof(categories) / sizeof(Category);
 		int demoCount = 0;
 		
+      videoSetModeSub(MODE_0_2D);
 		consoleDemoInit();
 		irqInit();
 		irqEnable(IRQ_VBLANK);
