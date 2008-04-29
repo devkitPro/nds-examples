@@ -46,8 +46,8 @@ int main(void) {
       if(keysHeld() & KEY_TOUCH)
          touchRead(&touch);
 
-      oamSet(&oamMain, 0, touch.px, touch.py, 0, SpriteSize_16x16, SpriteColorFormat_256Color, gfx, false);
-      oamSet(&oamSub, 0, touch.px, touch.py, 0, SpriteSize_16x16, SpriteColorFormat_256Color, gfx, false);
+      oamSet(&oamMain, 0, touch.px, touch.py, 0, SpriteSize_16x16, SpriteColorFormat_256Color, gfx, 0,false, false);
+      oamSet(&oamSub, 0, touch.px, touch.py, 0, SpriteSize_16x16, SpriteColorFormat_256Color, gfx, 0, false, false);
 
 		swiWaitForVBlank();
 
