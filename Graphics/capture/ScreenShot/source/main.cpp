@@ -136,8 +136,8 @@ int main() {
 		
 			screenshotbmp("shot.bmp");
 
-			display_temp=DISPLAY_CR;
-			DISPLAY_CR=MODE_FB1;
+			display_temp=REG_DISPCNT;
+			REG_DISPCNT=MODE_FB1;
 
 		}
 

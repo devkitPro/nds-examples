@@ -1,13 +1,13 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.14 2008-04-15 21:04:07 dovoto Exp $
+	$Id: main.cpp,v 1.15 2008-05-10 22:42:41 wntrmute Exp $
 
 	-- dovoto
 
 ---------------------------------------------------------------------------------*/
 
 #include <stdlib.h>
+#include <string.h>
 #include <nds.h>
-#include <nds/arm9/image.h>
 
 //include our ball pcx file (auto generated)
 #include "ball_pcx.h"
