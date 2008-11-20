@@ -1,6 +1,7 @@
 #include <nds.h>
 #include <stdio.h>
- 
+#include <string.h>
+
 SpriteEntry OAMCopy[128];
 
 #include "ballpalette_bin.h"

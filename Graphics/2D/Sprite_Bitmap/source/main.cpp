@@ -26,10 +26,7 @@ int main(int argc, char** argv)
       {0, SpriteSize_32x32, SpriteColorFormat_16Color, -1, 1, 20, 136}
    };
 
-   irqInit();
-   irqEnable(IRQ_VBLANK);
-
-   videoSetModeSub(MODE_0_2D);
+  videoSetModeSub(MODE_0_2D);
 
    //initialize the sub sprite engine with 1D mapping 128 byte boundary
    //and no external palette support
@@ -70,8 +67,12 @@ int main(int argc, char** argv)
          &oamSub, //sub display 
          i,       //oam entry to set
          sprites[i].x, sprites[i].y, //position 
-         sprites[i].paletteAlpha, //palette for 16 color sprite or alpha for bmp sprite
-         sprites[i].size, sprites[i].format, sprites[i].gfx, sprites[i].rotationIndex, 
+         0, //priority
+		 sprites[i].paletteAlpha, //palette for 16 color sprite or alpha for bmp sprite
+         sprites[i].size, 
+		 sprites[i].format, 
+		 sprites[i].gfx, 
+		 sprites[i].rotationIndex, 
          true, //double the size of rotated sprites
          false //don't hide the sprite
          );

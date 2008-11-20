@@ -131,7 +131,17 @@ void updateSprites(void)
 	for(i = 0; i < SPRITE_MAX; i++)
 	{
 		//an api function: void oamSet(int id, SpriteSize size, int x, int y, SpriteColorFormat format, const void* gfxOffset, bool hide);
-		oamSet(oam, i, sprites[i].x, sprites[i].y, 0, sprites[i].size,sprites[i].format, sprites[i].gfx, -1, false, !sprites[i].alive);
+		oamSet(oam, 
+			i, 
+			sprites[i].x, sprites[i].y, 
+			0, 
+			0,
+			sprites[i].size,
+			sprites[i].format, 
+			sprites[i].gfx, 
+			-1, 
+			false, 
+			!sprites[i].alive);
 	}
 }
 
@@ -199,7 +209,7 @@ int main(void)
    vramSetBankD(VRAM_D_SUB_SPRITE);
 
 	consoleDemoInit();
-	consoleDebugInit(DB_NOCASH); //send stderr to no$gba debug window
+	consoleDebugInit(DebugDevice_NOCASH); //send stderr to no$gba debug window
 
 	//api: initialize OAM to 1D mapping with XX byte offsets and no external palette
 	oamInit(oam, SpriteMapping_1D_128, false);

@@ -13,11 +13,13 @@ include $(DEVKITARM)/ds_rules
 # INCLUDES is a list of directories containing extra header files
 # DATA is a list of directories containing binary files
 # all directories are relative to this makefile
+# MAXMOD_SOUNDBANK contains a directory of music and sound effect files
 #---------------------------------------------------------------------------------
 BUILD		:=	build
 SOURCES		:=	source  
 INCLUDES	:=	include
 DATA		:=
+MAXMOD_SOUNDBANK		:=  music
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -39,7 +41,11 @@ LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:= -lnds9
+LIBS	:= \
+			-ldswifi9 \
+			-lfat \
+			-lmm9 \
+			-lnds9
  
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -65,6 +71,15 @@ CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+#--------------------------------------------------------------------------------- 
+# build audio file list, include full path
+#---------------------------------------------------------------------------------
+export AUDIOFILES := $(foreach dir,$(notdir $(wildcard $(MAXMOD_SOUNDBANK)/*.*)),$(CURDIR)/$(MAXMOD_SOUNDBANK)/$(dir))
+ 
+ifneq ($(strip $(AUDIOFILES)),)
+BINFILES += soundbank.bin
+endif
  
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -126,6 +141,11 @@ $(ARM9ELF)	:	$(OFILES)
 	@echo $(notdir $<)
 	@$(bin2o)
 
+#---------------------------------------------------------------------------------
+soundbank.bin : $(AUDIOFILES)
+#---------------------------------------------------------------------------------
+	@echo creating soundbank...
+	@mmutil -d $(AUDIOFILES) -osoundbank.bin -hsoundbank.h
 
 -include $(DEPENDS)
  
