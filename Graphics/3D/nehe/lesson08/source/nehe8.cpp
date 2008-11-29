@@ -47,18 +47,11 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	return TRUE;
 }
 
-int main()
-{	
-	// Turn on everything
-	powerON(POWER_ALL);
+int main() {
 	
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
-
-	// IRQ basic setup
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 
 	// initialize the geometry engine
 	glInit();
@@ -88,8 +81,7 @@ int main()
 	//set up a directional ligth arguments are light number (0-3), light color, 
 	//and an x,y,z vector that points in the direction of the light
 	glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0);
-	
-	
+
 	glColor3f(1,1,1);
 	
 	glMatrixMode(GL_MODELVIEW);

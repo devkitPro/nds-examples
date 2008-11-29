@@ -142,8 +142,7 @@ int main(void) {
 	
 
 	
-	while(1)
-	{
+	while(1) {
 		int selectedCategory = 0;
 		int selectedDemo = 0;
 		
@@ -152,15 +151,12 @@ int main(void) {
 		int catCount = sizeof(categories) / sizeof(Category);
 		int demoCount = 0;
 		
-      videoSetModeSub(MODE_0_2D);
+		videoSetModeSub(MODE_0_2D);
 		consoleDemoInit();
-		irqInit();
-		irqEnable(IRQ_VBLANK);
 		
-		while(!selected)
-		{
+		while(!selected) {
+
 			scanKeys();
-			
 			
 			keys = keysDown();
 			
@@ -173,8 +169,7 @@ int main(void) {
 			
 			swiWaitForVBlank();
 			consoleClear();
-			for(int ci = 0; ci < catCount; ci++)
-			{
+			for(int ci = 0; ci < catCount; ci++) {
 				iprintf("%c%d: %s\n", ci == selectedCategory ? '*' : ' ', ci + 1, categories[ci].name); 		
 			}	
 		}
@@ -183,10 +178,9 @@ int main(void) {
 		
 		demoCount = categories[selectedCategory].count;
 		
-		while(!selected)
-		{
+		while(!selected) {
+
 			scanKeys();
-			
 			
 			keys = keysDown();
 			
@@ -200,14 +194,13 @@ int main(void) {
 			
 			swiWaitForVBlank();
 			consoleClear();
-			for(int di = 0; di < demoCount; di++)
-			{
+
+			for(int di = 0; di < demoCount; di++) {
 				iprintf("%c%d: %s\n", di == selectedDemo ? '*' : ' ', di + 1, categories[selectedCategory].demos[di].name); 		
 			}	
 		}
 		
-		if(selected)
-		{
+		if(selected) {
 			consoleClear();
 			iprintf("Use arrow keys to scroll\nPress 'B' to exit");
 			categories[selectedCategory].demos[selectedDemo].go();

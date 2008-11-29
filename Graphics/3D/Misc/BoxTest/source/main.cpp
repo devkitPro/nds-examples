@@ -94,10 +94,6 @@ int main() {
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
 
-	// IRQ basic setup
-	irqInit();
-	irqEnable(IRQ_VBLANK);
-
 	// initialize gl
 	glInit();
 	

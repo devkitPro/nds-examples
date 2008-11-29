@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.cpp,v 1.15 2008-05-10 22:42:41 wntrmute Exp $
+	$Id: main.cpp,v 1.16 2008-11-29 22:58:58 wntrmute Exp $
 
 	-- dovoto
 
@@ -26,7 +26,7 @@ typedef struct {
 
 
 //---------------------------------------------------------------------------------
-extern "C" void MoveSprite(Sprite* sp) {
+void MoveSprite(Sprite* sp) {
 //---------------------------------------------------------------------------------
 	int x = sp->x >> 8;
 	int y = sp->y >> 8;
@@ -72,9 +72,6 @@ int main(void) {
 	uint16* map0 = (uint16*)SCREEN_BASE_BLOCK_SUB(1);
 	uint16* map1 = (uint16*)SCREEN_BASE_BLOCK_SUB(2);
 	uint16 red;
-	
-	//turn on the power to the system
-	powerON(POWER_ALL);
 
 	//set main display to render directly from the frame buffer
 	videoSetMode(MODE_FB1);
@@ -87,13 +84,7 @@ int main(void) {
 					DISPLAY_BG1_ACTIVE );
 	
 	//vram banks are somewhat complex
-	vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_SUB_BG, VRAM_D_SUB_SPRITE);
-	
-	// a vblank interrupt is needed to use swiWaitForVBlank()
-	// since the dispatcher handles the flags no handler is required
-	irqInit();
-	irqEnable(IRQ_VBLANK);
-	
+	vramSetMainBanks(VRAM_A_LCD, VRAM_B_LCD, VRAM_C_SUB_BG, VRAM_D_SUB_SPRITE);	
 
 	sImage ball;
 
@@ -132,7 +123,7 @@ int main(void) {
 		sprites[i].oam->attribute[0] = ATTR0_COLOR_256 | ATTR0_SQUARE;  
 		sprites[i].oam->attribute[1] = ATTR1_SIZE_32;
 		sprites[i].oam->attribute[2] = sprites[i].gfxID;
-		}
+	}
 
 	//set up two backgrounds to scroll around
 	REG_BG0CNT_SUB = BG_COLOR_256 | (1 << MAP_BASE_SHIFT);
@@ -143,11 +134,12 @@ int main(void) {
 	BG_PALETTE_SUB[2] = RGB15(0,0,31);
 	
 	//load the maps with alternating tiles (0,1 for bg0 and 0,2 for bg1)
-	for(iy = 0; iy < 32; iy++)
+	for(iy = 0; iy < 32; iy++) {
 		for(ix = 0; ix <32; ix++) {
 			map0[iy * 32 + ix] = (ix ^ iy) & 1;
 			map1[iy * 32 + ix] = ((ix ^ iy) & 1)<<1;
-		}    
+		}
+	}    
 
 	//fill 2 tiles with different colors
 	for(i = 0; i < 64 / 2; i++) {

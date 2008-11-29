@@ -38,18 +38,11 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	return TRUE;
 }
 
-int main()
-{	
-	// Turn on everything
-	powerON(POWER_ALL);
+int main() {	
 	
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE); // reserve some memory for textures
-
-	// IRQ basic setup
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
 
 	// initialize gl
 	glInit();

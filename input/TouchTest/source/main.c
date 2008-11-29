@@ -42,20 +42,12 @@ int main(void) {
 	int min_px = 4096 , min_py = 4096, max_px = 0 , max_py = 0;
 	touchPosition touch;
 
-	powerON(POWER_ALL_2D);
-
 	// put the main screen on the bottom lcd
 	lcdMainOnBottom();
 
-	// Initialise the interrupt system
-	irqInit();
-	// install our simple vblank handler
-	irqSet(IRQ_VBLANK, Vblank);
-	// enable the interrupt
-	irqEnable(IRQ_VBLANK);
 	initOAM();
     //enable vram and map it to the right places
-    vramSetMainBanks(   VRAM_A_MAIN_SPRITE,        //A and B maped consecutivly as sprite memory
+    vramSetMainBanks(   VRAM_A_MAIN_SPRITE,        //A and B maped consecutively as sprite memory
                         VRAM_B_MAIN_SPRITE,        //this gives us 256KB which is the max
                         VRAM_C_MAIN_BG_0x06000000,  //map C to background memory
                         VRAM_D_LCD                 //not using D

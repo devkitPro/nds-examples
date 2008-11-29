@@ -109,7 +109,6 @@ int main()
 	float rotateX = 0.0;
 	float rotateY = 0.0;
 
-	powerON(POWER_ALL);
 	lcdMainOnTop();
 	
 	//set mode 0, enable BG0 and set it to 3D
@@ -122,11 +121,6 @@ int main()
 	REG_BG0CNT_SUB = BG_MAP_BASE(31);
 	BG_PALETTE_SUB[255] = RGB15(31,31,31);//by default font rendered with color 255
 
-
-	//irqs are nice
-	irqInit();
-	irqEnable(IRQ_VBLANK);
-	
 	// initialize gl
 	glInit();
 	

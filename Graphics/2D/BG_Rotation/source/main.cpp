@@ -14,10 +14,7 @@
 #include "palette_bin.h"
 
 
-int main(void)
-{
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
+int main(void) {
 
 	// set the mode for 2 text layers and two extended background layers
 	videoSetMode(MODE_5_2D | DISPLAY_BG3_ACTIVE);
@@ -39,8 +36,6 @@ int main(void)
 	//consoleInit() is a lot more flexible but this gets you up and running quick
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
 
-
-
 	// set up our bitmap background
 
 	REG_BG3CNT = BG_BMP8_256x256;
@@ -48,18 +43,18 @@ int main(void)
 	// these are rotation backgrounds so you must set the rotation attributes:
     // these are fixed point numbers with the low 8 bits the fractional part
     // this basicaly gives it a 1:1 translation in x and y so you get a nice flat bitmap
-        REG_BG3PA = 1 << 8;
-        REG_BG3PB = 0;
-        REG_BG3PC = 0;
-        REG_BG3PD = 1 << 8;
+	REG_BG3PA = 1 << 8;
+	REG_BG3PB = 0;
+	REG_BG3PC = 0;
+	REG_BG3PD = 1 << 8;
     // our bitmap looks a bit better if we center it so scroll down (256 - 192) / 2
-        REG_BG3X = 0;
-        REG_BG3Y = 32 << 8;
+	REG_BG3X = 0;
+	REG_BG3Y = 32 << 8;
 
 	dmaCopy(drunkenlogo_bin, BG_GFX, 256*256);
 	dmaCopy(palette_bin, BG_PALETTE, 256*2);
 
-		unsigned int angle = 0;
+	unsigned int angle = 0;
 
 	// the screen origin is at the rotation center...so scroll to the rotation
 	// center + a small 32 pixle offset so our image is centered
@@ -74,21 +69,20 @@ int main(void)
 	s16 rcX = 128;
 	s16 rcY = 96;
 
-	while(1)
-	{
-	// Print status
+	while(1) {
+		// Print status
 
-	iprintf("\n\n\tHello DS devers\n");
-	iprintf("\twww.drunkencoders.com\n");
-	iprintf("\tBG Rotation demo\n");
+		iprintf("\n\n\tHello DS devers\n");
+		iprintf("\twww.drunkencoders.com\n");
+		iprintf("\tBG Rotation demo\n");
 
 		iprintf("Angle %3d(actual) %3d(degrees)\n", angle & 0x1FF, (angle & 0x1FF) * 360 / 512);
 		iprintf("Scroll  X: %4d Y: %4d\n", scrollX, scrollY);
 		iprintf("Rot center X: %4d Y: %4d\n", rcX, rcY);
 		iprintf("Scale X: %4d Y: %4d\n", scaleX, scaleY);
 
-	scanKeys();
-	u32 keys = keysHeld();
+		scanKeys();
+		u32 keys = keysHeld();
 
 		if( keys & KEY_L ) angle++;
 		if( keys & KEY_R ) angle--;
@@ -103,13 +97,13 @@ int main(void)
 		if( keys & KEY_X ) scaleY++;
 		if( keys & KEY_Y ) scaleY--;
 
-	// Compute sin and cos
+		// Compute sin and cos
 		s16 s = sinFixed(angle) >> 4;
 		s16 c = cosFixed(angle) >> 4;
 
 		swiWaitForVBlank();
 
-	// Set the background registers
+		// Set the background registers
 		REG_BG3PA = ( c * scaleX ) >> 8;
 		REG_BG3PB = (-s * scaleX ) >> 8;
 		REG_BG3PC = ( s * scaleY ) >> 8;
@@ -117,7 +111,6 @@ int main(void)
 
 		REG_BG3X = (scrollX<<8) - rcX*c + rcY*-s;
 		REG_BG3Y = (scrollY<<8) - rcX*s + rcY*+c;
-
 
 		// clear the console screen (ansi escape sequence)
 		iprintf("\x1b[2J");

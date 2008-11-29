@@ -29,14 +29,7 @@ void updateOAM(void) {
 }
 
 int main() {
-
-	//turn everything on
-    powerON(POWER_ALL_2D);
-
-    //irqs are nice
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
-    
+ 
     //enable vram and map it to the right places
     vramSetMainBanks(   VRAM_A_MAIN_SPRITE,        //A and B maped consecutivly as sprite memory
                         VRAM_B_MAIN_SPRITE,        //this gives us 256KB which is the max

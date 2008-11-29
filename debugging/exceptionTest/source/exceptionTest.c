@@ -20,9 +20,6 @@ int main(void) {
 	// install the default exception handler
 	defaultExceptionHandler();
 
-	irqInit();
-	irqEnable(IRQ_VBLANK);
-
 	// generate an exception
 	*(u32*)250 = 100;
 

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.13 2008-02-13 21:12:33 dovoto Exp $
+	$Id: main.c,v 1.14 2008-11-29 22:59:00 wntrmute Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
@@ -150,17 +150,9 @@ int LoadGLTextures() {
 int main()
 {	
 	
-	
-	// Turn on everything
-	powerON(POWER_ALL);
-	
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
-
-	// IRQ basic setup
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
 
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);

@@ -1,9 +1,12 @@
 /*---------------------------------------------------------------------------------
-	$Id: main.c,v 1.5 2007-05-22 18:04:16 dovoto Exp $
+	$Id: main.c,v 1.6 2008-11-29 22:59:00 wntrmute Exp $
 
 	Basic DS Motion example
 
 	$Log: not supported by cvs2svn $
+	Revision 1.5  2007/05/22 18:04:16  dovoto
+	Updated for new ds motion code.  motion_enable is now motion_init
+	
 	Revision 1.4  2007/01/10 16:57:30  dovoto
 	Fixed a small bug with callibration code that prevented it from showing message
 	
@@ -27,17 +30,11 @@ void Calibrate();
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-
-	
-    irqInit();
-	irqEnable(IRQ_VBLANK);
 	
 	consoleDemoInit();
 	
 	motion_init();
 
-	
-	
 	while(1) 
 	{	
 		scanKeys();

@@ -11,8 +11,6 @@
 int main(void) {
 //---------------------------------------------------------------------------------
 
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 	const int char_base = 0;
 	const int screen_base = 20;
 	videoSetMode(0);	

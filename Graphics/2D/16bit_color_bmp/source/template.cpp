@@ -6,9 +6,6 @@
 #include "drunkenlogo.h"
 
 int main(void) {
-	// irqs are nice
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 
     // set the mode for 2 text layers and two extended background layers
 	videoSetMode(MODE_5_2D);
@@ -17,7 +14,7 @@ int main(void) {
 	// of the main display text backgrounds just as easily
 	videoSetModeSub(MODE_0_2D); //sub bg 0 will be used to print text
 
-   vramSetBankA(VRAM_A_MAIN_BG);
+	vramSetBankA(VRAM_A_MAIN_BG);
 
 	consoleDemoInit();
 
@@ -26,13 +23,12 @@ int main(void) {
 	iprintf("\t16 bit bitmap demo");
 
 	// set up our bitmap background
-   int id = bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
+	int id = bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
 	
 	decompress(drunkenlogoBitmap, BG_GFX,  LZ77Vram);
 	
-	while(1)
-   {
-      swiWaitForVBlank();
-   }
+	while(1) {
+		swiWaitForVBlank();
+	}
 	return 0;
 }

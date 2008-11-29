@@ -28,19 +28,11 @@ int main()
 {    
 	int hours, seconds, minutes; 
 
-	// Turn on everything 
-	powerON(POWER_ALL); 
-
 	//put 3D on top 
 	lcdMainOnTop(); 
 
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D); 
-
-	// IRQ basic setup 
-	irqInit(); 
-	irqEnable(IRQ_VBLANK);
-
 
 	// Set our viewport to be the same size as the screen 
 	glViewport(0,0,255,191); 

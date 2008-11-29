@@ -6,8 +6,7 @@
 
 //these are placed in an array to allow for random size selection
 //these are defined as part of the new sprite api
-SpriteSize sizes[] = 
-{
+SpriteSize sizes[] = {
 	SpriteSize_8x8, 
 	SpriteSize_8x16,
 	SpriteSize_16x8,
@@ -25,8 +24,7 @@ SpriteSize sizes[] =
 //this is our game entity. Notice it has a bit more info than
 //would fit into OAM.  This method is a lot more flexible than trying
 //to treat oam as a game object directly.
-typedef struct 
-{
+typedef struct {
 	int x,y,z;
 	int dx, dy;
 	bool alive;
@@ -47,9 +45,8 @@ u32 spriteMemSize = 128 * 1024;
 bool oom = false;
 OamState *oam = &oamMain;
 
-//a sprite constructor (personally i would c++ this)
-void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColorFormat format, int dx, int dy)
-{
+//a sprite constructor
+void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColorFormat format, int dx, int dy) {
 	s->alive = true;
 	s->x = x;
 	s->y = y;
@@ -63,13 +60,10 @@ void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColor
 	s->gfx = oamAllocateGfx(oam, size, format);
 	
 	allocationCount++;
-	if(s->gfx)
-	{
+	if(s->gfx) {
 		spriteMemoryUsage += (size & 0xFFF) << 5;
 		oom = false;
-	}
-	else
-	{
+	} else {
 		oom = true;
 		//only a failure of the allocator if there was enough room
 		if(spriteMemoryUsage + ((size & 0xFFF) << 5) < spriteMemSize)
@@ -78,13 +72,11 @@ void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColor
 }
 
 //sprite deconstructor
-void killSprite(mySprite *s)
-{
+void killSprite(mySprite *s) {
 	s->alive = false;  
  
 	//api: free the graphics
-	if(s->gfx)
-	{	
+	if(s->gfx) {	
 		oamFreeGfx(oam, s->gfx);
 		spriteMemoryUsage -= (s->size & 0xFFF) << 5;
 	}
@@ -93,8 +85,7 @@ void killSprite(mySprite *s)
 }
 
 //a qsort function which sorts on z order
-int zsort(const void* a, const void* b)
-{
+int zsort(const void* a, const void* b) {
 	mySprite *first = (mySprite*)a;
 	mySprite *second = (mySprite*)b;
 
@@ -119,8 +110,7 @@ int zsort(const void* a, const void* b)
 }  
   
 //map our sprite to oam entries
-void updateSprites(void)
-{
+void updateSprites(void) {
 	int i;
 
 	//sort our sprites on z
@@ -128,8 +118,7 @@ void updateSprites(void)
 	qsort(sprites, SPRITE_MAX, sizeof(mySprite), zsort);
 
 	//set oam to values required by my sprite
-	for(i = 0; i < SPRITE_MAX; i++)
-	{
+	for(i = 0; i < SPRITE_MAX; i++) {
 		//an api function: void oamSet(int id, SpriteSize size, int x, int y, SpriteColorFormat format, const void* gfxOffset, bool hide);
 		oamSet(oam, 
 			i, 
@@ -146,8 +135,7 @@ void updateSprites(void)
 }
 
 //create a sprite with a random position, speed, and size 
-void randomSprite(mySprite* s)
-{
+void randomSprite(mySprite* s) {
 	//pick a random color index 
 	u8 c = rand() % 256;
 
@@ -158,55 +146,44 @@ void randomSprite(mySprite* s)
 	createSprite(s, rand() % 256, rand() % 192, 0, sizes[(rand() % 12)], SpriteColorFormat_256Color, rand() % 4 - 2, rand() % 4 - 2);
 
 	//dont let sprites get stuck with 0 velocity
-	if(s->dx == 0 && s->dy == 0)
-	{   
+	if(s->dx == 0 && s->dy == 0) {   
 		s->dx = rand() % 3 + 1;
 		s->dy = rand() % 3 + 1;
 	}
 
 	//the size (in pixels) is encoded in the low 12 bits of the Size attribute (shifted left by 5)
 	//we load new graphics each time as this is as much a test of my allocator as an example of api usage
-	if(s->gfx)
-	{
+	if(s->gfx) {
 		swiCopy(&color, s->gfx, ((s->size & 0xFFF) << 4) | COPY_MODE_FILL);
-	}
-	else
-	{	
+	}	else {	
 		s->alive = false;
 	}
 }
 
 //move the sprite based on its velocity, kill it if it goes off screen and create a new random one
-void moveSprites(void)
-{
+void moveSprites(void) {
 	int i;
 
-	for(i = 0; i < SPRITE_MAX; i++)
-	{
+	for(i = 0; i < SPRITE_MAX; i++) {
 		sprites[i].x += sprites[i].dx;
 		sprites[i].y += sprites[i].dy;
 
-		if(sprites[i].x >= 256 || sprites[i].x < 0 || sprites[i].y >= 192 || sprites[i].y < 0)
-		{
+		if(sprites[i].x >= 256 || sprites[i].x < 0 || sprites[i].y >= 192 || sprites[i].y < 0) {
 			killSprite(&sprites[i]);
 			randomSprite(&sprites[i]);
 		}
 	}
 }
 
-int main(void) 
-{
+int main(void)  {
 	int i;
 	int memUsageTemp = 0xFFFFFFFF;
 
-	irqInit();
-	irqEnable(IRQ_VBLANK);
-
 	videoSetMode(MODE_0_2D);
-   videoSetModeSub(MODE_0_2D);
+	videoSetModeSub(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_SPRITE);
 	vramSetBankB(VRAM_B_MAIN_SPRITE);
-   vramSetBankD(VRAM_D_SUB_SPRITE);
+	vramSetBankD(VRAM_D_SUB_SPRITE);
 
 	consoleDemoInit();
 	consoleDebugInit(DebugDevice_NOCASH); //send stderr to no$gba debug window
@@ -219,14 +196,12 @@ int main(void)
 		randomSprite(&sprites[i]);
 
 	//load a randomly colored palette
-	for(i = 0; i < 256; i++)
-   {
+	for(i = 0; i < 256; i++) {
       SPRITE_PALETTE[i] = rand();
       SPRITE_PALETTE_SUB[i] = rand();
-   }
+	}
 
-	while(1) 
-	{ 
+	while(1) { 
 		moveSprites();
 
 		updateSprites();
@@ -236,8 +211,7 @@ int main(void)
 		//api: updates real oam memory 
 		oamUpdate(oam);
 
-		if(oom)
-		{	
+		if(oom) {	
 			memUsageTemp = memUsageTemp > spriteMemoryUsage ? spriteMemoryUsage : memUsageTemp;
     	}	
 

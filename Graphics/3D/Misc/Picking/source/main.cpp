@@ -66,18 +66,11 @@ void endCheck(Clickable obj) {
 int main()
 {	
 
-	uint32 rotateX = 0;
-	uint32 rotateY = 0;
-
-	// power up everything; this a bit wasteful but this isn't a power management example
-	powerON(POWER_ALL);
+	u32 rotateX = 0;
+	u32 rotateY = 0;
 
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
-
-	//irqs are nice
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
 	
 	// used to hold touched position
 	touchPosition touchXY;
@@ -107,8 +100,7 @@ int main()
 	
 	glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0); // setup the light
 	
-	while(1)		
-	{
+	while(1) {
 		// handle key input
 		scanKeys();
 		u16 keys = keysHeld();

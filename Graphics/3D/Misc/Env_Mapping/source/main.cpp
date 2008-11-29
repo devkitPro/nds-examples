@@ -40,15 +40,9 @@ int main()
 	int rotateX = 0;
 	int rotateY = 0;
 
-	powerON(POWER_ALL);
-
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
 
-	//irqs are nice
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
-	
 	// intialize gl
 	glInit();
 	

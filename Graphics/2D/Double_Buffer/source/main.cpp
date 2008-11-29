@@ -12,11 +12,6 @@
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-	irqInit();
-	// a vblank interrupt is needed to use swiWaitForVBlank()
-	// since the dispatcher handles the flags no handler is required
-	irqEnable(IRQ_VBLANK);
-
 	//set the mode for 2 text layers and two extended background layers
 	videoSetMode(MODE_5_2D | DISPLAY_BG3_ACTIVE); 
 	

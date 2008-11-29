@@ -10,17 +10,9 @@
 int DrawGLScene();
 
 
-int main()
-{	
-	// Turn on everything
-	powerON(POWER_ALL);
-	
+int main() {		
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
-	
-	// IRQ basic setup
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 
 	// initialize the geometry engine
 	glInit();
@@ -43,8 +35,7 @@ int main()
 	// Set the color of the vertices
 	glColor3f(1, 1, 1);
 	
-	while (1) 
-	{
+	while (1) {
 
 		//ds specific, several attributes can be set here	
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
@@ -71,8 +62,7 @@ int main()
 	return 0;
 }
 
-int DrawGLScene()											// Here's Where We Do All The Drawing
-{
+int DrawGLScene() {
 	
 	glLoadIdentity();									// Reset The Current Modelview Matrix
 	glTranslatef(-1.5f,0.0f,-6.0f);						// Move Left 1.5 Units And Into The Screen 6.0

@@ -16,11 +16,10 @@ typedef struct
    int y;
 }MySprite;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
+	
    //three sprites of differing color format
-   MySprite sprites[] = 
-   {
+   MySprite sprites[] = {
       {0, SpriteSize_32x32, SpriteColorFormat_Bmp, 0, 15, 20, 15},
       {0, SpriteSize_32x32, SpriteColorFormat_256Color, -1, 0, 20, 80},
       {0, SpriteSize_32x32, SpriteColorFormat_16Color, -1, 1, 20, 136}
@@ -59,10 +58,8 @@ int main(int argc, char** argv)
 
    int angle = 0;
 
-   while(1)
-   {
-      for(int i = 0; i < 3; i++)
-      {
+   while(1) {
+      for(int i = 0; i < 3; i++) {
          oamSet(
          &oamSub, //sub display 
          i,       //oam entry to set

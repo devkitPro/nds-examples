@@ -14,10 +14,6 @@ int main()
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
 
-	//irqs are nice
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
-
 	// initialize gl
 	glInit();
 	

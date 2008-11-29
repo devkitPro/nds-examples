@@ -37,20 +37,13 @@ static void get_pen_delta( int *dx, int *dy )
 
 
 
-int main()
-{
+int main() {
 
 	int rotateX = 0;
 	int rotateY = 0;
 
-	powerON(POWER_ALL);
-
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
-
-	//irqs are nice
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 
 	// initialize gl
 	glInit();

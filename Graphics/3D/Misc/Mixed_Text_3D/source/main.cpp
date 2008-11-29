@@ -8,10 +8,7 @@ void DrawGLScene();
 float rtri;				// Angle For The Triangle ( NEW )
 float rquad;				// Angle For The Quad ( NEW )
  
-int main() {	
-	// Turn on everything
-	powerON(POWER_ALL);
- 
+int main() {
 
 // Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D | DISPLAY_BG1_ACTIVE);
@@ -22,11 +19,6 @@ int main() {
 	REG_BG0CNT = BG_PRIORITY(1); //set bg 0 (3d background) to be a lower priority than bg 1
  
 	consoleInitDefault((u16*)SCREEN_BASE_BLOCK(31), (u16*)CHAR_BASE_BLOCK(0), 16);
- 
- 
-	// IRQ basic setup
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
  
 	// initialize the geometry engine
 	glInit();
@@ -68,11 +60,11 @@ int main() {
 
 		printf("\x1b[15;5H rtri  = %f     \n", rtri);
 		printf("\x1b[16;5H rquad = %f     \n", rquad);
-	rtri+=0.9f;										// Increase The Rotation Variable For The Triangle ( NEW )
-	rquad-=0.75f;									// Decrease The Rotation Variable For The Quad ( NEW )
+		rtri+=0.9f;										// Increase The Rotation Variable For The Triangle ( NEW )
+		rquad-=0.75f;									// Decrease The Rotation Variable For The Quad ( NEW )
 
-	rtri  = fmodf( rtri , 360 );
-	rquad = fmodf( rquad, 360 );
+		rtri  = fmodf( rtri , 360 );
+		rquad = fmodf( rquad, 360 );
 
 	}
  
@@ -82,13 +74,12 @@ int main() {
 // Here's Where We Do All The Drawing
 void DrawGLScene() {
 
-	//ds does this automagicaly*open>///glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
-
+	//ds does this automagically*open>///glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 
 	glLoadIdentity();								// Reset The Current Modelview Matrix
-	glTranslatef(-1.5f,0.0f,-6.0f);				// Move Left 1.5 Units And Into The Screen 6.0
-	glRotatef(rtri,0.0f,1.0f,0.0f);				// Rotate The Triangle On The Y axis ( NEW )
-	glColor3f(1, 1, 1);							// set the vertex color
+	glTranslatef(-1.5f,0.0f,-6.0f);					// Move Left 1.5 Units And Into The Screen 6.0
+	glRotatef(rtri,0.0f,1.0f,0.0f);					// Rotate The Triangle On The Y axis ( NEW )
+	glColor3f(1, 1, 1);								// set the vertex color
 	glBegin(GL_TRIANGLES);							// Start Drawing A Triangle
 		glColor3f(1.0f,0.0f,0.0f);					// Set Top Point Of Triangle To Red
 		glVertex3f( 0.0f, 1.0f, 0.0f);				// First Point Of The Triangle

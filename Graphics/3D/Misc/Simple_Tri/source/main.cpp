@@ -1,20 +1,13 @@
 #include <nds.h>
 
 
-int main()
-{	
+int main() {	
 	
 	float rotateX = 0.0;
 	float rotateY = 0.0;
 
-	powerON(POWER_ALL);
-
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
-
-	//irqs are nice
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 
 	// initialize gl
 	glInit();
@@ -39,8 +32,7 @@ int main()
 				0.0, 0.0, 0.0,		//look at
 				0.0, 1.0, 0.0);		//up
 	
-	while(1)		
-	{
+	while(1) {
 		glPushMatrix();
 
 		//move it away from the camera
@@ -89,4 +81,4 @@ int main()
 	}
 
 	return 0;
-}//end main 
+}

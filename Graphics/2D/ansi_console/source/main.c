@@ -9,11 +9,7 @@
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-	// initialise the irq dispatcher
-	irqInit();
-	// a vblank interrupt is needed to use swiWaitForVBlank()
-	// since the dispatcher handles the flags no handler is required
-	irqEnable(IRQ_VBLANK);
+
 	videoSetMode(0);	//not using the main screen
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	//sub bg 0 will be used to print text
 	vramSetBankC(VRAM_C_SUB_BG);

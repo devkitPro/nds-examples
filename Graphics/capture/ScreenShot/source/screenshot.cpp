@@ -9,7 +9,6 @@
 
 void wait();
 
-
 void screenshot(u8* buffer) {
 
 	u8 vram_cr_temp=VRAM_A_CR;

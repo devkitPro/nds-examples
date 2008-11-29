@@ -7,15 +7,9 @@
  *
  ********************************************************************************************/
 
-// include your ndslib
 #include <nds.h>
 #include <malloc.h>
 #include <stdio.h>
-
-//needed to load pcx files
-#include <nds/arm9/image.h>
-
-#include <nds/arm9/trig_lut.h>
 
 #include "Mud_pcx.h"
 #include "World_txt.h"
@@ -35,19 +29,16 @@ int lookupdown = 0;
 
 int	texture[0];			// Storage For 1 Textures (only going to use 1 on the DS for this demo)
 
-typedef struct tagVERTEX
-{
+typedef struct tagVERTEX {
 	v16 x, y, z;
 	t16 u, v;
 } VERTEX;
 
-typedef struct tagTRIANGLE
-{
+typedef struct tagTRIANGLE {
 	VERTEX vertex[3];
 } TRIANGLE;
 
-typedef struct tagSECTOR
-{
+typedef struct tagSECTOR {
 	int numtriangles;
 	TRIANGLE* triangle;
 } SECTOR;
@@ -56,10 +47,9 @@ SECTOR sector1;				// Our Model Goes Here:
 
 
 
- u8* file = (u8*)World_txt;
+u8* file = (u8*)World_txt;
 
- void myGetStr(char* buff, int size)
-{
+void myGetStr(char* buff, int size) {
 	*buff = *file++;
 
 	while( (*buff != '\n') && (*buff != 0xD))
@@ -74,17 +64,13 @@ SECTOR sector1;				// Our Model Goes Here:
 }
 
 
-void readstr(char *string)
-{
-	do
-	{
+void readstr(char *string) {
+	do {
 		myGetStr(string, 255);
 	} while ((string[0] == '/') || (string[0] == '\n' ));
-	return;
 }
 
-void SetupWorld()
-{
+void SetupWorld() {
 	float x, y, z;
 	float u, v;
 	int numtriangles;
@@ -96,10 +82,8 @@ void SetupWorld()
 	sector1.triangle = (TRIANGLE*)malloc(numtriangles*sizeof(TRIANGLE));
 	sector1.numtriangles = numtriangles;
 
-	for (int loop = 0; loop < numtriangles; loop++)
-	{
-		for (int vert = 0; vert < 3; vert++)
-		{
+	for (int loop = 0; loop < numtriangles; loop++) {
+		for (int vert = 0; vert < 3; vert++) {
 			readstr(oneline);
 			sscanf(oneline, "%f %f %f %f %f", &x, &y, &z, &u, &v);
 			sector1.triangle[loop].vertex[vert].x = floattov16(x);
@@ -112,9 +96,10 @@ void SetupWorld()
 
 	return;
 }
-int LoadGLTextures()									// Load PCX files And Convert To Textures
-{
-	sImage pcx;                //////////////(NEW) and different from nehe.
+
+// Load PCX files And Convert To Textures
+int LoadGLTextures() {
+	sImage pcx;
 
 	//load our texture
 	loadPCX((u8*)Mud_pcx, &pcx);
@@ -130,20 +115,11 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	return TRUE;
 }
 
-int main()
-{
-
-
-	// Turn on everything
-	powerON(POWER_ALL);
+int main() {
 
 	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
-
-	// IRQ basic setup
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
 	
 	// initialize the 3D engine
 	glInit();

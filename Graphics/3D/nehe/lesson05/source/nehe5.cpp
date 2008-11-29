@@ -14,15 +14,9 @@ float rquad;				// Angle For The Quad ( NEW )
 
 int main()
 {	
-	// Turn on everything
-	powerON(POWER_ALL);
 	
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);
-	
-	// IRQ basic setup
-	irqInit();
-	irqEnable(IRQ_VBLANK);
 	
 	// initialize the geometry engine
 	glInit();

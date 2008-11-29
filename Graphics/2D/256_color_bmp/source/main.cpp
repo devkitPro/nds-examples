@@ -8,10 +8,6 @@
 
 int main(void)
 {
-	// irqs are nice
-	irqInit();
-	irqSet(IRQ_VBLANK, 0);
-
     // set the mode for 2 text layers and two extended background layers
 	videoSetMode(MODE_5_2D | DISPLAY_BG3_ACTIVE);
 

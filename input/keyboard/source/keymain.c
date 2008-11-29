@@ -3,16 +3,12 @@
 #include <stdio.h>
 
 
-void OnKeyPressed(int key)
-{
+void OnKeyPressed(int key) {
    if(key > 0)
       iprintf("%c", key);
 }
 
-int main(void) 
-{
-   irqInit();
-   irqEnable(IRQ_VBLANK);
+int main(void)  {
 
    consoleDemoInit();
 
@@ -22,8 +18,7 @@ int main(void)
 
    keyboardInit(kbd);
 
-   while(1)
-   {
+   while(1) {
       char myName[256];
 
       iprintf("What is your name?\n");

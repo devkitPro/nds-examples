@@ -15,9 +15,6 @@ int main(void) {
 	int i = 0;
 	touchPosition touch;
 
-	irqInit();
-	irqEnable(IRQ_VBLANK);
-
 	videoSetMode(MODE_0_2D);
 	videoSetModeSub(MODE_0_2D);
 
