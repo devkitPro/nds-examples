@@ -4,12 +4,10 @@
 #include "teapot_bin.h"
 
 
-int main()
-{
+int main() {
+
 	float rotateX = 0.0;
 	float rotateY = 0.0;
-
-	powerON(POWER_ALL);
 
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);

@@ -10,10 +10,9 @@
 int DrawGLScene();
 
 float rtri;				// Angle For The Triangle ( NEW )
-float rquad;				// Angle For The Quad ( NEW )
+float rquad;			// Angle For The Quad ( NEW )
 
-int main()
-{	
+int main() {	
 	
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D);

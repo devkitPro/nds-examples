@@ -83,8 +83,6 @@ int main() {
 
 	touchPosition touchXY;
 
-	// Enable the 3D core
-	powerON(POWER_3D_CORE | POWER_MATRIX);
 	//put 3D on top
 	lcdMainOnTop();
 
