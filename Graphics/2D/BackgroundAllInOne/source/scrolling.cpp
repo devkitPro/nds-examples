@@ -35,6 +35,8 @@ void scroll(int id, int width, int height)
 
       bgSetScroll(id, sx, sy);
 
+	  bgUpdate(id);
+
       consoleClear();
       iprintf("Scroll x: %d Scroll y: %d\n", sx, sy);
       iprintf("Press 'B' to exit");
@@ -189,6 +191,7 @@ void scrollVertical(void)
       }
 
       bgSetScroll(bg, 0, scroll_y);
+	  bgUpdate(bg);
    }
 
 }
@@ -249,6 +252,7 @@ void scrollHorizontalText(void)
 
 
       bgSetScroll(bg, scroll_x, 0);
+	  bgUpdate(bg);
    }
 
 }
@@ -303,6 +307,7 @@ void scrollHorizontalExRotation(void)
       }
 
       bgSetScroll(bg, scroll_x, 0);
+	  bgUpdate(bg);
    }
 
 }
@@ -420,6 +425,7 @@ void scroll4wayText(void)
       }
 
       bgSetScroll(bg, scroll_x, scroll_y);
+	  bgUpdate(bg);
    }
 }
 
@@ -526,5 +532,6 @@ void scroll4wayExRotation(void)
       }
 
       bgSetScroll(bg, scroll_x, scroll_y);
+	  bgUpdate(bg);
    }
 }

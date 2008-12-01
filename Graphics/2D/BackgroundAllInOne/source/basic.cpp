@@ -176,7 +176,7 @@ void Rot256x256(void)
 	videoSetMode(MODE_2_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(3, BgType_Rotation, BgSize_R_256x256, 0,1);
+	int bg = bgInit(3, BgType_Rotation, BgSize_R_256x256, 0,2);
 	
 	dmaCopy(RotBackgroundsTiles, bgGetGfxPtr(bg), sizeof(RotBackgroundsTiles));
 	dmaCopy(RotBackgroundsPal, BG_PALETTE, sizeof(RotBackgroundsPal));
@@ -191,7 +191,7 @@ void Rot512x512(void)
 	videoSetMode(MODE_2_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(3, BgType_Rotation, BgSize_R_512x512, 0,1);
+	int bg = bgInit(3, BgType_Rotation, BgSize_R_512x512, 0,2);
 	
 	dmaCopy(RotBackgroundsTiles, bgGetGfxPtr(bg), sizeof(RotBackgroundsTiles));
 	dmaCopy(RotBackgroundsPal, BG_PALETTE, sizeof(RotBackgroundsPal));
@@ -205,7 +205,7 @@ void Rot1024x1024(void)
 	videoSetMode(MODE_2_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
-	int bg = bgInit(3, BgType_Rotation, BgSize_R_1024x1024, 0,2);
+	int bg = bgInit(3, BgType_Rotation, BgSize_R_1024x1024, 0,3);
 	
 	dmaCopy(RotBackgroundsTiles, bgGetGfxPtr(bg), sizeof(RotBackgroundsTiles));
 	dmaCopy(RotBackgroundsPal, BG_PALETTE, sizeof(RotBackgroundsPal));
