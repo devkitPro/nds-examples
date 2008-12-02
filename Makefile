@@ -7,7 +7,7 @@ all: examples
 #---------------------------------------------------------------------------------
 	rm -fr bin
 	mkdir -p bin
-	find ./ -name *.nds -exec cp -fv {} bin \;
+	find . -name "*.nds" -exec cp -fv {} bin \;
 
 examples:
 	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE) -C $$i || { exit 1;} fi; done;
