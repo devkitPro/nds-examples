@@ -113,10 +113,10 @@ int main() {
 
 	while(1)
 	{
-		angle++;
+		angle+=64;
 		
-		spriteRotations[0].hdx = cosFixed(angle) >> 4;
-		spriteRotations[0].hdy = sinFixed(angle) >> 4;
+		spriteRotations[0].hdx = cosLerp(angle) >> 4;
+		spriteRotations[0].hdy = sinLerp(angle) >> 4;
 		spriteRotations[0].vdx = -spriteRotations[0].hdy;
 		spriteRotations[0].vdy = spriteRotations[0].hdx;
 		

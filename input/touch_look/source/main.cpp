@@ -172,38 +172,38 @@ int main() {
 
 		if (keysHeld() & (KEY_LEFT|KEY_Y))
 		{
-			xpos -= sinFixed((heading+128)& LUT_MASK) >> 5;
-			zpos += cosFixed((heading+128)& LUT_MASK) >> 5;
+			xpos -= sinLerp(heading + degreesToAngle(90)) >> 5;
+			zpos += cosLerp(heading + degreesToAngle(90)) >> 5;
 		}
 		if (keysHeld() & (KEY_RIGHT|KEY_A))
 		{
-			xpos += sinFixed((heading+128)& LUT_MASK) >> 5;
-			zpos -= cosFixed((heading+128)& LUT_MASK) >> 5;
+			xpos += sinLerp(heading + degreesToAngle(90)) >> 5;
+			zpos -= cosLerp(heading + degreesToAngle(90)) >> 5;
 		}
 		if (keysHeld() & (KEY_DOWN|KEY_B))
 		{
 
-			xpos -= sinFixed(heading & LUT_MASK)>>5;
-			zpos += cosFixed(heading & LUT_MASK)>>5;
+			xpos -= sinLerp(heading)>>5;
+			zpos += cosLerp(heading)>>5;
 
-			walkbiasangle+= 10;
+			walkbiasangle += degreesToAngle(5);
 
-			walkbias = sinFixed(walkbiasangle)>>4;
+			walkbias = sinLerp(walkbiasangle)>>4;
 		}
 		if (keysHeld() & (KEY_UP|KEY_X))
 		{
-			xpos += sinFixed(heading& LUT_MASK) >> 5;
-			zpos -= cosFixed(heading& LUT_MASK) >> 5;
+			xpos += sinLerp(heading) >> 5;
+			zpos -= cosLerp(heading) >> 5;
 
 			if (walkbiasangle <= 0)
 			{
-				walkbiasangle = LUT_SIZE;
+				walkbiasangle = DEGREES_IN_CIRCLE;
 			}
 			else
 			{
-				walkbiasangle-= 10;
+				walkbiasangle -= degreesToAngle(5);
 			}
-			walkbias = sinFixed(walkbiasangle & LUT_MASK)>>4;
+			walkbias = sinLerp(walkbiasangle)>>4;
 		}
 
 		// Camera rotation by touch screen
@@ -224,9 +224,9 @@ int main() {
 				if(dy>-2&&dy<2)
 					dy=0;
 
-					lookupdown -= dy;
+					lookupdown -= degreesToAngle(dy);
 
-					heading += dx;
+					heading += degreesToAngle(dx);
 					yrot = heading;
 			}
 
@@ -259,7 +259,7 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 	int32 xtrans = -xpos;
 	int32 ztrans = -zpos;
 	int32 ytrans = -walkbias-(1<<10);
-	int sceneroty = LUT_SIZE - yrot;
+	int sceneroty = DEGREES_IN_CIRCLE - yrot;
 
 	glLoadIdentity();
 

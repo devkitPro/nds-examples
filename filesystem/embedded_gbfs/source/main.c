@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.14 2008-11-29 22:59:00 wntrmute Exp $
+	$Id: main.c,v 1.15 2008-12-02 20:21:21 dovoto Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
@@ -55,7 +55,7 @@ SECTOR sector1;				// Our Model Goes Here:
 //---------------------------------------------------------------------------------
 float tsin(float angle) {
 //---------------------------------------------------------------------------------
-	int32 s = sinFixed((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
+	int32 s = sinLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
 
 	return f32tofloat(s);
 }
@@ -63,7 +63,7 @@ float tsin(float angle) {
 //---------------------------------------------------------------------------------
 float tcos(float angle) {
 //---------------------------------------------------------------------------------
-	int32 c = cosFixed((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
+	int32 c = cosLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
 
 	return f32tofloat(c);
 }

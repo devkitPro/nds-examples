@@ -15,28 +15,20 @@ int main(void) {
 	//set the mode for 2 text layers and two extended background layers
 	videoSetMode(MODE_5_2D | DISPLAY_BG3_ACTIVE); 
 	
-	//set the sub background up for text display (we could just print to one
-	//of the main display text backgrounds just as easily
-	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE); //sub bg 0 will be used to print text
-	
 	//set the first two banks as background memory and the third as sub background memory
 	//D is not used..if you need a bigger background then you will need to map
 	//more vram banks consecutivly (VRAM A-D are all 0x20000 bytes in size)
 	vramSetMainBanks(	VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000, 
 						VRAM_C_SUB_BG , VRAM_D_LCD); 
 
-	// set up text background for text
-	REG_BG0CNT = BG_MAP_BASE(31);
-	
-	BG_PALETTE_SUB[255] = RGB15(31,31,31);//by default font will be rendered with color 255
-	
-	//consoleInit() is a lot more flexible but this gets you up and running quick
-	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
+	consoleDemoInit();
 
 	iprintf("\n\n\tHello DS devers\n");
 	iprintf("\twww.drunkencoders.com\n");
 	iprintf("\tdouble buffer demo");
 	
+	while(1);
+
 	// set up our bitmap background
 	
 	REG_BG3CNT = BG_BMP16_256x256;

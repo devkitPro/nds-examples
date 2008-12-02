@@ -51,8 +51,8 @@ int main(void) {
 		scanKeys();
 		u32 keys = keysHeld();
 
-		if ( keys & KEY_L ) angle++; 
-		if ( keys & KEY_R ) angle--;
+		if ( keys & KEY_L ) angle+=64; 
+		if ( keys & KEY_R ) angle-=64;
 
 		if ( keys & KEY_LEFT ) scrollX++;
 		if ( keys & KEY_RIGHT ) scrollX--;
@@ -65,12 +65,9 @@ int main(void) {
 		if( keys & KEY_X ) scaleY++;
 		if( keys & KEY_Y ) scaleY--;
 
-		// wrap angle
-		angle &= 0x1ff;
-
 		// Compute sin and cos
-		s16 angleSin = sinFixed(angle);
-		s16 angleCos = cosFixed(angle);
+		s16 angleSin = sinLerp(angle);
+		s16 angleCos = cosLerp(angle);
  
 		swiWaitForVBlank();
 

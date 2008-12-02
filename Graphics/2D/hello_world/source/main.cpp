@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.cpp,v 1.12 2008-11-29 22:58:59 wntrmute Exp $
+	$Id: main.cpp,v 1.13 2008-12-02 20:21:20 dovoto Exp $
 
 	Simple console print demo
 	-- dovoto
@@ -23,6 +23,8 @@ void Vblank() {
 int main(void) {
 //---------------------------------------------------------------------------------
 	touchPosition touchXY;
+
+	irqSet(IRQ_VBLANK, Vblank);
 
 	consoleDemoInit();
 

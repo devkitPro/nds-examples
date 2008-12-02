@@ -53,14 +53,14 @@ typedef struct tagSECTOR
 
 float sin(float angle)
 {
-	int32 s = sinFixed((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
+	int32 s = sinLerp((short)(angle * DEGREES_IN_CIRCLE / 360));
 
 	return f32tofloat(s);
 }
 
 float cos(float angle)
 {
-	int32 c = cosFixed((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
+	int32 c = cosLerp((short)(angle * DEGREES_IN_CIRCLE / 360));
 
 	return f32tofloat(c);
 }
@@ -102,7 +102,7 @@ void SetupWorld()
 
 	sector1.triangle = (TRIANGLE*)malloc(numtriangles*sizeof(TRIANGLE));
 	sector1.numtriangles = numtriangles;
-	
+
 	for (int loop = 0; loop < numtriangles; loop++)
 	{
 		for (int vert = 0; vert < 3; vert++)
@@ -116,7 +116,6 @@ void SetupWorld()
 			sector1.triangle[loop].vertex[vert].v = v;
 		}
 	}
-	
 	return;
 }
 int LoadGLTextures()									// Load PCX files And Convert To Textures
@@ -141,6 +140,8 @@ int main() {
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 	
+	consoleDemoInit();
+
 	// initialize the geometry engine
 	glInit();
 	
@@ -164,7 +165,7 @@ int main() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
-	
+
 	glLight(0, RGB15(31,31,31) , 0,				  floattov10(-1.0),		 0);
 	
 	//need to set up some material properties since DS does not have them set by default
@@ -172,7 +173,7 @@ int main() {
 	glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
 	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
 	glMaterialf(GL_EMISSION, RGB15(16,16,16));
-	
+
 	//ds uses a table for shinyness..this generates a half-ass one
 	glMaterialShinyness();
 	
@@ -183,7 +184,7 @@ int main() {
 	glMatrixMode(GL_MODELVIEW);
 	
 
-	while (1) 
+	while (1)
 	{
 		//these little button functions are pretty handy
 		scanKeys();
@@ -212,6 +213,7 @@ int main() {
 			
 			xpos -= (float)sin(heading) * 0.05f;
 			zpos += (float)cos(heading) * 0.05f;
+
 			if (walkbiasangle >= 359.0f)
 			{
 				walkbiasangle = 0.0f;
@@ -220,6 +222,7 @@ int main() {
 			{
 				walkbiasangle+= 10;
 			}
+			
 			walkbias = (float)sin(walkbiasangle)/20.0f;
 		}
 		if (keysHeld() & KEY_UP)
