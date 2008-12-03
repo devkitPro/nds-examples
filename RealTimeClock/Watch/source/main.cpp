@@ -34,6 +34,9 @@ int main()
 	// Setup the Main screen for 3D 
 	videoSetMode(MODE_0_3D); 
 
+	// Reset the screen and setup the view 
+	glInit();
+
 	// Set our viewport to be the same size as the screen 
 	glViewport(0,0,255,191); 
 
@@ -43,8 +46,7 @@ int main()
 
 	consoleDemoInit();
 	
-	// Reset the screen and setup the view 
-	glInit(); 
+ 
 	
 	
 	//ds specific, several attributes can be set here    
