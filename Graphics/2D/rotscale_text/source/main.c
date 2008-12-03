@@ -9,27 +9,25 @@
 int main(void) {
 //---------------------------------------------------------------------------------
 
-	const int char_base = 0;
-	const int screen_base = 20;
+	const int tile_base = 0;
+	const int map_base = 20;
+
 	videoSetMode(0);	
 
-	videoSetModeSub(MODE_5_2D | DISPLAY_BG3_ACTIVE);	
+	videoSetModeSub(MODE_5_2D);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	// rot scale backgrounds have a different size code
-	REG_BG3CNT_SUB = BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base) | BG_RS_32x32;
-	
-	u16* sub_tile = (u16*)CHAR_BASE_BLOCK_SUB(char_base);
-	u16* sub_map = (u16*)SCREEN_BASE_BLOCK_SUB(screen_base);
+	int bg = bgInitSub(3, BgType_ExRotation, BgSize_ER_256x256, map_base, tile_base);
+
 
 	//95 and 32 show how many characters there are and 32 shows which ASCII character to start, respectively
 	//95 is the smaller set of ACSII characters. It usually will start with 32
-	consoleInit(((u16*)fontTiles), sub_tile, 95, 32, sub_map, CONSOLE_USE_COLOR255, 8);
+	consoleInit(((u16*)fontTiles), bgGetGfxPtr(bg), 95, 32, bgGetMapPtr(bg), CONSOLE_USE_COLOR255, 8);
     
 	//Load the Font Data and Palette stuff here
 
-	dmaCopy(fontTiles, sub_tile, fontTilesLen);
-	dmaCopy(fontPal,BG_PALETTE_SUB,fontPalLen);
+	dmaCopy(fontTiles, bgGetGfxPtr(bg), fontTilesLen);
+	dmaCopy(fontPal, BG_PALETTE_SUB, fontPalLen);
 
 
 	iprintf("Custom Font Demo\n");
@@ -37,15 +35,12 @@ int main(void) {
 	iprintf("modified by WinterMute and dovoto\n");
 	iprintf("for libnds examples\n");
 
-	//scale is fixed point
-	s16 scaleX = 1 << 8, scaleY = 1 << 8;
-
-	s16 scrollX = 128 , scrollY = 96;
-
-	//this is the screen pixel that the image will rotate about
-	s16 rcX = 128, rcY = 96;
-
+	
 	unsigned int angle = 0;
+    int scrollX = 0;
+	int scrollY = 0;
+	int scaleX = intToFixed(1,8);
+	int scaleY = intToFixed(1,8);
 
 	while(1) {
 		scanKeys();
@@ -65,27 +60,12 @@ int main(void) {
 		if( keys & KEY_X ) scaleY++;
 		if( keys & KEY_Y ) scaleY--;
 
-		// Compute sin and cos
-		s16 angleSin = sinLerp(angle);
-		s16 angleCos = cosLerp(angle);
- 
 		swiWaitForVBlank();
 
 
-		// Set the background registers
-		s16 pa = ( angleCos * scaleX ) >> 12;
-		s16 pb = (-angleSin * scaleX ) >> 12;
-		s16 pc = ( angleSin * scaleY ) >> 12;
-		s16 pd = ( angleCos * scaleY ) >> 12;
-		
-		REG_BG3PA = pa;
-		REG_BG3PB = pb;
-		REG_BG3PC = pc;
-		REG_BG3PD = pd;
-
-		REG_BG3X = (scrollX<<8) - ((rcX * pa + rcY * pb));
-		REG_BG3Y = (scrollY<<8) - ((rcX * pc + rcY * pd));
-
+		bgSetRotateScale(bg, angle, scaleX, scaleY);
+		bgSetScroll(bg, scrollX, scrollY);
+		bgUpdate(bg);
 	}
 
 }
