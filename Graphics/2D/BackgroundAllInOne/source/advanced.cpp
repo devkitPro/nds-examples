@@ -49,7 +49,7 @@ void advMosaic(void)
 		bgSetMosaic(mosaic_x, mosaic_y);
 		
 		consoleClear();
-		iprintf("Press B to exit.n");
+		iprintf("Press B to exit\n");
 		iprintf("DX: %d  DY: %d", mosaic_x, mosaic_y);
 		
 	}
@@ -99,7 +99,8 @@ void advRotating(void)
 		bgSetRotate(bg, angle);
 		bgSetScroll(bg, center_x, center_y);
 		bgSetCenter(bg, center_x, center_y);
-		
+		bgUpdate(bg);
+
 		consoleClear();
 		iprintf("Press B to exit.n");
 		iprintf("Angle: %d \ncenter X: %d  center Y: %d", angle, center_x, center_y);
@@ -139,6 +140,8 @@ void advScaling(void)
 		
 		bgSetScale(bg, scale_x , scale_y );
 		
+		bgUpdate(bg);
+
 		consoleClear();
 		iprintf("Press B to exit.n");
 		iprintf("scale X: %d  scale Y: %d", scale_x, scale_y);
@@ -192,6 +195,7 @@ void advMultipleLayers(void)
 		bg3_hidden ? bgHide(bg3) : bgShow(bg3);
 		
 		consoleClear();
+
 		iprintf("Press UP DOWN LEFT to toggle the layers\n\n");
 		iprintf("Floor (UP): %s\n", bg1_hidden ? "hidden" : "displayed");
 		iprintf("Walls (DOWN): %s\n", bg2_hidden ? "hidden" : "displayed");
