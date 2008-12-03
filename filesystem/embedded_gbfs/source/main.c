@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.15 2008-12-02 20:21:21 dovoto Exp $
+	$Id: main.c,v 1.16 2008-12-03 22:39:34 dovoto Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
@@ -154,11 +154,13 @@ int main()
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 
+	// Reset the screen and setup the view
+	glInit();
+
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);
 	
-	// Reset the screen and setup the view
-	glInit();
+
 	
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
