@@ -33,14 +33,14 @@ int	texture[1];			// Storage For 3 Textures (only going to use 1 on the DS for t
 
 float sin(float angle)
 {
-	int32 s = sinLerp((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
+	int32 s = sinLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
 
 	return f32tofloat(s);
 }
 
 float cos(float angle)
 {
-	int32 c = cosLerp((int)((angle * LUT_SIZE) / 360.0) & LUT_MASK);
+	int32 c = cosLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
 
 	return f32tofloat(c);
 }
@@ -108,7 +108,7 @@ void InitGL(void) {
 		{
 			points[x][y][0]= (inttov16(x)/4);
 			points[x][y][1]= (inttov16(y)/4);
-			points[x][y][2]= sinLerp((x * 16));
+			points[x][y][2]= sinLerp(x * (DEGREES_IN_CIRCLE / 32));
 		}
 	}
 	
