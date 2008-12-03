@@ -13,7 +13,6 @@ include $(DEVKITARM)/ds_rules
 # INCLUDES is a list of directories containing extra header files
 # DATA is a list of directories containing binary files
 # all directories are relative to this makefile
-# MAXMOD_SOUNDBANK contains a directory of music and sound effect files
 #---------------------------------------------------------------------------------
 BUILD		:=	build
 SOURCES		:=	source  
