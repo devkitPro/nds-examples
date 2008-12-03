@@ -34,7 +34,7 @@ int main(void) {
 	}
 
 	SPRITE_PALETTE[1] = RGB15(31,0,0);
-	SPRITE_PALETTE_SUB[1] = RGB15(31,0,0);
+	SPRITE_PALETTE_SUB[1] = RGB15(0,31,0);
 
 	while(1) {
 
@@ -64,8 +64,8 @@ int main(void) {
 			0,
 			SpriteSize_16x16, 
 			SpriteColorFormat_256Color, 
-			gfx, 
-			0, 
+			gfxSub, 
+			-1, 
 			false, 
 			false);
 

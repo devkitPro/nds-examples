@@ -25,14 +25,15 @@ int main(int argc, char** argv) {
       {0, SpriteSize_32x32, SpriteColorFormat_16Color, -1, 1, 20, 136}
    };
 
-  videoSetModeSub(MODE_0_2D);
+   videoSetModeSub(MODE_0_2D);
 
+   consoleDemoInit();
+   
    //initialize the sub sprite engine with 1D mapping 128 byte boundary
    //and no external palette support
    oamInit(&oamSub, SpriteMapping_Bmp_1D_128, false);
 
-   consoleDemoInit();
-
+  
    vramSetBankD(VRAM_D_SUB_SPRITE);
    
    //allocate some space for the sprite graphics
@@ -75,7 +76,9 @@ int main(int argc, char** argv) {
          );
       }
 
-      oamRotateScale(&oamSub, 0, angle++, (1 << 8), (1<<8));
+      oamRotateScale(&oamSub, 0, angle, (1 << 8), (1<<8));
+
+	  angle += 64;
 
       swiWaitForVBlank();
 

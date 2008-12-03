@@ -186,7 +186,7 @@ int main(void)  {
 	vramSetBankD(VRAM_D_SUB_SPRITE);
 
 	consoleDemoInit();
-	consoleDebugInit(DebugDevice_NOCASH); //send stderr to no$gba debug window
+//	consoleDebugInit(DebugDevice_NOCASH); //send stderr to no$gba debug window
 
 	//api: initialize OAM to 1D mapping with XX byte offsets and no external palette
 	oamInit(oam, SpriteMapping_1D_128, false);
