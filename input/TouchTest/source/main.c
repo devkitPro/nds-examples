@@ -69,16 +69,9 @@ int main(void) {
 	for(i = 0; i< 32*16; i++)
 		SPRITE_GFX[i] = ((u16*)balldata_bin)[i];
 
-	// black backdrop
-	BG_PALETTE[0]=RGB15(0,0,0);
-
-	REG_BG0CNT = BG_MAP_BASE(31);//use bg0 for the text
+  	int consoleBgId = bgInit(0,BgType_Text4bpp, BgSize_T_256x256, 31,0);
 	
-	BG_PALETTE[255] = RGB15(31,31,31);//by default font rendered with color 255
-	
-	//consoleInit() is a lot more flexible but this gets you up and running quick
-	consoleInitDefault((u16*)SCREEN_BASE_BLOCK(31), (u16*)CHAR_BASE_BLOCK(0), 16);
-
+	consoleInitDefault(consoleBgId); 
  
 	iprintf("\x1b[4;8HTouch Screen Test");
 	iprintf("\x1b[15;4HRight Shoulder toggles");

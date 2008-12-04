@@ -66,6 +66,9 @@ void endCheck(Clickable obj) {
 int main()
 {	
 
+	// initialize gl
+	glInit();
+
 	u32 rotateX = 0;
 	u32 rotateY = 0;
 
@@ -77,8 +80,6 @@ int main()
 	
 	lcdMainOnBottom(); // we are going to be touching the 3D display
 
-	// initialize gl
-	glInit();
 	
 	// enable edge outlining, this will be used to show which object is selected
 	glEnable(GL_OUTLINE);

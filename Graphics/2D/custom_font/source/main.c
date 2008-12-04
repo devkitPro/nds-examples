@@ -10,26 +10,23 @@
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
+	
+	const int tile_base = 0;
+	const int map_base = 20;
 
-	const int char_base = 0;
-	const int screen_base = 20;
-	videoSetMode(0);	
-	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);	
+	PrintConsole console;
+	
+	videoSetModeSub(MODE_0_2D);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	REG_BG0CNT_SUB = BG_COLOR_16 | BG_TILE_BASE(char_base) | BG_MAP_BASE(screen_base);
+	consoleNew(&console);
 
-	u16* sub_tile = (u16*)CHAR_BASE_BLOCK_SUB(char_base);
-	u16* sub_map = (u16*)SCREEN_BASE_BLOCK_SUB(screen_base);
+	consoleNewFont(&console.font, fontTiles, fontPal, 95, fontPalLen / 2, 4, 32, false);
+	
+	console.bgId = bgInitSub(0, BgType_Text4bpp, BgSize_T_256x256, map_base, tile_base);
 
-	//95 and 32 show how many characters there are and 32 shows which ASCII character to start, respectively
-	//95 is the smaller set of ACSII characters. It usually will start with 32
-	consoleInit((u16 *)fontTiles, sub_tile, 95, 32, sub_map, 0, 16);
-    
-	//Load the Font Data and Palette stuff here
+	consoleInit(&console);
 
-	dmaCopy(fontTiles, sub_tile, fontTilesLen);
-	dmaCopy(fontPal,BG_PALETTE_SUB,fontPalLen);
 
 	iprintf("Custom Font Demo\n");
 	iprintf("   by Poffy\n");

@@ -113,14 +113,9 @@ int main()
 	
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
-	
-	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE); //sub bg 0 will be used to print text
-  	vramSetBankC(VRAM_C_SUB_BG); 
-	// black backdrop
-	BG_PALETTE_SUB[0]=RGB15(0,0,0);
-	REG_BG0CNT_SUB = BG_MAP_BASE(31);
-	BG_PALETTE_SUB[255] = RGB15(31,31,31);//by default font rendered with color 255
+	consoleDemoInit();
 
+	
 	// initialize gl
 	glInit();
 	
@@ -222,8 +217,7 @@ int main()
 	textures[9].size = texture9_RGB32_A3_tex_bin_size+texture9_RGB32_A3_pal_bin_size;
 	
 	
-	//consoleInit() is a lot more flexible but this gets you up and running quick
-	consoleInitDefault((u16*)SCREEN_BASE_BLOCK_SUB(31), (u16*)CHAR_BASE_BLOCK_SUB(0), 16);
+
 	iprintf("\x1b[4;8HPaletted Cube");
 	iprintf("\x1b[6;2HRight/Left shoulder to switch");
 	

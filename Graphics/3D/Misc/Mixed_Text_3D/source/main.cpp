@@ -10,18 +10,25 @@ float rquad;				// Angle For The Quad ( NEW )
  
 int main() {
 
-// Setup the Main screen for 3D 
-	videoSetMode(MODE_0_3D | DISPLAY_BG1_ACTIVE);
+	PrintConsole console;
+
+	// initialize the geometry engine
+	glInit();	
+
+	// Setup the Main screen for 3D 
+	videoSetMode(MODE_0_3D);
+	
+	//map some vram to background for printing
 	vramSetBankC(VRAM_C_MAIN_BG_0x06000000);
  
-	BG_PALETTE[255] = 0xFFFF;
-    REG_BG1CNT = BG_MAP_BASE(31) | BG_PRIORITY(0); // use bg 1 for text, set to highest priority
-	REG_BG0CNT = BG_PRIORITY(1); //set bg 0 (3d background) to be a lower priority than bg 1
- 
-	consoleInitDefault((u16*)SCREEN_BASE_BLOCK(31), (u16*)CHAR_BASE_BLOCK(0), 16);
- 
-	// initialize the geometry engine
-	glInit();
+	int bgId = bgInit(1, BgType_Text4bpp, BgSize_T_256x256, 31,0);
+
+	consoleInitDefault(bgId);
+
+	//put bg 0 at a lower priority than the text background
+	bgSetPriority(0, 1);
+  
+
  
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);

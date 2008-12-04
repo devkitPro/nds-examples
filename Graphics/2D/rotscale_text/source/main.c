@@ -12,23 +12,23 @@ int main(void) {
 	const int tile_base = 0;
 	const int map_base = 20;
 
+
+	PrintConsole console;
+
 	videoSetMode(0);	
 
 	videoSetModeSub(MODE_5_2D);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	int bg = bgInitSub(3, BgType_ExRotation, BgSize_ER_256x256, map_base, tile_base);
+	int bg3 = bgInitSub(3, BgType_ExRotation, BgSize_ER_256x256, map_base, tile_base);
 
+	consoleNew(&console);
 
-	//95 and 32 show how many characters there are and 32 shows which ASCII character to start, respectively
-	//95 is the smaller set of ACSII characters. It usually will start with 32
-	consoleInit(((u16*)fontTiles), bgGetGfxPtr(bg), 95, 32, bgGetMapPtr(bg), CONSOLE_USE_COLOR255, 8);
-    
-	//Load the Font Data and Palette stuff here
+	consoleNewFont(&console.font, fontTiles, fontPal, 95, fontPalLen / 2, 8, 32, false);
+	
+	console.bgId = bg3;
 
-	dmaCopy(fontTiles, bgGetGfxPtr(bg), fontTilesLen);
-	dmaCopy(fontPal, BG_PALETTE_SUB, fontPalLen);
-
+	consoleInit(&console);
 
 	iprintf("Custom Font Demo\n");
 	iprintf("   by Poffy\n");
@@ -63,9 +63,9 @@ int main(void) {
 		swiWaitForVBlank();
 
 
-		bgSetRotateScale(bg, angle, scaleX, scaleY);
-		bgSetScroll(bg, scrollX, scrollY);
-		bgUpdate(bg);
+		bgSetRotateScale(bg3, angle, scaleX, scaleY);
+		bgSetScroll(bg3, scrollX, scrollY);
+		bgUpdate(bg3);
 	}
 
 }
