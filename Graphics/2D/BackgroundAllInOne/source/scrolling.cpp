@@ -320,13 +320,13 @@ void scroll4wayText(void)
    int scroll_x = 0;
    int scroll_y = 0;
 
-   const int tileWidth = 8;
-   const int mapWidth = 1024 / 8;
-   const int mapHeight = 1024 / 8;
-   const int bgWidth = 256 / 8;
-   const int bgHeight = 256 / 8;
-   const int screenWidth = 256 / 8;
-   const int screenHeight = 192 / 8;
+   const int tileWidth = 8; //width of a tile in pixels
+   const int mapWidth = 1024 / 8; //width of the big map in tiles
+   const int mapHeight = 1024 / 8; //heigh of the big map in tiles
+   const int bgWidth = 256 / 8; //width of the hardware map in tiles
+   const int bgHeight = 256 / 8; //height of the hardware map in tiles
+   const int screenWidth = 256 / 8; //screen width in tiles
+   const int screenHeight = 192 / 8; //screen height in tiles
 
 
    int bg = bgInit(3, BgType_Text8bpp, BgSize_T_512x256, 0,1);
