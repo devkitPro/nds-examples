@@ -415,12 +415,10 @@ void scroll4wayText(void)
       {	
          for(int ix = scroll_x / 8 - 1 ; ix < scroll_x / 8 + screenWidth + 1; ix++)
          {
-            if((ix & 63) < bgWidth)
-               bgLeftHalf[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* 32] = 
-                  Layer1024x1024Map[ix + offset_y * mapWidth];	
-            else
-               bgRightHalf[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* 32] = 
-                  Layer1024x1024Map[ix & + offset_y * mapWidth];	
+            u16* bgTemp = ((ix & 63) >= bgWidth) ? bgRightHalf : bgLeftHalf;
+
+             bgTemp[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* 32] = 
+                 Layer1024x1024Map[ix + offset_y * mapWidth];	
          }
       }
 
