@@ -69,9 +69,8 @@ int main(void) {
 	for(i = 0; i< 32*16; i++)
 		SPRITE_GFX[i] = ((u16*)balldata_bin)[i];
 
-  	int consoleBgId = bgInit(0,BgType_Text4bpp, BgSize_T_256x256, 31,0);
-	
-	consoleInitDefault(consoleBgId); 
+ 
+	consoleInit(0, 0,BgType_Text4bpp, BgSize_T_256x256, 31,0, true); 
  
 	iprintf("\x1b[4;8HTouch Screen Test");
 	iprintf("\x1b[15;4HRight Shoulder toggles");

@@ -13,22 +13,26 @@ int main(void) {
 	const int map_base = 20;
 
 
-	PrintConsole console;
-
 	videoSetMode(0);	
 
 	videoSetModeSub(MODE_5_2D);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	int bg3 = bgInitSub(3, BgType_ExRotation, BgSize_ER_256x256, map_base, tile_base);
+	PrintConsole *console = consoleInit(0, 3, BgType_ExRotation, BgSize_ER_256x256, map_base, tile_base, false);
 
-	consoleNew(&console);
+	ConsoleFont font;
 
-	consoleNewFont(&console.font, fontTiles, fontPal, 95, fontPalLen / 2, 8, 32, false);
+	font.gfx = (u16*)fontTiles;
+	font.pal = (u16*)fontPal;
+	font.numChars = 95;
+	font.numColors =  fontPalLen / 2;
+	font.bpp = 8;
+	font.asciiOffset = 32;
+	font.convertSingleColor = false;
 	
-	console.bgId = bg3;
+	consoleSetFont(console, &font);
 
-	consoleInit(&console);
+	int bg3 = console->bgId;
 
 	iprintf("Custom Font Demo\n");
 	iprintf("   by Poffy\n");

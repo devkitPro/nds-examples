@@ -45,9 +45,8 @@ int main() {
                    DISPLAY_SPR_1D_BMP      //and this in bitmap mode
                     );
 
-   	int consoleBgId = bgInit(0,BgType_Text4bpp, BgSize_T_256x256, 31,0);
-	
-	consoleInitDefault(consoleBgId);
+  	
+	consoleInit(0, 0,BgType_Text4bpp, BgSize_T_256x256, 31,0, true);
     
     //turn off the sprites
     initSprites();
