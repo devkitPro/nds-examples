@@ -6,14 +6,14 @@
 #include "soundbank_bin.h"
 
 int main() {
-	
+
 	consoleDemoInit();
 
 	mmInitDefaultMem((mm_addr)soundbank_bin);
 	
 	// load the module
 	mmLoad( MOD_FLATOUTLIES );
-	
+
 	// load sound effects
 	mmLoadEffect( SFX_AMBULANCE );
 	mmLoadEffect( SFX_BOOM );
@@ -46,12 +46,14 @@ int main() {
 	iprintf("\x1b[0;8HMaxMod Audio demo");
 	iprintf("\x1b[3;0HHold A for ambulance sound");
 	iprintf("\x1b[4;0HPress B for boom sound");
+	
+	// sound effect handle (for cancelling it later)
+	mm_sfxhand amb = 0;
 
 	do {
 
 		int keys_pressed, keys_released;
-		mm_sfxhand amb = 0;
-
+		
 		swiWaitForVBlank();
 		scanKeys();
 
