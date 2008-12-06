@@ -190,38 +190,32 @@ int main() {
 		
 		if (keysHeld() & KEY_LEFT)
 		{
-			heading -= 1;	
+			heading += 64;	
 			yrot = heading;
 		}
 		if (keysHeld() & KEY_RIGHT)
 		{
-			heading += 1;
+			heading -= 64;
 			yrot = heading;
 		}
 		if (keysHeld() & KEY_DOWN)
 		{
 			
-			xpos -= sinLerp(heading)>>4;
-			zpos += cosLerp(heading)>>4;
+			xpos += sinLerp(heading)/20;
+			zpos += cosLerp(heading)/20;
+
+			walkbiasangle+= 640;
 			
-			walkbiasangle+= 10;
-			
-			walkbias = sinLerp(walkbiasangle)>>4;
+			walkbias = sinLerp(walkbiasangle)/20;
 		}
 		if (keysHeld() & KEY_UP)
 		{
-			xpos += sinLerp(heading)>>4;
-			zpos -= sinLerp(heading)>>4;
+			xpos -= sinLerp(heading)/20;
+			zpos -= cosLerp(heading)/20;
 
-			if (walkbiasangle <= 0)
-			{
-				walkbiasangle = LUT_SIZE;
-			}
-			else
-			{
-				walkbiasangle-= 10;
-			}
-			walkbias = sinLerp(walkbiasangle)>>4;
+			walkbiasangle-= 640;
+			
+			walkbias = sinLerp(walkbiasangle)/20;
 		}
 		
 		DrawGLScene();

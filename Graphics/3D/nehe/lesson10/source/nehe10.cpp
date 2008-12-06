@@ -200,18 +200,18 @@ int main() {
 		}
 		if (keysHeld() & KEY_LEFT)
 		{
-			heading -= 1.0f;	
+			heading += 1.0f;	
 			yrot = heading;
 		}
 		if (keysHeld() & KEY_RIGHT)
 		{
-			heading += 1.0f;
+			heading -= 1.0f;
 			yrot = heading;
 		}
 		if (keysHeld() & KEY_DOWN)
 		{
 			
-			xpos -= (float)sin(heading) * 0.05f;
+			xpos += (float)sin(heading) * 0.05f;
 			zpos += (float)cos(heading) * 0.05f;
 
 			if (walkbiasangle >= 359.0f)
@@ -227,7 +227,7 @@ int main() {
 		}
 		if (keysHeld() & KEY_UP)
 		{
-			xpos += (float)sin(heading) * 0.05f;
+			xpos -= (float)sin(heading) * 0.05f;
 			zpos -= (float)cos(heading) * 0.05f;
 			if (walkbiasangle <= 1.0f)
 			{

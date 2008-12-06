@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	$Id: main.c,v 1.16 2008-12-03 22:39:34 dovoto Exp $
+	$Id: main.c,v 1.17 2008-12-06 15:41:04 dovoto Exp $
 	
 	Nehe lesson 10 modified to use gbfs
 	
@@ -208,17 +208,17 @@ int main()
 		if (keysHeld() & KEY_B) lookupdown += 1.0f;
 
 		if (keysHeld() & KEY_LEFT) {
-			heading -= 1.0f;	
+			heading += 1.0f;	
 			yrot = heading;
 		}
 		
 		if (keysHeld() & KEY_RIGHT) {
-			heading += 1.0f;
+			heading -= 1.0f;
 			yrot = heading;
 		}
 		
 		if (keysHeld() & KEY_DOWN) {
-			xpos -= (float)tsin(heading) * 0.05f;
+			xpos += (float)tsin(heading) * 0.05f;
 			zpos += (float)tcos(heading) * 0.05f;
 			if (walkbiasangle >= 359.0f)
 			{
@@ -232,7 +232,7 @@ int main()
 		}
 		if (keysHeld() & KEY_UP)
 		{
-			xpos += tsin(heading) * 0.05f;
+			xpos -= tsin(heading) * 0.05f;
 			zpos -= tcos(heading) * 0.05f;
 
 			if (walkbiasangle <= 1.0f) {
