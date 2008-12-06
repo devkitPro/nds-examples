@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------
 
-	Simple console print demo doing window
+	Simple console print demo using two consols with different windows
 	-- dovoto
 
 ---------------------------------------------------------------------------------*/
@@ -12,10 +12,12 @@ int main(void) {
 //---------------------------------------------------------------------------------
 	touchPosition touch;
 
-	PrintConsole left = *consoleDemoInit();  
-	PrintConsole right = *consoleDemoInit();
-
-	consoleSetWindow(&left, 2,2,10,14);
+	
+	PrintConsole *left = consoleDemoInit();  
+	consoleSetWindow(left, 2,2,10,14);
+	
+	//make a copy and set a new window
+	PrintConsole right = *left;	
 	consoleSetWindow(&right,16,2,10,14);
 	
 	while(1) {
@@ -31,7 +33,7 @@ int main(void) {
 			touchRead(&touch);
 			
 			if(touch.px < 128)
-				consoleSelect(&left);
+				consoleSelect(left);
 			else
 				consoleSelect(&right);
 				
