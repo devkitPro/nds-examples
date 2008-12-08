@@ -1,7 +1,9 @@
 /*		Simple Maxmod example - Song events   
 
 	See http://www.maxmod.org/ref/tut/songevents.html for an explanation of song events.
-
+	
+	Example and mod file by Nyarla 
+	(modified by Jason Rogers aka Dovoto)
 */
 
 
@@ -44,7 +46,7 @@ int main(void) {
 	
 	videoSetMode(MODE_0_2D);
 	
-	//initialize the sprite engine with 1D mapping 128 byte boundary
+	//initialize the sprite engine with 1D mapping 32 byte boundary
 	//and no external palette support
 	oamInit(&oamMain, SpriteMapping_1D_32, false);
 
@@ -53,12 +55,14 @@ int main(void) {
 	//allocate some space for the sprite graphics	
 	u16* gfx = oamAllocateGfx(&oamMain, SpriteSize_32x32, SpriteColorFormat_256Color);
 
-	//fill the 256 color sprite with index 1 (2 pixels at a time)
+	//copy in our ball graphics
 	dmaCopy(ballTiles, gfx, ballTilesLen);
 	dmaCopy(ballPal, SPRITE_PALETTE, ballPalLen);
 	
 	//--------------------------------------------
-	// initialise maxmod using default settings, and enable interface for soundbank that is loaded into memory
+	// initialise maxmod using default settings, and 
+	// enable interface for a soundbank that is loaded 
+	// into memory
 	//--------------------------------------------
 	mmInitDefaultMem( (mm_addr)mmsolution_bin );
 
@@ -68,6 +72,7 @@ int main(void) {
 	// load song
 	// values for this function are in the solution header
 	mmLoad( MOD_EXAMPLE );
+
 	// start the music playing
 	mmStart( MOD_EXAMPLE, MM_PLAY_LOOP );
 
@@ -80,8 +85,7 @@ int main(void) {
 		spriteY += spriteDy;
 		
 		// Floor is arbitrarily set to 140
-		if ( spriteY > 140 ) 
-			spriteY = 140;
+		if ( spriteY > 140 ) spriteY = 140;
 		
 		
 		oamSet(&oamMain, 			//main graphics engine context
