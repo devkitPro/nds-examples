@@ -7,21 +7,45 @@
 #include <nds.h>
 #include <stdio.h>
 
+char *border = 
+"------------"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"|          |"
+"------------";
+
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
 	touchPosition touch;
 
-	
 	PrintConsole *left = consoleDemoInit();  
-	consoleSetWindow(left, 2,2,10,14);
-	
-	//make a copy and set a new window
 	PrintConsole right = *left;	
+	
+	consoleSetWindow(left, 15,1,12,16);
+	consoleSetWindow(&right, 1,1,12,16);
+
+	consoleSelect(left);
+	iprintf(border);
+	consoleSelect(&right);
+	iprintf(border);
+
+	consoleSetWindow(left, 2,2,10,14);
 	consoleSetWindow(&right,16,2,10,14);
 	
-	while(1) {
-
+	while(1) 
+	{
 		int keys;
 		
 		scanKeys();
@@ -37,7 +61,7 @@ int main(void) {
 			else
 				consoleSelect(&right);
 				
-			iprintf("T: %i\n", touch.px);
+			iprintf("\nT: %i", touch.px);
 		}
 
 		swiWaitForVBlank();
