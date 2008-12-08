@@ -28,8 +28,6 @@ distribution.
 #include <nds.h>
 #include <dswifi7.h>
 #include <maxmod7.h>
-#include <nds/arm7/input.h>
-#include <nds/arm7/system.h>
 
 //---------------------------------------------------------------------------------
 void VcountHandler() {
