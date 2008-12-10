@@ -23,8 +23,10 @@
  *********************************************************/
  
 #include <nds.h>
-
 #include <maxmod9.h>
+
+#include <stdio.h>
+
 #include "soundbank_bin.h"
 #include "soundbank.h"
 

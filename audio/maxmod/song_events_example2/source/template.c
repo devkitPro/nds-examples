@@ -11,15 +11,14 @@
 
 
 #include <nds.h>
-
 #include <maxmod9.h>
+
 #include "mmsolution.h"		// solution definitions
 #include "mmsolution_bin.h"	// solution binary reference 
 
 
 // a simple sprite structure
-typedef struct  
-{
+typedef struct {
    u16* gfx;
    SpriteSize size;
    SpriteColorFormat format;
@@ -40,12 +39,15 @@ MySprite sprites[] = {	{0, SpriteSize_16x16, SpriteColorFormat_256Color, 0, 0, 2
 
 
 
+//---------------------------------------------------------------------------------
 // callback function to handle song events
-mm_word myEventHandler( mm_word msg, mm_word param )
-{
-    switch( msg )
-    {
-    case MMCB_SONGMESSAGE:	// process song messages
+//---------------------------------------------------------------------------------
+mm_word myEventHandler( mm_word msg, mm_word param ) {
+//---------------------------------------------------------------------------------
+
+	switch( msg ) {
+
+	case MMCB_SONGMESSAGE:	// process song messages
 
 			if (param==1) sprites[0].dy = -8;
 			if (param==2) sprites[1].dy = -8;
@@ -82,8 +84,7 @@ int main(void) {
 
 	vramSetBankA(VRAM_A_MAIN_SPRITE);
 	
-	for (i = 0; i < 5; i++)
-	{
+	for (i = 0; i < 5; i++) {
 		//allocate some space for the sprite graphics
 		sprites[i].gfx = oamAllocateGfx(&oamMain, sprites[i].size, sprites[i].format);
 
@@ -111,10 +112,8 @@ int main(void) {
 	// start song playing
 	mmStart( MOD_EXAMPLE2, MM_PLAY_LOOP );
 
-	while(1) 
-	{
-		for (i=0; i < 5; i++)
-		{
+	while(1) {
+		for (i=0; i < 5; i++) {
 			// constantly increase the sprite's y velocity
 			sprites[i].dy += 1;
 		

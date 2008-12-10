@@ -10,8 +10,8 @@
 
 
 #include <nds.h>
-
 #include <maxmod9.h>
+
 #include "mmsolution.h"		// solution definitions
 #include "mmsolution_bin.h"	// solution binary reference 
 #include "ball.h"
@@ -19,19 +19,21 @@
 int spriteDy = 0;
 int spriteY = 140;
 
+//---------------------------------------------------------------------------------
 // callback function to handle song events
-mm_word myEventHandler( mm_word msg, mm_word param )
-{
-    switch( msg )
-    {
-    case MMCB_SONGMESSAGE:	// process song messages
+//---------------------------------------------------------------------------------
+mm_word myEventHandler( mm_word msg, mm_word param ) {
+//---------------------------------------------------------------------------------
+	switch( msg ) {
 
-			// if song event 1 is triggered, set sprite's y velocity to make it jump
-			if (param == 1) spriteDy = -16;
-		
+	case MMCB_SONGMESSAGE:	// process song messages
+
+		// if song event 1 is triggered, set sprite's y velocity to make it jump
+		if (param == 1) spriteDy = -16;
+
         break;
 		
-    case MMCB_SONGFINISHED:	// process song finish message (only triggered in songs played with MM_PLAY_ONCE)
+		case MMCB_SONGFINISHED:	// process song finish message (only triggered in songs played with MM_PLAY_ONCE)
         
 		break;
     }
@@ -76,8 +78,7 @@ int main(void) {
 	// start the music playing
 	mmStart( MOD_EXAMPLE, MM_PLAY_LOOP );
 
-	while(1) 
-	{
+	while(1) {
 		// Sprite accelerates down
 		spriteDy += 2;
 		
