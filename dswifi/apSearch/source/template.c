@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------
 
-	Simple wifi demo to locate and connect to an ap
-	-- dovoto
+Simple wifi demo to locate and connect to an ap
+-- dovoto
 
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
@@ -16,13 +16,13 @@
 
 //---------------------------------------------------------------------------------
 Wifi_AccessPoint* findAP(void){
-//---------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 
 	int selected = 0;  
 	int i;
 	int count = 0;
 
-	Wifi_AccessPoint ap;
+	static Wifi_AccessPoint ap;
 
 	Wifi_ScanMode(); //this allows us to search for APs
 
@@ -79,63 +79,75 @@ Wifi_AccessPoint* findAP(void){
 
 //---------------------------------------------------------------------------------
 void keyPressed(int c){
-//---------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
 	if(c > 0) iprintf("%c",c);
 }
 
 //---------------------------------------------------------------------------------
 int main(void) {
-//---------------------------------------------------------------------------------
-	int status = ASSOCSTATUS_DISCONNECTED;
-
+	//---------------------------------------------------------------------------------
+	Wifi_InitDefault(false);
+	
 	consoleDemoInit(); 
 
 	Keyboard* kb = keyboardGetDefault();
 	kb->OnKeyPressed = keyPressed;
 	keyboardInit(kb);
 
-	Wifi_InitDefault(false);
-
-	Wifi_AccessPoint* ap = findAP();
-		
-	iprintf("Connecting to %s\n", ap->ssid);
-
-	//this tells the wifi lib to use dhcp for everything
-	Wifi_SetIP(0,0,0,0,0);	
-
-	Wifi_ConnectAP(ap, WEPMODE_NONE, 0, 0);
-
-	while(status != ASSOCSTATUS_ASSOCIATED && status != ASSOCSTATUS_CANNOTCONNECT)
-	{
-		int oldStatus = status;
-
-		status = Wifi_AssocStatus();
-
-		iprintf("%s", oldStatus != status ? ASSOCSTATUS_STRINGS[status] : ".");
-	
-		swiWaitForVBlank();
-	}
-
-	consoleClear();
-	consoleSetWindow(NULL, 0,0,32,10);
-
-	char url[256];
-
 	while(1)
 	{
-		iprintf("Url? ");
+		int status = ASSOCSTATUS_DISCONNECTED;
 
-		scanf("%s", url);
+		consoleClear();
 
-		struct hostent *host = gethostbyname(url);
-		
-		if(host)
-			iprintf("IP (%s) : %s\n",  url, inet_ntoa(*(struct in_addr *)host->h_addr_list[0]));
-		else
-			iprintf("Could not resolve\n");
-	
-		swiWaitForVBlank();
+		Wifi_AccessPoint* ap = findAP();
+
+		iprintf("Connecting to %s\n", ap->ssid);
+
+		//this tells the wifi lib to use dhcp for everything
+		Wifi_SetIP(0,0,0,0,0);	
+
+		Wifi_ConnectAP(ap, WEPMODE_NONE, 0, 0);
+
+		while(status != ASSOCSTATUS_ASSOCIATED && status != ASSOCSTATUS_CANNOTCONNECT)
+		{
+			int oldStatus = status;
+
+			status = Wifi_AssocStatus();
+
+			iprintf("%s", oldStatus != status ? ASSOCSTATUS_STRINGS[status] : ".");
+
+			scanKeys();
+
+			if(keysDown() & KEY_B) break;
+			
+			swiWaitForVBlank();
+		}
+
+		consoleClear();
+		consoleSetWindow(NULL, 0,0,32,10);
+
+		char url[256];
+
+		if(status == ASSOCSTATUS_ASSOCIATED) while(1)
+		{
+			iprintf("Url? ");
+
+			scanf("%s", url);
+
+			struct hostent *host = gethostbyname(url);
+
+			if(host)
+				iprintf("IP (%s) : %s\n",  url, inet_ntoa(*(struct in_addr *)host->h_addr_list[0]));
+			else
+				iprintf("Could not resolve\n");
+
+			scanKeys();
+
+			if(keysDown() & KEY_B) break;
+
+			swiWaitForVBlank();
+		}
 	}
-
 	return 0;
 }
