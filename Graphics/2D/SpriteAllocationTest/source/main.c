@@ -119,7 +119,7 @@ void updateSprites(void) {
 
 	//set oam to values required by my sprite
 	for(i = 0; i < SPRITE_MAX; i++) {
-		//an api function: void oamSet(int id, SpriteSize size, int x, int y, SpriteColorFormat format, const void* gfxOffset, bool hide);
+		//an api function: void oamSet(OamState* oam, int id,  int x, int y, int priority, int palette_alpha, SpriteSize size, SpriteColorFormat format, const void* gfxOffset, int affineIndex, bool sizeDouble, bool hide);
 		oamSet(oam, 
 			i, 
 			sprites[i].x, sprites[i].y, 
