@@ -69,7 +69,7 @@ int main(void) {
 
 		bgSetRotateScale(bg3, angle, scaleX, scaleY);
 		bgSetScroll(bg3, scrollX, scrollY);
-		bgUpdate(bg3);
+		bgUpdate();
 	}
 
 }

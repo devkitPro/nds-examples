@@ -78,7 +78,7 @@ int main(void) {
 		bgSetCenter(bg3, rcX, rcY);
 		bgSetRotateScale(bg3, angle, scaleX, scaleY);
 		bgSetScroll(bg3, scrollX, scrollY);
-		bgUpdate(bg3);
+		bgUpdate();
 
 		// clear the console screen (ansi escape sequence)
 		iprintf("\x1b[2J");

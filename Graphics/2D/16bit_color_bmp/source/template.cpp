@@ -23,7 +23,7 @@ int main(void) {
 	iprintf("\t16 bit bitmap demo");
 
 	// set up our bitmap background
-	int id = bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
+	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
 	
 	decompress(drunkenlogoBitmap, BG_GFX,  LZ77Vram);
 	

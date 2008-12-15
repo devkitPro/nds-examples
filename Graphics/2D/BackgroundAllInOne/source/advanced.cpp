@@ -84,8 +84,8 @@ void advRotating(void)
 		if(keys & KEY_LEFT) center_x--;
 		if(keys & KEY_RIGHT) center_x++;
 
-		if(keys & KEY_L) angle--;
-		if(keys & KEY_R) angle++;
+		if(keys & KEY_L) angle-=40;
+		if(keys & KEY_R) angle+=40;
 
 		if(center_x > 256) center_x = 256;
 		if(center_x < 0) center_x = 0;
@@ -99,11 +99,11 @@ void advRotating(void)
 		bgSetRotate(bg, angle);
 		bgSetScroll(bg, center_x, center_y);
 		bgSetCenter(bg, center_x, center_y);
-		bgUpdate(bg);
+		bgUpdate();
 
 		consoleClear();
 		iprintf("Press B to exit.n");
-		iprintf("Angle: %d \ncenter X: %d  center Y: %d", angle, center_x, center_y);
+		iprintf("Angle: %d \ncenter X: %d  center Y: %d", angleToDegrees(angle), center_x, center_y);
 		
 	}
 }
@@ -140,7 +140,7 @@ void advScaling(void)
 		
 		bgSetScale(bg, scale_x , scale_y );
 		
-		bgUpdate(bg);
+		bgUpdate();
 
 		consoleClear();
 		iprintf("Press B to exit.n");
