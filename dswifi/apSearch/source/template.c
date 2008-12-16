@@ -45,7 +45,11 @@ Wifi_AccessPoint* findAP(void){
 			Wifi_GetAPData(i, &ap);
 
 			// display the name of the AP
-			iprintf("%s %s\n", i == selected ? "*" : " ", ap.ssid);
+			iprintf("%s %s Wep:%s Sig:%i\n", 
+				i == selected ? "*" : " ", 
+				ap.ssid, 
+				ap.flags & WFLAG_APDATA_WEP ? "Yes " : "No ",
+				ap.rssi * 100 / 0xD0);
 
 		}
 
@@ -131,7 +135,9 @@ int main(void) {
 
 		if(status == ASSOCSTATUS_ASSOCIATED) while(1)
 		{
-			iprintf("Url? ");
+			u32 ip = Wifi_GetIP();
+
+			iprintf("ip: [%i.%i.%i.%i]", (ip ) & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
 
 			scanf("%s", url);
 
