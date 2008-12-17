@@ -17,7 +17,7 @@ int main(void) {
 	videoSetModeSub(MODE_0_2D);	
 	vramSetBankC(VRAM_C_SUB_BG); 
 
-	PrintConsole *console = consoleInit(0,0, BgType_Text4bpp, BgSize_T_256x256, map_base, tile_base, false);
+	PrintConsole *console = consoleInit(0,0, BgType_Text4bpp, BgSize_T_256x256, map_base, tile_base, false, false);
 
 	ConsoleFont font;
 

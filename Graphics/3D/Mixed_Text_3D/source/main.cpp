@@ -21,7 +21,7 @@ int main() {
 	//map some vram to background for printing
 	vramSetBankC(VRAM_C_MAIN_BG_0x06000000);
  
-	consoleInit(0,1, BgType_Text4bpp, BgSize_T_256x256, 31,0, true);
+	consoleInit(0,1, BgType_Text4bpp, BgSize_T_256x256, 31,0, true, true);
 
 	//put bg 0 at a lower priority than the text background
 	bgSetPriority(0, 1);

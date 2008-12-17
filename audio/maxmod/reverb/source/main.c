@@ -3,6 +3,7 @@
  *********************************************/
 
 #include <nds.h>
+#include <stdio.h>
 
 #include <maxmod9.h>			// maxmod reference
 #include "soundbank_bin.h"		// soundbank binary reference

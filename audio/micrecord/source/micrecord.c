@@ -1,4 +1,5 @@
 #include <nds.h>
+#include <stdio.h>
 
 //the record sample rate
 #define sample_rate  8000

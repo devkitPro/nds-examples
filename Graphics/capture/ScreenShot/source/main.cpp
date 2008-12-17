@@ -46,7 +46,7 @@ int main() {
                     );
 
   	
-	consoleInit(0, 0,BgType_Text4bpp, BgSize_T_256x256, 31,0, true);
+	consoleInit(0, 0,BgType_Text4bpp, BgSize_T_256x256, 31,0, true, true);
     
     //turn off the sprites
     initSprites();

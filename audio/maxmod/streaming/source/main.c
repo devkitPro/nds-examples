@@ -3,6 +3,7 @@
  ****************************************************************/
  
 #include <nds.h>
+#include <stdio.h>
 #include <maxmod9.h>
 
 int sine;		// sine position
