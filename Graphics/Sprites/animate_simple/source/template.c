@@ -221,10 +221,10 @@ int main(void)
 		// while the women has an array of pointers
 		//-----------------------------------------------------------------
 		oamSet(&oamMain, 0, man.x, man.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color, 
-			man.sprite_gfx_mem, -1, false, false);
+			man.sprite_gfx_mem, -1, false, false, false, false, false);
 		
 		oamSet(&oamSub, 0, woman.x, woman.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color, 
-			woman.sprite_gfx_mem[woman.gfx_frame], -1, false, false);
+			woman.sprite_gfx_mem[woman.gfx_frame], -1, false, false, false, false, false);
 
 		swiWaitForVBlank();
 

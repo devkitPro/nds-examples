@@ -72,7 +72,9 @@ int main(int argc, char** argv) {
 		 sprites[i].gfx, 
 		 sprites[i].rotationIndex, 
          true, //double the size of rotated sprites
-         false //don't hide the sprite
+         false, //don't hide the sprite
+		 false, false, //vflip, hflip
+		 false //apply mosaic
          );
       }
 

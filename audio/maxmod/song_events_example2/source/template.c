@@ -135,8 +135,11 @@ int main(void) {
 					sprites[i].gfx,				//pointer to the loaded graphics
 					sprites[i].rotationIndex,	//sprite rotation data  
 					false,						//double the size when rotating?
-					false );					//hide the sprite?	
-		}
+					false,			//hide the sprite?
+					false, false, //vflip, hflip
+					false	//apply mosaic
+					);              
+			}
 
 		swiWaitForVBlank();
 		

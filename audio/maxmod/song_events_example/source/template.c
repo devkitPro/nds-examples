@@ -100,8 +100,11 @@ int main(void) {
 			gfx,				//pointer to the loaded graphics
 			-1,	//sprite rotation data  
 			false,					//double the size when rotating?
-			false);					//hide the sprite?
-
+			false,			//hide the sprite?
+			false, false, //vflip, hflip
+			false	//apply mosaic
+			);              
+	
 		swiWaitForVBlank();
 		
 		//send the updates to the hardware

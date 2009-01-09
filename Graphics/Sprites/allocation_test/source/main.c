@@ -130,7 +130,10 @@ void updateSprites(void) {
 			sprites[i].gfx, 
 			-1, 
 			false, 
-			!sprites[i].alive);
+			!sprites[i].alive,
+			false,
+			false, 
+			false);
 	}
 }
 
