@@ -12,7 +12,7 @@ int main(void) {
 //---------------------------------------------------------------------------------
 	consoleDemoInit();  //setup the sub screen for printing
 
-	keyboardInit(keyboardGetDefault());
+	keyboardDemoInit();
 
 	keyboardShow();
 

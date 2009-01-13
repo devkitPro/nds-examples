@@ -12,11 +12,9 @@ int main(void)  {
 
    consoleDemoInit();
 
-   Keyboard *kbd = keyboardGetDefault();
+   Keyboard *kbd = 	keyboardDemoInit();
 
    kbd->OnKeyPressed = OnKeyPressed;
-
-   keyboardInit(kbd);
 
    while(1) {
       char myName[256];
