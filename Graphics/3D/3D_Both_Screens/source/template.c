@@ -122,8 +122,6 @@ void initSubSprites(void){
  
 		oamSet(&oamSub, x + y * 4, x * 64, y * 64, 0, 15, SpriteSize_64x64, 
 			SpriteColorFormat_Bmp, offset, -1, false,false,false,false,false);
-		
-		oamSub.oamMemory[x + y * 4].gfxIndex = (x * 8) | ((y * 8)<<5);
 	}
  
 	swiWaitForVBlank();
