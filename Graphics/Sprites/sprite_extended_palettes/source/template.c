@@ -8,17 +8,15 @@ using palette 0 and palette 1.
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
 
-
-
 //---------------------------------------------------------------------------------
 int main(void) {
-	//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+
 	int i = 0;
 
 	touchPosition touch;
 
 	videoSetMode(MODE_0_2D);
-	videoSetModeSub(MODE_0_2D);
 
 	vramSetBankA(VRAM_A_MAIN_SPRITE);
 
@@ -27,14 +25,18 @@ int main(void) {
 	u16* gfx1 = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
 	u16* gfx2 = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
 
+	//------------------------------------------------------------------
 	// notice both sprites are filled with color 1
+	//------------------------------------------------------------------
 	for(i = 0; i < 16 * 16 / 2; i++)
 	{
 		gfx1[i] = 1 | (1 << 8);
 		gfx2[i] = 1 | (1 << 8);
 	}
 
-	// unlock vram
+	//------------------------------------------------------------------
+	// unlock vram (cannot write to vram while mapped as palette memory)
+	//------------------------------------------------------------------
 	vramSetBankF(VRAM_F_LCD);
 
 	VRAM_F_EXT_PALETTE[0][1] = RGB15(31,0,0);
