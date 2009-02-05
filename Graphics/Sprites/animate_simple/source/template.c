@@ -43,6 +43,8 @@ demos will follow this one.
 #include <man.h>
 #include <woman.h>
 
+#define FRAMES_PER_ANIMATION 3
+
 //---------------------------------------------------------------------
 // The man sprite
 // he needs a single pointer to sprite memory
@@ -84,15 +86,19 @@ typedef struct
 //---------------------------------------------------------------------
 // The state of the sprite (which way it is walking)
 //---------------------------------------------------------------------
-enum {W_UP = 0, W_RIGHT = 1, W_DOWN = 2, W_LEFT = 3};
+enum SpriteState {W_UP = 0, W_RIGHT = 1, W_DOWN = 2, W_LEFT = 3};
 
+//---------------------------------------------------------------------
+// Screen dimentions
+//---------------------------------------------------------------------
+enum {SCREEN_TOP = 0, SCREEN_BOTTOM = 192, SCREEN_LEFT = 0, SCREEN_RIGHT = 256);
 
 //---------------------------------------------------------------------
 // Animating a man requires us to copy in a new frame of data each time
 //---------------------------------------------------------------------
 void animateMan(Man *sprite)
 {
-	int frame = sprite->anim_frame + sprite->state * 3;
+	int frame = sprite->anim_frame + sprite->state * FRAMES_PER_ANIMATION;
 
 	u8* offset = sprite->frame_gfx + frame * 32*32;
 
@@ -116,7 +122,7 @@ void initMan(Man *sprite, u8* gfx)
 //---------------------------------------------------------------------
 void animateWoman(Woman *sprite)
 {
-	sprite->gfx_frame = sprite->anim_frame + sprite->state * 3;
+	sprite->gfx_frame = sprite->anim_frame + sprite->state * FRAMES_PER_ANIMATION;
 }
 
 //---------------------------------------------------------------------
@@ -134,6 +140,7 @@ void initWoman(Woman *sprite, u8* gfx)
 		gfx += 32*32;
 	}
 }
+
 
 //---------------------------------------------------------------------
 // main
@@ -177,29 +184,29 @@ int main(void)
 		{
 			if(keys & KEY_UP)
 			{
-				if(man.y > 0) man.y--;
-				if(woman.y > 0) woman.y--;
+				if(man.y >= SCREEN_TOP) man.y--;
+				if(woman.y >= SCREEN_TOP) woman.y--;
 
 				man.state = woman.state = W_UP;
 			}
 			if(keys & KEY_LEFT)
 			{
-				if(man.x > 0) man.x--;
-				if(woman.x > 0) woman.x--;
+				if(man.x >= SCREEN_LEFT) man.x--;
+				if(woman.x >= SCREEN_LEFT) woman.x--;
 
 				man.state = woman.state = W_LEFT;
 			}
 			if(keys & KEY_RIGHT)
 			{
-				if(man.x < 255) man.x++;
-				if(woman.x < 255) woman.x++;
+				if(man.x <= SCREEN_RIGHT) man.x++;
+				if(woman.x <= SCREEN_RIGHT) woman.x++;
 
 				man.state = woman.state = W_RIGHT;
 			}
 			if(keys & KEY_DOWN)
 			{
-				if(man.y < 191) man.y++;
-				if(woman.y < 191) woman.y++;
+				if(man.y <= SCREEN_BOTTOM) man.y++;
+				if(woman.y <= SCREEN_BOTTOM) woman.y++;
 
 				man.state = woman.state = W_DOWN;
 			}
@@ -207,8 +214,8 @@ int main(void)
 			man.anim_frame++;
 			woman.anim_frame++;
 
-			if(man.anim_frame > 2) man.anim_frame = 0;
-			if(woman.anim_frame > 2) woman.anim_frame = 0;
+			if(man.anim_frame >= FRAMES_PER_ANIMATION) man.anim_frame = 0;
+			if(woman.anim_frame >= FRAMES_PER_ANIMATION) woman.anim_frame = 0;
 
 		}
 
