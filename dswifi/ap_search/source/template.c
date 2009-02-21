@@ -94,9 +94,8 @@ int main(void) {
 	
 	consoleDemoInit(); 
 
-	Keyboard* kb = keyboardGetDefault();
+	Keyboard* kb = keyboardDemoInit();
 	kb->OnKeyPressed = keyPressed;
-	keyboardInit(kb);
 
 	while(1)
 	{
