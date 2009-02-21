@@ -5,9 +5,9 @@ DATESTRING	:=	$(shell date +%Y)$(shell date +%m)$(shell date +%d)
 #---------------------------------------------------------------------------------
 all: examples
 #---------------------------------------------------------------------------------
-	@rm -fr xbin
-	@mkdir -p xbin
-	@find . -name "*.nds" -exec cp -fv {} xbin \;
+	@rm -fr bin
+	@mkdir -p bin
+	@find . -name "*.nds" -exec cp -fv {} bin \;
 
 examples:
 	@for i in $(SUBDIRS); do if test -e $$i/Makefile ; then $(MAKE) -C $$i || { exit 1;} fi; done;
@@ -22,5 +22,5 @@ clean:
 #---------------------------------------------------------------------------------
 dist: clean
 #---------------------------------------------------------------------------------
-	@rm -fr xbin
+	@rm -fr bin
 	@tar --exclude=*CVS* -cvjf nds-examples-$(DATESTRING).tar.bz2 *
