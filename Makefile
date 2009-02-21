@@ -23,4 +23,4 @@ clean:
 dist: clean
 #---------------------------------------------------------------------------------
 	@rm -fr bin
-	@tar --exclude=*CVS* -cvjf nds-examples-$(DATESTRING).tar.bz2 *
+	@tar --exclude=.svn --exclude=*CVS* -cvjf nds-examples-$(DATESTRING).tar.bz2 *
