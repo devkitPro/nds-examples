@@ -33,7 +33,7 @@ enum {
  *
  * Audio stream data request handler.
  ***********************************************************************************/
-void on_stream_request( mm_word length, mm_addr dest, mm_stream_formats format ) {
+mm_word on_stream_request( mm_word length, mm_addr dest, mm_stream_formats format ) {
 //----------------------------------------------------------------------------------
 	
 	s16 *target = dest;
@@ -42,7 +42,8 @@ void on_stream_request( mm_word length, mm_addr dest, mm_stream_formats format )
 	// synthensize a sine wave with an LFO applied to the pitch
 	// the stereo data is interleaved
 	//------------------------------------------------------------
-	for( length++; length--; )
+	int len = length;
+	for( ; len; len-- )
 	{
 		int sample = sinLerp(sine);
 		
@@ -56,6 +57,7 @@ void on_stream_request( mm_word length, mm_addr dest, mm_stream_formats format )
 		lfo = (lfo + lfo_freq);
 	}
 	
+	return length;
 }
 
 /**********************************************************************************
