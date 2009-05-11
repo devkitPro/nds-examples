@@ -25,7 +25,7 @@ INCLUDES	:=	include
 #---------------------------------------------------------------------------------
 ARCH	:=	-mthumb-interwork
 
-CFLAGS	:=	-g -Wall -O0 -save-temps \
+CFLAGS	:=	-g -Wall -O2 \
  			-march=armv5te -mtune=arm946e-s -fno-gcse\
 			-ffast-math \
 			$(ARCH)
