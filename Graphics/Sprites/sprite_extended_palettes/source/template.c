@@ -39,8 +39,8 @@ int main(void) {
 	//------------------------------------------------------------------
 	vramSetBankF(VRAM_F_LCD);
 
-	VRAM_F_EXT_PALETTE[0][1] = RGB15(31,0,0);
-	VRAM_F_EXT_PALETTE[1][1] = RGB15(0,31,0);
+	VRAM_F_EXT_SPR_PALETTE[0][1] = RGB15(31,0,0);
+	VRAM_F_EXT_SPR_PALETTE[1][1] = RGB15(0,31,0);
 
 	// set vram to ex palette
 	vramSetBankF(VRAM_F_SPRITE_EXT_PALETTE);
