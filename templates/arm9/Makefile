@@ -96,7 +96,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
  
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-icons = $(wildcard *.bmp)
+icons := $(wildcard *.bmp)
 
 ifneq (,$(findstring $(TARGET).bmp,$(icons)))
 	export GAME_ICON := $(CURDIR)/$(TARGET).bmp
@@ -124,8 +124,7 @@ else
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(OUTPUT).nds	: 	$(OUTPUT).arm9
-$(OUTPUT).arm9	:	$(OUTPUT).elf
+$(OUTPUT).nds	: 	$(OUTPUT).elf
 $(OUTPUT).elf	:	$(OFILES)
  
 #---------------------------------------------------------------------------------
