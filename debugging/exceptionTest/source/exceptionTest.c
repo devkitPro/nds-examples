@@ -21,7 +21,7 @@ int main(void) {
 	defaultExceptionHandler();
 
 	// generate an exception
-	*(u32*)250 = 100;
+	*(u32*)8192 = 100;
 
 	while(1) swiWaitForVBlank();
 
