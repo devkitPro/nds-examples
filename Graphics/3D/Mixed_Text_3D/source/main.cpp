@@ -6,11 +6,9 @@
 void DrawGLScene();
  
 float rtri;				// Angle For The Triangle ( NEW )
-float rquad;				// Angle For The Quad ( NEW )
+float rquad;			// Angle For The Quad ( NEW )
  
 int main() {
-
-	PrintConsole console;
 
 	// initialize the geometry engine
 	glInit();	
