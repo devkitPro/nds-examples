@@ -8,7 +8,7 @@
 
 
 //---------------------------------------------------------------------------------
-void dirlist(char* path) {
+void dirlist(const char* path) {
 //---------------------------------------------------------------------------------
 
 	DIR* pdir = opendir(path);
@@ -21,10 +21,10 @@ void dirlist(char* path) {
 			if(pent == NULL) break;
 			
 			if(strcmp(".", pent->d_name) != 0 && strcmp("..", pent->d_name) != 0) {
-				dnbuf = malloc(strlen(pent->d_name)+strlen(path)+2);
+				dnbuf = (char *)malloc(strlen(pent->d_name)+strlen(path)+2);
 				sprintf(dnbuf, "%s/%s", (strcmp("/",path) == 0)?"":path, pent->d_name);
 				
-				struct stat *statbuf = malloc(sizeof(statbuf));
+				struct stat *statbuf = (struct stat*)malloc(sizeof(statbuf));
 				stat(dnbuf, statbuf);
 
 				if(S_ISDIR(statbuf->st_mode)) {
