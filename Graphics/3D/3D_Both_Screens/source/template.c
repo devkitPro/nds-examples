@@ -114,14 +114,21 @@ void initSubSprites(void){
 	int x = 0;
 	int y = 0;
  
+	int id = 0;
+
 	//set up a 4x3 grid of 64x64 sprites to cover the screen
 	for(y = 0; y < 3; y++)
 	for(x = 0; x < 4; x++)
 	{
-		u16 *offset = &SPRITE_GFX_SUB[(x * 64) + (y * 64 * 256)];
+	/*	u16 *offset = &SPRITE_GFX_SUB[(x * 64) + (y * 64 * 256)];
  
 		oamSet(&oamSub, x + y * 4, x * 64, y * 64, 0, 15, SpriteSize_64x64, 
 			SpriteColorFormat_Bmp, offset, -1, false,false,false,false,false);
+	*/
+		oamSub.oamMemory[id].attribute[0] = ATTR0_BMP | ATTR0_SQUARE | (64 * y);
+		oamSub.oamMemory[id].attribute[1] = ATTR1_SIZE_64 | (64 * x);
+		oamSub.oamMemory[id].attribute[2] = ATTR2_ALPHA(1) | (8 * 32 * y) | (8 * x);
+		id++;
 	}
  
 	swiWaitForVBlank();

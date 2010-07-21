@@ -83,21 +83,22 @@ Wifi_AccessPoint* findAP(void){
 
 //---------------------------------------------------------------------------------
 void keyPressed(int c){
-	//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 	if(c > 0) iprintf("%c",c);
 }
 
 //---------------------------------------------------------------------------------
 int main(void) {
-	//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 	Wifi_InitDefault(false);
 	
 	consoleDemoInit(); 
 
-	Keyboard* kb = keyboardDemoInit();
-	kb->OnKeyPressed = keyPressed;
+	//Keyboard* kb = keyboardDemoInit();
+	//kb->OnKeyPressed = keyPressed;
 
-	while(1)
+	while(1);
+
 	{
 		int status = ASSOCSTATUS_DISCONNECTED;
 
@@ -112,8 +113,7 @@ int main(void) {
 
 		Wifi_ConnectAP(ap, WEPMODE_NONE, 0, 0);
 
-		while(status != ASSOCSTATUS_ASSOCIATED && status != ASSOCSTATUS_CANNOTCONNECT)
-		{
+		while(status != ASSOCSTATUS_ASSOCIATED && status != ASSOCSTATUS_CANNOTCONNECT) {
 			int oldStatus = status;
 
 			status = Wifi_AssocStatus();
@@ -126,32 +126,32 @@ int main(void) {
 			
 			swiWaitForVBlank();
 		}
-
 		consoleClear();
 		consoleSetWindow(NULL, 0,0,32,10);
 
 		char url[256];
 
-		if(status == ASSOCSTATUS_ASSOCIATED) while(1)
-		{
-			u32 ip = Wifi_GetIP();
+		if(status == ASSOCSTATUS_ASSOCIATED) {
+			while(1) {
+				u32 ip = Wifi_GetIP();
 
-			iprintf("ip: [%i.%i.%i.%i]", (ip ) & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
+				iprintf("ip: [%i.%i.%i.%i]", (ip ) & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
 
-			scanf("%s", url);
+				scanf("%s", url);
 
-			struct hostent *host = gethostbyname(url);
+				struct hostent *host = gethostbyname(url);
 
-			if(host)
-				iprintf("IP (%s) : %s\n",  url, inet_ntoa(*(struct in_addr *)host->h_addr_list[0]));
-			else
-				iprintf("Could not resolve\n");
+				if(host)
+					iprintf("IP (%s) : %s\n",  url, inet_ntoa(*(struct in_addr *)host->h_addr_list[0]));
+				else
+					iprintf("Could not resolve\n");
 
-			scanKeys();
+				scanKeys();
 
-			if(keysDown() & KEY_B) break;
+				if(keysDown() & KEY_B) break;
 
-			swiWaitForVBlank();
+				swiWaitForVBlank();
+			}
 		}
 	}
 	return 0;
