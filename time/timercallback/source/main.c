@@ -11,7 +11,7 @@ void waitfor(int keys)
 }
 
 
-uint channel = 0;
+int channel = 0;
 bool play = true;
 
 //this function will be called by the timer.
