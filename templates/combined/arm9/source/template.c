@@ -25,6 +25,8 @@ int main(void) {
 		iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
 
 		swiWaitForVBlank();
+		scanKeys();
+		if (keysDown()&KEY_START) break;
 	}
 
 	return 0;
