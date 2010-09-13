@@ -21,8 +21,8 @@ int main(int argc, char** argv) {
    //three sprites of differing color format
    MySprite sprites[] = {
       {0, SpriteSize_32x32, SpriteColorFormat_Bmp, 0, 15, 20, 15},
-      {0, SpriteSize_32x32, SpriteColorFormat_256Color, -1, 0, 20, 80},
-      {0, SpriteSize_32x32, SpriteColorFormat_16Color, -1, 1, 20, 136}
+      {0, SpriteSize_32x32, SpriteColorFormat_256Color, 0, 0, 20, 80},
+      {0, SpriteSize_32x32, SpriteColorFormat_16Color, 0, 1, 20, 136}
    };
 
    videoSetModeSub(MODE_0_2D);
