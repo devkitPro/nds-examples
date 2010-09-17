@@ -1,0 +1,26 @@
+Please note that this is a temporary way to create the font from multiple input images, as I'm working on a more build friendly way to do this.
+
+The options listed in the batch file / shell script are as follows:
+
+Option          Description
+-w value        Width of the glyph in pixels
+-h value        Height of the glyph in pixels
+-l value        Line height font
+-a value        The space between characters
+-p value        The width of a space character, exluding the space added between characters
+-s value        Start code of the glyphs in the image, this HAS to be in hex
+-e value        End code of the glyphs in the image, this HAS to be in hex
+-b value        Change the bit per pixel value
+-i filename     Input file image, any image supported by freeImage can be used (BMP, JPG, TIF, GIF, PNG, etc)
+-o filename     Output file name, this will have .dsf added to it
+
+The Line height of the font and the glyph height are seperate values, and you will need to specify them both otherwise your font line height will be set to 8. The reason for this is so that you can have a font that has a gap between the lines on the screen.
+
+the -b option should only be used to create multi-colour fonts, the valid options are:
+
+1 - mono fonts
+2 - 4 colour font (transparent + 3 colours)
+3 - 8 colour font (transparent + 7 colours)
+4 - 16 colour font (transparent + 15 colours)
+
+Other options on the bpp will result in an unpredictable output file.
