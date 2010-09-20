@@ -147,7 +147,7 @@ int main() {
 	
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
 	
@@ -178,11 +178,22 @@ int main() {
 	glMaterialShinyness();
 	
 	//ds specific, several attributes can be set here	
-	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0);
+	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0 | POLY_FOG);
 	
 	// Set the current matrix to be the model matrix
 	glMatrixMode(GL_MODELVIEW);
-	
+
+	//setup demo fog parameters
+	//these parameters are somewhat arbitrary, and designed to illustrate fog in just this one case.
+	//you will certainly need to tweak them for your own use.
+	//be sure to have set the POLY_FOG bit on any material you want to be fogged.
+	glEnable(GL_FOG);
+	glFogShift(2);
+	glFogColor(0,0,0,0);
+	for(int i=0;i<32;i++)
+		glFogDensity(i,i*4);
+	glFogDensity(31,127);
+	glFogOffset(0x6000);
 
 	while (1)
 	{
