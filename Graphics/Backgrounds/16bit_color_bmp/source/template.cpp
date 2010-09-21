@@ -29,6 +29,8 @@ int main(void) {
 	
 	while(1) {
 		swiWaitForVBlank();
+		scanKeys();
+		if (keysDown()&KEY_START) break;
 	}
 	return 0;
 }
