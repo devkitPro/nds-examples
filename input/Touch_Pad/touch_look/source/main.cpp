@@ -268,7 +268,7 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 	glRotatef32i(lookupdown,(1<<12),0,0);
 	glRotatef32i(sceneroty,0,(1<<12),0);
 
-	glTranslate3f32(xtrans, ytrans, ztrans);
+	glTranslatef32(xtrans, ytrans, ztrans);
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 
 	numtriangles = sector1.numtriangles;

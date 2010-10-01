@@ -84,7 +84,7 @@ int main()
 
 		glMatrixMode(GL_POSITION);
 		glLoadIdentity();
-		glTranslate3f32(0, 0, floattof32(-3));
+		glTranslatef32(0, 0, floattof32(-3));
 		glRotateXi(rotateX);
 		glRotateYi(rotateY);
 
