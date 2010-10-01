@@ -4,7 +4,7 @@
 #include <time.h>
 
 //the speed of the timer when using ClockDivider_1024
-#define TIMER_SPEED (TIMER_HZ/1024)
+#define TIMER_SPEED (BUS_CLOCK/1024)
 
 typedef enum
 {
