@@ -75,6 +75,21 @@ u32 normals[] =
 	glVertex3v16(CubeVectors[f4*3], CubeVectors[f4*3 + 1], CubeVectors[f4*3 + 2] );
 }
 
+void DisplayEnableMotionBlur()
+{
+	u32 dispcnt = REG_DISPCNT;
+	//set main display to display from VRAM
+	dispcnt &= ~(0x00030000); dispcnt |= 2<<16; //choose to display screen from VRAM
+	dispcnt &= ~(0x000C0000); dispcnt |= 1<<18; //choose to display screen from VRAM_B
+	REG_DISPCNT = dispcnt;
+}
+
+void DisplayEnableNormal()
+{
+	u32 dispcnt = REG_DISPCNT;
+	dispcnt &= ~(0x00030000); dispcnt |= 1<<16; //choose to display screen from normal layer composition
+	REG_DISPCNT = dispcnt;
+}
 
 int main()
 {	
@@ -103,7 +118,28 @@ int main()
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
 	glClearDepth(0x7FFF);
-	
+
+	vramSetBankB(VRAM_B_LCD);
+	REG_DISPCAPCNT = 
+			DCAP_MODE(DCAP_MODE_BLEND) //blend source A and source B
+		//|	DCAP_SRC_ADDR //this is not used since we are setting the display to render from VRAM
+		|	DCAP_SRC_B(DCAP_SRC_B_VRAM)
+		|	DCAP_SRC_A(DCAP_SRC_A_3DONLY)
+		|	DCAP_SIZE(DCAP_SIZE_256x192)
+		|	DCAP_OFFSET(0) //where to write the captured data within our chosen VRAM bank
+		|	DCAP_BANK(DCAP_BANK_VRAM_B)
+		|	DCAP_B(12) //blend mostly from B to make a very dramatic effect
+		|	DCAP_A(4) //and blend only a little bit from the new scene
+		;
+	//but, dramatic effects tend to leave some garbage on the screen since the precision of the math is low,
+	//and we're not putting a lot of dampening on the effect.
+	//a more realistic value might be 8 and 8, but perhaps in a more complex 3d scene the garbage isn't such a bad thing
+	//since the scene is changing constantly
+
+	DisplayEnableMotionBlur();
+	bool displayBlurred = true;
+
+
 	vramSetBankA(VRAM_A_TEXTURE);
 
 	glGenTextures(1, &textureID);
@@ -160,6 +196,15 @@ int main()
 		if((keys & KEY_DOWN)) rotateX -= 3;
 		if((keys & KEY_LEFT)) rotateY += 3;
 		if((keys & KEY_RIGHT)) rotateY -= 3;
+
+		if(keysDown() & KEY_A)
+		{
+			displayBlurred = !displayBlurred;
+			if(displayBlurred)
+				DisplayEnableMotionBlur();
+			else 
+				DisplayEnableNormal();
+		}
 		
 		glBindTexture(0, textureID);
 
@@ -175,6 +220,9 @@ int main()
 		glFlush(0);
 
 		swiWaitForVBlank();
+
+		//the display capture enable bit must be set again each frame if you want to continue capturing.
+		REG_DISPCAPCNT |= DCAP_ENABLE;
 	}
 
 	return 0;
