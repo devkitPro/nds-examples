@@ -27,7 +27,7 @@ int walkbiasangle = 0;
 int lookupdown = 0;
 
 
-int	texture[0];			// Storage For 1 Textures (only going to use 1 on the DS for this demo)
+int	texture[1];			// Storage For 1 Textures (only going to use 1 on the DS for this demo)
 
 typedef struct tagVERTEX {
 	v16 x, y, z;
