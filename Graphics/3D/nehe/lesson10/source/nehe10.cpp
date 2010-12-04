@@ -205,9 +205,6 @@ void EmitCube()
 void ShadowDemo()
 {
 	cubeRot.y+=0.8f;
-		
-
-	
 	
 	//draw the actual cube
 	glPushMatrix();
@@ -219,12 +216,11 @@ void ShadowDemo()
 
 	//draw the shadow:
 	{
-		
 		//draw the cube shadow on the ground
 		glPushMatrix();
 		glTranslatef(0.0f,0.0f,-0.4f);
 		TransformCube();
-	
+		
 		//use no texture. set shadow color: we'll use green just to show that it is possible
 		glBindTexture(0,0);
 		glColor(RGB15(0,8,0));
@@ -235,17 +231,16 @@ void ShadowDemo()
 		EmitCube();
 		
 		//2nd shadow pass
-		//be sure to use a different polyID here (shadow with polyID 0 can't be case on surface with polyID 0)
+		//be sure to use a different polyID here (shadow with polyID 0 can't be cast on surface with polyID 0)
 		//we set the fog bit here because we want the shadow to be fogged later. i think it may be buggy but it looks better.
 		glPolyFmt(POLY_SHADOW | POLY_CULL_BACK | POLY_ALPHA(15) | POLY_ID(1) | POLY_FOG);
 		EmitCube();
 		
 		//reset poly attribute
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0 | POLY_FOG);
-
+		
 		glPopMatrix(1);
 	}
-
 }
 
 int main() {
@@ -255,13 +250,13 @@ int main() {
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 	
 	consoleDemoInit();
-
+	
 	// initialize the geometry engine
 	glInit();
 	
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
-
+	
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
 	
