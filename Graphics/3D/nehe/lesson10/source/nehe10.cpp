@@ -15,6 +15,7 @@
 
 #include "Mud_pcx.h"
 #include "World_txt.h"
+#include "drunkenlogo_pcx.h"
 
 
 int DrawGLScene();
@@ -24,12 +25,12 @@ float heading;
 float xpos;
 float zpos;
 
-float	yrot;				// Y Rotation
+float yrot = 0;
 float walkbias = 0;
 float walkbiasangle = 0;
 float lookupdown = 0.0f;
 
-int	texture[3];			// Storage For 3 Textures (only going to use 1 on the DS for this demo)
+int	texture[2];
 
 typedef struct tagVERTEX
 {
@@ -122,16 +123,129 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 {
 	sImage pcx;                //////////////(NEW) and different from nehe.
 
+	glGenTextures(2, &texture[0]);
+	
 	//load our texture
 	loadPCX((u8*)Mud_pcx, &pcx);
-	
 	image8to16(&pcx);
 
-	glGenTextures(1, &texture[0]);
 	glBindTexture(0, texture[0]);
 	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD | GL_TEXTURE_WRAP_S | GL_TEXTURE_WRAP_T, pcx.image.data8);
+	
+	imageDestroy(&pcx);
 
+	loadPCX((u8*)drunkenlogo_pcx, &pcx);
+	image8to16(&pcx);
+	glBindTexture(0, texture[1]);
+	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, pcx.image.data8);
+	
 	return TRUE;
+}
+
+struct CubeRot
+{
+	float x,y,z;
+	CubeRot()
+		: x(0), y(0), z(0)
+	{
+	}
+} cubeRot;
+
+void TransformCube()
+{
+	glRotatef(cubeRot.x,1.0f,0.0f,0.0f);
+	glRotatef(cubeRot.y,0.0f,1.0f,0.0f);
+	glRotatef(cubeRot.z,0.0f,0.0f,1.0f);
+}
+
+void EmitCube()
+{
+	glPushMatrix();
+	glScalef(0.03f,0.03f,0.03f);	
+	
+	glRotatef(cubeRot.x,1.0f,0.0f,0.0f);
+	glRotatef(cubeRot.y,0.0f,1.0f,0.0f);
+	glRotatef(cubeRot.z,0.0f,0.0f,1.0f);
+		
+	glBegin(GL_QUADS);
+		// Front Face
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+		// Back Face
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		// Top Face
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+		// Bottom Face
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		// Right face
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		// Left Face
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+	glEnd();
+	glPopMatrix(1);
+}
+
+void ShadowDemo()
+{
+	cubeRot.y+=0.8f;
+		
+
+	
+	
+	//draw the actual cube
+	glPushMatrix();
+	glTranslatef(0.0f,0.4f,-0.4f); //draw the cube up in the air
+	TransformCube();
+	glBindTexture(GL_TEXTURE_2D, texture[1]);
+	EmitCube();
+	glPopMatrix(1);
+
+	//draw the shadow:
+	{
+		
+		//draw the cube shadow on the ground
+		glPushMatrix();
+		glTranslatef(0.0f,0.0f,-0.4f);
+		TransformCube();
+	
+		//use no texture. set shadow color: we'll use green just to show that it is possible
+		glBindTexture(0,0);
+		glColor(RGB15(0,8,0));
+		
+		//1st shadow pass
+		//be sure to use opaque here
+		glPolyFmt(POLY_SHADOW | POLY_CULL_FRONT | POLY_ALPHA(31) );
+		EmitCube();
+		
+		//2nd shadow pass
+		//be sure to use a different polyID here (shadow with polyID 0 can't be case on surface with polyID 0)
+		//we set the fog bit here because we want the shadow to be fogged later. i think it may be buggy but it looks better.
+		glPolyFmt(POLY_SHADOW | POLY_CULL_BACK | POLY_ALPHA(15) | POLY_ID(1) | POLY_FOG);
+		EmitCube();
+		
+		//reset poly attribute
+		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0 | POLY_FOG);
+
+		glPopMatrix(1);
+	}
+
 }
 
 int main() {
@@ -150,6 +264,9 @@ int main() {
 
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
+	
+	// enable alpha blending for shadow demo
+	glEnable(GL_BLEND);
 	
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
@@ -315,6 +432,9 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 			glTexCoord2f(u_m,v_m); glVertex3f(x_m,y_m,z_m);
 		glEnd();
 	}
+
+	ShadowDemo();
+	
 	return TRUE;										// Everything Went OK
 
 }
