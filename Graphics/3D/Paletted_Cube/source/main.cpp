@@ -102,7 +102,6 @@ u32 normals[] =
 
 int main()
 {	
-	
 	int textureIDS[10];
 	struct { int format, pal_addr; u32 size; } textures[10];
 	int i;
@@ -114,6 +113,7 @@ int main()
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
 	consoleDemoInit();
+	consoleDebugInit(DebugDevice_NOCASH);
 
 	
 	// initialize gl
@@ -146,6 +146,8 @@ int main()
 	glLight(0, RGB15(31,31,31) , 0, floattov10(-.5), floattov10(-.85));
 	
 	vramSetBankA(VRAM_A_TEXTURE);
+	vramSetBankF(VRAM_F_TEX_PALETTE_SLOT0);
+	vramSetBankG(VRAM_G_TEX_PALETTE_SLOT1);
 
 	glGenTextures(10, textureIDS);
 	
@@ -207,7 +209,10 @@ int main()
 	glBindTexture(0, textureIDS[8]);
 	glTexImage2D(0, 0, GL_RGB32_A3, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture8_RGB32_A3_tex_bin);
 	textures[8].format = GL_RGB32_A3;
-	textures[8].pal_addr = gluTexLoadPal( (u16*)texture8_RGB32_A3_pal_bin, 32, GL_RGB32_A3 );
+	// this line seems stupid, but for purposes of a demo, it will prove that you can 
+	// load palettes to F and G by pushing the allocated textures from F and into G
+	for(int i=0;i<300;i++)
+		textures[8].pal_addr = gluTexLoadPal( (u16*)texture8_RGB32_A3_pal_bin, 32, GL_RGB32_A3 );
 	textures[8].size = texture8_RGB32_A3_tex_bin_size+texture8_RGB32_A3_pal_bin_size;
 
 	glBindTexture(0, textureIDS[9]);
@@ -278,6 +283,7 @@ int main()
 		glPopMatrix(1);
 			
 		glFlush(0);
+		swiWaitForVBlank();
 	}
 
 	return 0;
