@@ -46,12 +46,6 @@ int main(void) {
 	lcdMainOnBottom();
 
 	initOAM();
-    //enable vram and map it to the right places
-    vramSetMainBanks(   VRAM_A_MAIN_SPRITE,        //A and B maped consecutively as sprite memory
-                        VRAM_B_MAIN_SPRITE,        //this gives us 256KB which is the max
-                        VRAM_C_MAIN_BG_0x06000000,  //map C to background memory
-                        VRAM_D_LCD                 //not using D
-                        ); 
    
    //set the video mode
     videoSetMode(  MODE_0_2D | 
