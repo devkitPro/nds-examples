@@ -52,35 +52,42 @@ typedef struct {
 int main(void) {
 	consoleDemoInit();
 
-	iprintf("      Hello DS dev'rs\n");
-	iprintf("     \x1b[32mwww.devkitpro.org\n");
-	iprintf("   \x1b[32;1mwww.drunkencoders.com\x1b[39m");
-
 	while(1) {
 		swiWaitForVBlank();
+
+		consoleClear();
+		iprintf("      Hello DS dev'rs\n");
+		iprintf("     \x1b[32mwww.devkitpro.org\n");
+		iprintf("   \x1b[32;1mwww.drunkencoders.com\x1b[39m");
+
+
+		printf("\x1b[4;0Hgba header 96h: %02X\n",GBA_HEADER.is96h);
+		printf("0x08000000: %04X\n",*(vu16*)0x08000000);
+
+		if(guitarGripIsInserted())
+		{
+			guitarGripScanKeys();
+			u8 keys = guitarGripKeysHeld();
+			iprintf("\x1b[7;0HguitarGrip: %02X\n",keys);
+			iprintf("  [%s]  [%s]  [%s]  [%s]",(keys&GUITARGRIP_BLUE)?"BLU":"   ",(keys&GUITARGRIP_YELLOW)?"YEL":"   ",(keys&GUITARGRIP_RED)?"RED":"   ",(keys&GUITARGRIP_GREEN)?"GRN":"   ");
+		}
 
 		if(pianoIsInserted())
 		{
 			pianoScanKeys();
 			PianoKeys keys;
 			keys.VAL = pianoKeysHeld();
-			iprintf("\x1b[5;0Hpiano: %04X\n",pianoKeysHeld());
+			iprintf("\x1b[7;0Hpiano: %04X\n",pianoKeysHeld());
 			iprintf("  %s  %s     %s  %s  %s   \n",keys.c_sharp?"C#":"  ",keys.d_sharp?"D#":"  ",keys.f_sharp?"F#":"  ",keys.g_sharp?"G#":"  ",keys.a_sharp?"A#":"  ");
 			iprintf("%s  %s  %s %s  %s  %s  %s  %s\n",keys.c?"C ":"  ",keys.d?"D ":"  ",keys.e?"E ":"  ",keys.f?"F ":"  ",keys.g?"G ":"  ",keys.a?"A ":"  ",keys.b?"B ":"  ",keys.high_c?"C ":"  ");
 		}
 
 		if(paddleIsInserted())
 		{
-			iprintf("\x1b[5;0Hpaddle: %04X\n",paddleRead());
+			iprintf("\x1b[7;0Hpaddle: %04X\n",paddleRead());
 		}
 
-		if(guitarGripIsInserted())
-		{
-			guitarGripScanKeys();
-			u8 keys = guitarGripKeysHeld();
-			iprintf("\x1b[5;0HguitarGrip: %02X\n",keys);
-			iprintf("  [%s]  [%s]  [%s]  [%s]",(keys&GUITARGRIP_GREEN)?"GRN":"   ",(keys&GUITARGRIP_RED)?"RED":"   ", (keys&GUITARGRIP_YELLOW)?"YEL":"   ",(keys&GUITARGRIP_BLUE)?"BLU":"   ");
-		}
+
 	}
 
 	return 0;
