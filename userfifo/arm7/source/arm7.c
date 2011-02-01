@@ -48,9 +48,11 @@ void VcountHandler() {
 volatile bool exitflag = false;
 
 //---------------------------------------------------------------------------------
-void powerButtonHandler() {
+void i2cIRQHandler() {
 //---------------------------------------------------------------------------------
-	exitflag = true;
+	int cause = (i2cReadRegister(I2C_PM, 0x10) & 0x3) | (i2cReadRegister(I2C_UNK4, 0x02)<<2);
+	
+	if (cause & 1) exitflag = true;
 }
 
 //---------------------------------------------------------------------------------
@@ -74,8 +76,8 @@ int main() {
 
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
-	irqSetAUX(IRQ_POWER, powerButtonHandler);
-	irqEnableAUX(IRQ_POWER);
+	irqSetAUX(IRQ_I2C, i2cIRQHandler);
+	irqEnableAUX(IRQ_I2C);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT | IRQ_NETWORK);   
 
