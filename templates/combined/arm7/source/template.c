@@ -49,7 +49,7 @@ volatile bool exitflag = false;
 //---------------------------------------------------------------------------------
 void i2cIRQHandler() {
 //---------------------------------------------------------------------------------
-	int cause = (i2cReadRegister(I2C_PM, 0x10) & 0x3) | (i2cReadRegister(I2C_UNK4, 0x02)<<2);
+	int cause = (i2cReadRegister(I2C_PM, 0x10) & 0x3) | (i2cReadRegister(I2C_GPIO, 0x02)<<2);
 	
 	if (cause & 1) exitflag = true;
 }
