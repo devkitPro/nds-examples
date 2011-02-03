@@ -1,0 +1,11 @@
+this file has some content
+it is small.
+but we should make it 512 bytes at least to make sure that some stuff works.
+so let us pad it out.
+pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad 
+pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad 
+pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad 
+pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad 
+pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad pad 
+and now it is 631 bytes.
+wait, make that 678
