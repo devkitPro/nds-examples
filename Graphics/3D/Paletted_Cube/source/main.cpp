@@ -29,6 +29,13 @@
 #include "texture9_RGB32_A3_pal_bin.h"
 #include "texture9_RGB32_A3_tex_bin.h"
 
+// I wish I could remember where I got this compressed texture from, but I'm sure that someone
+// who sees it might know where it comes from.
+
+#include "texture10_COMP_tex_bin.h"
+#include "texture10_COMP_texExt_bin.h"
+#include "texture10_COMP_pal_bin.h"
+
 
 
 //verticies for the cube
@@ -102,8 +109,7 @@ u32 normals[] =
 
 int main()
 {	
-	int textureIDS[10];
-	struct { int format, pal_addr; u32 size; } textures[10];
+	int textureIDS[11];
 	int i;
 	float rotateX = 0.0;
 	float rotateY = 0.0;
@@ -112,8 +118,12 @@ int main()
 	
 	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
-	consoleDemoInit();
-	consoleDebugInit(DebugDevice_NOCASH);
+	
+	//Because of letting the user manipulate which video banks the program will use,
+	// I chose to manually set the console data into Bank I, as the demo default uses Bank C.
+	videoSetModeSub( MODE_0_2D  );
+	vramSetBankI( VRAM_I_SUB_BG_0x06208000 );
+	consoleInit( NULL, 0, BgType_Text4bpp, BgSize_T_256x256, 23, 2, false, true );
 
 	
 	// initialize gl
@@ -145,83 +155,104 @@ int main()
 	// setup the lighting
 	glLight(0, RGB15(31,31,31) , 0, floattov10(-.5), floattov10(-.85));
 	
-	vramSetBankA(VRAM_A_TEXTURE);
+	
+	//You may comment/uncomment what you like, as the integration of nglVideo into libnds works
+	// by examining the state of the banks, and deciding where to put textures/texpalettes based on that.
+	//There are some exceptions to get certain stuff working though...
+	// At least one main bank (A-D) must be allocated to textures to load/use them obviously, as well as 
+	//  sub banks (E-G) for texture palettes
+	// Compressed textures require bank B allocated, as well as bank A or C (or both) to be loadable/usable
+	// 4 color palettes (not 4-bit) require either bank E, or bank F/G as slot0/1
+	
+	
+	//vramSetBankA(VRAM_A_TEXTURE);
+	vramSetBankB(VRAM_B_TEXTURE);
+	vramSetBankC(VRAM_C_TEXTURE);
+	//vramSetBankD(VRAM_D_TEXTURE);
+	//vramSetBankE(VRAM_E_TEX_PALETTE);
 	vramSetBankF(VRAM_F_TEX_PALETTE_SLOT0);
-	vramSetBankG(VRAM_G_TEX_PALETTE_SLOT1);
+	vramSetBankG(VRAM_G_TEX_PALETTE_SLOT5);
+	
+	
 
-	glGenTextures(10, textureIDS);
+	glGenTextures(11, textureIDS);
 	
 	// inital full 16 bit colour texture
 	glBindTexture(0, textureIDS[0]);
 	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture_bin);
-	textures[0].format = GL_RGB;
-	textures[0].pal_addr = 0;	
-	textures[0].size = texture_bin_size; 	// size field just recorded for on-screen info
-	
 
-	// Load some 16 colour textures
+
+	// Load a 16 colour texture
 	glBindTexture(0, textureIDS[1]);
 	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture1_RGB16_tex_bin);
-	textures[1].format = GL_RGB16;
-	textures[1].pal_addr = gluTexLoadPal( (u16*)texture1_RGB16_pal_bin, 16, GL_RGB16 );
-	textures[1].size = texture1_RGB16_tex_bin_size+texture1_RGB16_pal_bin_size;
+	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture1_RGB16_pal_bin );
 
+
+	// Just to show that this works, let's go and delete that very first texture that was loaded
+	glDeleteTextures( 1, &textureIDS[ 0 ] );	
+	
+
+	// Load some more 16 color textures
 	glBindTexture(0, textureIDS[2]);
 	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture2_RGB16_tex_bin);
-	textures[2].format = GL_RGB16;
-	textures[2].pal_addr = gluTexLoadPal( (u16*)texture2_RGB16_pal_bin, 16, GL_RGB16 );
-	textures[2].size = texture2_RGB16_tex_bin_size+texture2_RGB16_pal_bin_size;
+	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture2_RGB16_pal_bin );
 	
 	glBindTexture(0, textureIDS[3]);
 	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture3_RGB16_tex_bin);
-	textures[3].format = GL_RGB16;
-	textures[3].pal_addr = gluTexLoadPal( (u16*)texture3_RGB16_pal_bin, 16, GL_RGB16 );
-	textures[3].size = texture3_RGB16_tex_bin_size+texture3_RGB16_pal_bin_size;
+	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture3_RGB16_pal_bin );
 	
+
+	// Now, re-generate the first texture, who's VRAM position won't be the same as before in the end
+	glGenTextures( 1, &textureIDS[ 0 ] );
+
+
+	// Load some more 16 color textures
 	glBindTexture(0, textureIDS[4]);
 	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture4_RGB16_tex_bin);
-	textures[4].format = GL_RGB16;
-	textures[4].pal_addr = gluTexLoadPal( (u16*)texture4_RGB16_pal_bin, 16, GL_RGB16 );
-	textures[4].size = texture4_RGB16_tex_bin_size+texture4_RGB16_pal_bin_size;
+	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture4_RGB16_pal_bin );
 	
 	glBindTexture(0, textureIDS[5]);
 	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture5_RGB16_tex_bin);
-	textures[5].format = GL_RGB16;
-	textures[5].pal_addr = gluTexLoadPal( (u16*)texture5_RGB16_pal_bin, 16, GL_RGB16 );
-	textures[5].size = texture5_RGB16_tex_bin_size+texture5_RGB16_pal_bin_size;
-
+	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture5_RGB16_pal_bin );
+	
 
 	// Load some 4 colour textures
 	glBindTexture(0, textureIDS[6]);
 	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture6_RGB4_tex_bin);
-	textures[6].format = GL_RGB4;
-	textures[6].pal_addr = gluTexLoadPal( (u16*)texture6_RGB4_pal_bin, 4, GL_RGB4 );
-	textures[6].size = texture6_RGB4_tex_bin_size+texture6_RGB4_pal_bin_size;
-
+	glColorTableEXT( 0, 0, 4, 0, 0, (u16*)texture6_RGB4_pal_bin );
+	
 	glBindTexture(0, textureIDS[7]);
 	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture7_RGB4_tex_bin);
-	textures[7].format = GL_RGB4;
-	textures[7].pal_addr = gluTexLoadPal( (u16*)texture7_RGB4_pal_bin, 4, GL_RGB4 );
-	textures[7].size = texture7_RGB4_tex_bin_size+texture7_RGB4_pal_bin_size;
+	glColorTableEXT( 0, 0, 4, 0, 0, (u16*)texture7_RGB4_pal_bin );
 
 
 	// Load some 32 colour textures, 8 levels of alpha
 	glBindTexture(0, textureIDS[8]);
 	glTexImage2D(0, 0, GL_RGB32_A3, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture8_RGB32_A3_tex_bin);
-	textures[8].format = GL_RGB32_A3;
-	// this line seems stupid, but for purposes of a demo, it will prove that you can 
-	// load palettes to F and G by pushing the allocated textures from F and into G
-	for(int i=0;i<300;i++)
-		textures[8].pal_addr = gluTexLoadPal( (u16*)texture8_RGB32_A3_pal_bin, 32, GL_RGB32_A3 );
-	textures[8].size = texture8_RGB32_A3_tex_bin_size+texture8_RGB32_A3_pal_bin_size;
+	glColorTableEXT( 0, 0, 32, 0, 0, (u16*)texture8_RGB32_A3_pal_bin );
 
 	glBindTexture(0, textureIDS[9]);
 	glTexImage2D(0, 0, GL_RGB32_A3, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture9_RGB32_A3_tex_bin);
-	textures[9].format = GL_RGB32_A3;
-	textures[9].pal_addr = gluTexLoadPal( (u16*)texture9_RGB32_A3_pal_bin, 32, GL_RGB32_A3 );
-	textures[9].size = texture9_RGB32_A3_tex_bin_size+texture9_RGB32_A3_pal_bin_size;
-	
-	
+	glColorTableEXT( 0, 0, 32, 0, 0, (u16*)texture9_RGB32_A3_pal_bin );
+
+
+	// Load a 4x4 texel compressed texture
+	// The tiles and header need to be combined together in that order
+	// If this data is already pre-combined together, then you can just send it into the nglTexImage2D function
+	u8 *compTexture = (u8*)malloc( texture10_COMP_tex_bin_size + texture10_COMP_texExt_bin_size );
+	swiCopy( texture10_COMP_tex_bin, compTexture, texture10_COMP_tex_bin_size >> 2 | COPY_MODE_WORD );
+	swiCopy( texture10_COMP_texExt_bin, compTexture + texture10_COMP_tex_bin_size , texture10_COMP_texExt_bin_size >> 2 | COPY_MODE_WORD );
+
+	glBindTexture(0, textureIDS[10]);
+	glTexImage2D(0, 0, GL_COMPRESSED, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)compTexture);
+	glColorTableEXT( 0, 0, texture10_COMP_pal_bin_size >> 1, 0, 0, (u16*)texture10_COMP_pal_bin );
+
+
+	// Now, let's reload the full 16 bit color texture was had it's name deleted and regenerated
+	glBindTexture(0, textureIDS[0]);
+	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture_bin);
+
+
 
 	iprintf("\x1b[4;8HPaletted Cube");
 	iprintf("\x1b[6;2HRight/Left shoulder to switch");
@@ -257,23 +288,19 @@ int main()
 		if((keys & KEY_RIGHT)) rotateY -= 3;
 		
 		u16 keysPressed = keysDown();
-		if(!(keysPressed & KEY_R)) 
+		if(keysPressed & KEY_R)
 		{
-			if( ++nTexture == 10 )	
+			if( ++nTexture == 11 )	
 				nTexture=0;
 		}
-		if(!(keysPressed & KEY_L)) 
+		if(keysPressed & KEY_L) 
 		{
 			if( --nTexture == -1 )	
-				nTexture=9;
+				nTexture=10;
 		}
 		
 		glBindTexture(nTexture, textureIDS[nTexture]);
-		if( textures[nTexture].format != GL_RGB )
-		{
-			glColorTable(textures[nTexture].format, textures[nTexture].pal_addr);
-		}
-
+		
 		//draw the obj
 		glBegin(GL_QUAD);
 			for(i = 0; i < 6; i++)
