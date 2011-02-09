@@ -61,8 +61,8 @@ int main(void) {
 		iprintf("   \x1b[32;1mwww.drunkencoders.com\x1b[39m");
 
 
-		printf("\x1b[4;0Hgba header 96h: %02X\n",GBA_HEADER.is96h);
-		printf("0x08000000: %04X\n",*(vu16*)0x08000000);
+		iprintf("\x1b[4;0Hgba header 96h: %02X\n",GBA_HEADER.is96h);
+		iprintf("0x08000000: %04X\n",*(vu16*)0x08000000);
 
 		if(guitarGripIsInserted())
 		{
