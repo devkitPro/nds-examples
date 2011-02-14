@@ -48,11 +48,9 @@ void VcountHandler() {
 volatile bool exitflag = false;
 
 //---------------------------------------------------------------------------------
-void i2cIRQHandler() {
+void powerButtonCB() {
 //---------------------------------------------------------------------------------
-	int cause = (i2cReadRegister(I2C_PM, 0x10) & 0x3) | (i2cReadRegister(I2C_GPIO, 0x02)<<2);
-	
-	if (cause & 1) exitflag = true;
+	exitflag = true;
 }
 
 //---------------------------------------------------------------------------------
@@ -76,10 +74,10 @@ int main() {
 
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
-	irqSetAUX(IRQ_I2C, i2cIRQHandler);
-	irqEnableAUX(IRQ_I2C);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT | IRQ_NETWORK);   
+
+	setPowerButtonCB(powerButtonCB);   
 
 	// Keep the ARM7 mostly idle
 	while (!exitflag) {
@@ -101,8 +99,7 @@ int main() {
 			fifoSendValue32(FIFO_USER_01,temp);
 		}
 
-		//ideally we would wait for irq here to keep from burning cpu.
-		//but arm7 bios routines seem not to be readily available at this point.
+		swiIntrWait(1,IRQ_FIFO_NOT_EMPTY | IRQ_VBLANK);
 	}
 	return 0;
 }

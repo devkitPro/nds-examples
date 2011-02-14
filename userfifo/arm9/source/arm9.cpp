@@ -23,6 +23,8 @@ int main(void) {
 		iprintf("%d %d %d\n",values[0],values[1],values[2]);
 
 		swiWaitForVBlank();
+		scanKeys();
+		if (keysDown() & KEY_START) break;
 	}
 
 	return 0;
