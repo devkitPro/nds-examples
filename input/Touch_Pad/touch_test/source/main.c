@@ -86,6 +86,9 @@ int main(void) {
 		// Right Shoulder button toggles the mode
 		if ( pressed & KEY_R) TouchType ^= SINGLE;
 
+		// Start button exits the app
+		if ( pressed & KEY_START) break;
+
 		iprintf("\x1b[14;4HTouch mode: %s",TouchType==CONTINUOUS?"CONTINUOUS ":"SINGLE SHOT");
 
 		iprintf("\x1b[6;5HTouch x = %04X, %04X\n", touch.rawx, touch.px);
