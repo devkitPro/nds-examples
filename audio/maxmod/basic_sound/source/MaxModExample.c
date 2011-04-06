@@ -74,6 +74,8 @@ int main() {
 		if ( keys_pressed & KEY_B ) {
 			mmEffectEx(&boom);
 		}
+		if( keys_pressed & KEY_START) break;
 
-	} while( 1 );
+	} while(1);
+	return 0;
 }
