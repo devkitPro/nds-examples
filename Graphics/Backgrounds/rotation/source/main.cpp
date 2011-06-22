@@ -74,6 +74,8 @@ int main(void) {
 
 
 		swiWaitForVBlank();
+		scanKeys();
+		if (keysDown()&KEY_START) break;
 
 		bgSetCenter(bg3, rcX, rcY);
 		bgSetRotateScale(bg3, angle, scaleX, scaleY);
@@ -82,8 +84,6 @@ int main(void) {
 
 		// clear the console screen (ansi escape sequence)
 		iprintf("\x1b[2J");
-
-
 
 	}
 	return 0;
