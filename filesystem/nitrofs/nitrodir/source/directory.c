@@ -12,7 +12,6 @@ void dirlist(const char* path) {
 //---------------------------------------------------------------------------------
 
 	DIR* pdir = opendir(path);
-	char *dnbuf;
 
 	if (pdir != NULL) {
 
@@ -21,20 +20,15 @@ void dirlist(const char* path) {
 			if(pent == NULL) break;
 			
 			if(strcmp(".", pent->d_name) != 0 && strcmp("..", pent->d_name) != 0) {
-				dnbuf = (char *)malloc(strlen(pent->d_name)+strlen(path)+2);
-				sprintf(dnbuf, "%s/%s", (strcmp("/",path) == 0)?"":path, pent->d_name);
-				
-				struct stat *statbuf = (struct stat*)malloc(sizeof(statbuf));
-				stat(dnbuf, statbuf);
-
-				if(S_ISDIR(statbuf->st_mode)) {
-					printf("%s <DIR>\n", dnbuf);
+				if(pent->d_type == DT_DIR) {
+					printf("%s/%s <DIR>\n", (strcmp("/",path) == 0)?"":path, pent->d_name);
+					char *dnbuf = (char *)malloc(strlen(pent->d_name)+strlen(path)+2);
+					sprintf(dnbuf, "%s/%s", (strcmp("/",path) == 0)?"":path, pent->d_name);
 					dirlist(dnbuf);
+					free(dnbuf);
 				} else {
-					printf("%s (%d)\n", dnbuf, (int)statbuf->st_size);
+					printf("%s/%s\n",(strcmp("/",path) == 0)?"":path, pent->d_name);
 				}
-				free(dnbuf);
-				free(statbuf);
 			}
 		}
 		
@@ -91,6 +85,8 @@ int main(int argc, char **argv) {
 
 	while(1) {
 		swiWaitForVBlank();
+		scanKeys();
+		if(keysDown()&KEY_START) break;
 	}
 
 	return 0;
