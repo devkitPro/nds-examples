@@ -42,6 +42,8 @@ int main(void) {
 				backBuffer[iy * 256 + ix] = (rand() & colorMask) | BIT(15);
 
 		swiWaitForVBlank();
+		scanKeys();
+		if (keysDown()&KEY_START) break;
 
 		//swap the back buffer to the current buffer
 		backBuffer = (u16*)bgGetGfxPtr(bg);
