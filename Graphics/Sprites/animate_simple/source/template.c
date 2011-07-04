@@ -179,6 +179,8 @@ int main(void)
 		scanKeys();
 
 		int keys = keysHeld();
+		
+		if(keys & KEY_START) break;
 
 		if(keys)
 		{
