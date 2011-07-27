@@ -23,6 +23,15 @@ INCLUDES	:=	include
 DATA		:=	data  
 GRAPHICS	:=	gfx  
 
+# specify a directory which contains the nitro filesystem
+# this is relative to the Makefile
+NITRO_FILES	:=
+
+# These set the information text in the nds file
+GAME_TITLE		:=	Basic ARM9 template
+GAME_SUBTITLE1	:=	www.devkitpro.org
+GAME_SUBTITLE2	:=	www.drunkencoders.com
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
