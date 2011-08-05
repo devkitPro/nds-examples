@@ -3,40 +3,33 @@
 #include <stdio.h>
 #include <nds/arm9/console.h> //basic print funcionality
 
+#include "i2.h" //deleted
+//tinted
+#include "i4.h"
+#include "i8.h"
+#include "16bpp.h"
+#include "a3i5.h"
+#include "a5i3.h"
+//compressed
 
-//texture_bin our original texture
-#include "texture_bin.h"
-
-// most of the following textures were generated from online samples available at 
-// http://www.marlinstudios.com/samples/sampvtf.htm and http://www.3dtotal.com/textures_v15/
-
-#include "texture1_RGB16_pal_bin.h"
-#include "texture1_RGB16_tex_bin.h"
-#include "texture2_RGB16_pal_bin.h"
-#include "texture2_RGB16_tex_bin.h"
-#include "texture3_RGB16_pal_bin.h"
-#include "texture3_RGB16_tex_bin.h"
-#include "texture4_RGB16_pal_bin.h"
-#include "texture4_RGB16_tex_bin.h"
-#include "texture5_RGB16_pal_bin.h"
-#include "texture5_RGB16_tex_bin.h"
-#include "texture6_RGB4_pal_bin.h"
-#include "texture6_RGB4_tex_bin.h"
-#include "texture7_RGB4_pal_bin.h"
-#include "texture7_RGB4_tex_bin.h"
-#include "texture8_RGB32_A3_pal_bin.h"
-#include "texture8_RGB32_A3_tex_bin.h"
-#include "texture9_RGB32_A3_pal_bin.h"
-#include "texture9_RGB32_A3_tex_bin.h"
+static const char* test_names[] = {
+	"i2 (GL_RGB4)",
+	"i2 (GL_RGB4) palette-swapped",
+	"i4 (GL_RGB16)",
+	"i8 (GL_RGB256)",
+	"direct color (GL_RGB)",
+	"a3i5 (GL_RGB32_A3)",
+	"a5i3 (GL_RGB8_A5)",
+	"4x4 compressed (GL_COMPRESSED)"
+};
 
 // I wish I could remember where I got this compressed texture from, but I'm sure that someone
 // who sees it might know where it comes from.
-
 #include "texture10_COMP_tex_bin.h"
 #include "texture10_COMP_texExt_bin.h"
 #include "texture10_COMP_pal_bin.h"
 
-
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 //verticies for the cube
 v16 CubeVectors[] = {
@@ -90,8 +83,8 @@ void drawQuad(int poly)
 	u32 f3 = CubeFaces[poly * 4 + 2] ;
 	u32 f4 = CubeFaces[poly * 4 + 3] ;
 
-
-	glNormal(normals[poly]);
+	//not using lighting; not using normals
+	//glNormal(normals[poly]);
 
 	GFX_TEX_COORD = (uv[0]);
 	glVertex3v16(CubeVectors[f1*3], CubeVectors[f1*3 + 1], CubeVectors[f1*3 +  2] );
@@ -106,35 +99,33 @@ void drawQuad(int poly)
 	glVertex3v16(CubeVectors[f4*3], CubeVectors[f4*3 + 1], CubeVectors[f4*3 + 2] );
 }
 
+void TintPalette(u16* dst, u16* src, int count, int r, int g, int b)
+{
+	memcpy(dst,src,count*2);
+	for(int i=0;i<count;i++) dst[i] |= RGB15(r,g,b);
+}
 
 int main()
 {	
-	int textureIDS[11];
-	int paletteIDS[2];
-	int i;
+	consoleDebugInit(DebugDevice_NOCASH);
+
+	int textureIDS[8];
+	int paletteIDS[6];
 	float rotateX = 0.0;
 	float rotateY = 0.0;
 
 	lcdMainOnTop();
 
-	//set mode 0, enable BG0 and set it to 3D
 	videoSetMode(MODE_0_3D);
-
-	//Because of letting the user manipulate which video banks the program will use,
-	// I chose to manually set the console data into Bank I, as the demo default uses Bank C.
-	videoSetModeSub( MODE_0_2D  );
-	vramSetBankI( VRAM_I_SUB_BG_0x06208000 );
 	consoleInit( NULL, 0, BgType_Text4bpp, BgSize_T_256x256, 23, 2, false, true );
-
+	consoleDemoInit();
 
 	// initialize gl
 	glInit();
 
-	//enable textures
 	glEnable(GL_TEXTURE_2D);
-
-	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
+	glEnable(GL_BLEND);
 
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
@@ -143,19 +134,6 @@ int main()
 
 	//this should work the same as the normal gl call
 	glViewport(0,0,255,191);
-
-	//ds uses a table for shinyness..this generates a half-ass one
-	glMaterialShinyness();
-
-	// setup other material properties
-	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
-	glMaterialf(GL_DIFFUSE, RGB15(20,20,20));
-	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
-	glMaterialf(GL_EMISSION, RGB15(5,5,5));
-
-	// setup the lighting
-	glLight(0, RGB15(31,31,31) , 0, floattov10(-.5), floattov10(-.85));
-
 
 	//You may comment/uncomment what you like, as the integration of nglVideo into libnds works
 	// by examining the state of the banks, and deciding where to put textures/texpalettes based on that.
@@ -166,90 +144,80 @@ int main()
 	// 4 color palettes (not 4-bit) require either bank E, or bank F/G as slot0/1
 
 
-	//vramSetBankA(VRAM_A_TEXTURE);
+	vramSetBankA(VRAM_A_TEXTURE);
 	vramSetBankB(VRAM_B_TEXTURE);
-	vramSetBankC(VRAM_C_TEXTURE);
+	//vramSetBankC(VRAM_C_TEXTURE);
 	//vramSetBankD(VRAM_D_TEXTURE);
 	//vramSetBankE(VRAM_E_TEX_PALETTE);
 	vramSetBankF(VRAM_F_TEX_PALETTE_SLOT0);
 	vramSetBankG(VRAM_G_TEX_PALETTE_SLOT5);
 
 
+	glGenTextures(ARRAY_SIZE(textureIDS), textureIDS);
 
-	glGenTextures(11, textureIDS);
-
-	// inital full 16 bit colour texture
+	//I2
 	glBindTexture(0, textureIDS[0]);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture_bin);
-
-
-	// Load a 16 colour texture
-	glBindTexture(0, textureIDS[1]);
-	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture1_RGB16_tex_bin);
+	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i2Bitmap);
 
 	//create two alternate textures for that texture.
 	//this illustrates our recommended approach for palette-swap management, which is to consider them as separate resources
 	//that just so happen to be allocated with glGenTextures()
-	u16 tempPalette[16];
-	glGenTextures(2, &paletteIDS[0]);
-	//make a green-tinted one
-	memcpy(tempPalette,texture1_RGB16_pal_bin,32);
-	for(int i=0;i<16;i++) tempPalette[i] |= RGB15(0,31,0);
-	glBindTexture(0, paletteIDS[0]); 
-	glColorTableEXT(0,0,16,0,0,tempPalette);
-	//make a blue-tinted one
-	memcpy(tempPalette,texture1_RGB16_pal_bin,32);
-	for(int i=0;i<16;i++) tempPalette[i] |= RGB15(0,0,31);
-	glBindTexture(0, paletteIDS[1]); 
-	glColorTableEXT(0,0,16,0,0,tempPalette);
+	glBindTexture(0, textureIDS[1]);
+	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i2Bitmap);
+	u16 tempPalette[4];
+	glGenTextures(6, &paletteIDS[0]);
+	
+	static const int tintColors[][3] = {
+		{0,31,0},
+		{0,0,31},
+		{31,0,0},
+		{31,0,31},
+		{31,31,0},
+		{0,31,31}
+	};
 
+	for(int i=0;i<6;i++)
+	{
+		TintPalette(tempPalette,(u16*)i2Pal,4, tintColors[i][0], tintColors[i][1], tintColors[i][2]);
+		glBindTexture(0, paletteIDS[i]); 
+		glColorTableEXT(0,0,4,0,0,tempPalette);
+	}
 
-	// Just to show that this works, let's go and delete that very first texture that was loaded
+	// Just to show that this works, let's go and delete that very first texture that was loaded and load it again
 	glDeleteTextures( 1, &textureIDS[ 0 ] );	
+	
+	//I2 (tinted)
+	glBindTexture(0, textureIDS[1]);
+	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i2Bitmap);
+	glColorTableEXT( 0, 0, 4, 0, 0, (u16*)i2Pal );
 
-
-	// Load some more 16 color textures
+	//I4
 	glBindTexture(0, textureIDS[2]);
-	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture2_RGB16_tex_bin);
-	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture2_RGB16_pal_bin );
+	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i4Bitmap);
+	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)i4Pal );
 
+	//I8
 	glBindTexture(0, textureIDS[3]);
-	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture3_RGB16_tex_bin);
-	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture3_RGB16_pal_bin );
-
+	glTexImage2D(0, 0, GL_RGB256, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i8Bitmap);
+	glColorTableEXT( 0, 0, 256, 0, 0, (u16*)i8Pal );
 
 	// Now, re-generate the first texture, who's VRAM position won't be the same as before in the end
 	glGenTextures( 1, &textureIDS[ 0 ] );
 
-
-	// Load some more 16 color textures
+	//16bpp
 	glBindTexture(0, textureIDS[4]);
-	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture4_RGB16_tex_bin);
-	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture4_RGB16_pal_bin );
+	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)_6bppBitmap);
 
+	//A3I5
 	glBindTexture(0, textureIDS[5]);
-	glTexImage2D(0, 0, GL_RGB16, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture5_RGB16_tex_bin);
-	glColorTableEXT( 0, 0, 16, 0, 0, (u16*)texture5_RGB16_pal_bin );
+	glTexImage2D(0, 0, GL_RGB32_A3, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)a3i5Bitmap);
+	glColorTableEXT( 0, 0, 32, 0, 0, (u16*)a3i5Pal );
 
-
-	// Load some 4 colour textures
+	//A5I3
 	glBindTexture(0, textureIDS[6]);
-	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture6_RGB4_tex_bin);
-	glColorTableEXT( 0, 0, 4, 0, 0, (u16*)texture6_RGB4_pal_bin );
+	glTexImage2D(0, 0, GL_RGB8_A5, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)a5i3Bitmap);
+	glColorTableEXT( 0, 0, 8, 0, 0, (u16*)a5i3Pal );
 
-	glBindTexture(0, textureIDS[7]);
-	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture7_RGB4_tex_bin);
-	glColorTableEXT( 0, 0, 4, 0, 0, (u16*)texture7_RGB4_pal_bin );
-
-
-	// Load some 32 colour textures, 8 levels of alpha
-	glBindTexture(0, textureIDS[8]);
-	glTexImage2D(0, 0, GL_RGB32_A3, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture8_RGB32_A3_tex_bin);
-	glColorTableEXT( 0, 0, 32, 0, 0, (u16*)texture8_RGB32_A3_pal_bin );
-
-	glBindTexture(0, textureIDS[9]);
-	glTexImage2D(0, 0, GL_RGB32_A3, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture9_RGB32_A3_tex_bin);
-	glColorTableEXT( 0, 0, 32, 0, 0, (u16*)texture9_RGB32_A3_pal_bin );
 
 
 	// Load a 4x4 texel compressed texture
@@ -259,39 +227,34 @@ int main()
 	swiCopy( texture10_COMP_tex_bin, compTexture, texture10_COMP_tex_bin_size >> 2 | COPY_MODE_WORD );
 	swiCopy( texture10_COMP_texExt_bin, compTexture + texture10_COMP_tex_bin_size , texture10_COMP_texExt_bin_size >> 2 | COPY_MODE_WORD );
 
-	glBindTexture(0, textureIDS[10]);
+	glBindTexture(0, textureIDS[7]);
 	glTexImage2D(0, 0, GL_COMPRESSED, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)compTexture);
 	glColorTableEXT( 0, 0, texture10_COMP_pal_bin_size >> 1, 0, 0, (u16*)texture10_COMP_pal_bin );
 
 
-	// Now, let's reload the full 16 bit color texture was had it's name deleted and regenerated
+	//I2 (recreated after getting deleted)
 	glBindTexture(0, textureIDS[0]);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)texture_bin);
-
-
-
-	iprintf("\x1b[4;8HPaletted Cube");
-	iprintf("\x1b[6;2HRight/Left shoulder to switch");
+	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i2Bitmap);
+	glColorTableEXT( 0, 0, 4, 0, 0, (u16*)i2Pal );
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
 
-	gluLookAt(	0.0, 0.0, 2.0,		//camera possition 
-		0.0, 0.0, 0.0,		//look at
-		0.0, 1.0, 0.0);		//up
-
-	//not a real gl function and will likely change
-	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0 | POLY_ID(1) ) ;
-
-	glColor3f(1,1,1);
-
-	glMatrixMode(GL_MODELVIEW);
-
+	float fCamera = 1.25;
 	int nTexture = 0;
-	while(1)		
+
+	for(;;)
 	{
+
+		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
+
+		gluLookAt(	0.0, 0.0, fCamera,		//camera possition 
+			0.0, 0.0, 0.0,		//look at
+			0.0, 1.0, 0.0);		//up
+
+
 
 		glRotateX(rotateX);
 		glRotateY(rotateY);
@@ -302,37 +265,65 @@ int main()
 		if((keys & KEY_DOWN)) rotateX -= 3;
 		if((keys & KEY_LEFT)) rotateY += 3;
 		if((keys & KEY_RIGHT)) rotateY -= 3;
+		if((keys & KEY_A)) fCamera -= 0.05f;
+		if((keys & KEY_B)) fCamera += 0.05f;
+
+		if(fCamera <= 0.58f) fCamera = 0.58f;
 
 		u16 keysPressed = keysDown();
 		if(keysPressed & KEY_R)
 		{
-			if( ++nTexture == 11 )	
+			if( ++nTexture == ARRAY_SIZE(textureIDS) )	
 				nTexture=0;
 		}
 		if(keysPressed & KEY_L) 
 		{
 			if( --nTexture == -1 )	
-				nTexture=10;
+				nTexture=ARRAY_SIZE(textureIDS)-1;
 		}
 
 		glBindTexture(nTexture, textureIDS[nTexture]);
 
 		//draw the obj
-		glBegin(GL_QUAD);
-		for(i = 0; i < 6; i++)
+		glColor3b(255,255,255);
+		glScalef(0.4f,0.4f,0.4f);
+		int polyid = 1;
+		for(int j = 0; j < 2; j++)
 		{
-			if(nTexture==1)
+			for(int i = 0; i < 6; i++)
 			{
-				//assign alternating palettes for texture 1, which is where we have setup the palette swapping demo
-				glAssignColorTable(0,paletteIDS[i&1]);
+				if(nTexture==1)
+				{
+					//assign various palettes for texture 1, which is where we have setup the palette swapping demo
+					glAssignColorTable(0,paletteIDS[i]);
+				}
+				if(nTexture == 3)
+				{
+					//glTexParameter(0, 0); //disable GL_TEXTURE_COLOR0_TRANSPARENT
+				}
+
+				glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_MODULATION | POLY_ID(polyid) ) ;
+				glBegin(GL_QUAD);
+				drawQuad(i);
+				glEnd();				
+				polyid++;
 			}
-			drawQuad(i);
+
+			glScalef(1.0f/0.4f,1.0f/0.4f,1.0f/0.4f);
 		}
-		glEnd();
 
 		glPopMatrix(1);
 
-		glFlush(0);
+		glFlush(GL_TRANS_MANUALSORT);
+
+		consoleClear();
+		iprintf("test %d:\n %s\n",nTexture, test_names[nTexture]);
+		printf("\nrot: %f, %f\n",rotateX,rotateY);
+		printf("cam: %f\n",fCamera);
+		iprintf("\nuse d-pad to rotate\n");
+		iprintf("use L/R to change test\n");
+		iprintf("use A/B to zoom\n");
+
 		swiWaitForVBlank();
 	}
 

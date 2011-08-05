@@ -1,0 +1,9 @@
+#enable texture mode
+-gx 
+
+#enable bitmap mode
+-gb 
+
+#required texture format
+-gBa5i3
+

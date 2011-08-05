@@ -2,6 +2,8 @@
 .SUFFIXES:
 #---------------------------------------------------------------------------------
 
+.SECONDARY:
+
 ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
@@ -19,6 +21,7 @@ BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	data  
 INCLUDES	:=	include
+GRAPHICS	:=	graphics
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -58,7 +61,8 @@ ifneq ($(BUILD),$(notdir $(CURDIR)))
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
  
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
-					$(foreach dir,$(DATA),$(CURDIR)/$(dir))
+					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
+					$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir))					
 
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
@@ -66,6 +70,7 @@ CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+TGAFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.tga)))
  
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -82,6 +87,7 @@ endif
 #---------------------------------------------------------------------------------
 
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
+					$(TGAFILES:.tga=.o) \
 					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
  
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
@@ -122,6 +128,11 @@ $(OUTPUT).elf	:	$(OFILES)
 	@$(bin2o)
  
  
+#---------------------------------------------------------------------------------
+%.s %.h	: %.tga %.grit
+#---------------------------------------------------------------------------------
+	grit $< -fts -o$*	
+  
 -include $(DEPENDS)
  
 #---------------------------------------------------------------------------------------

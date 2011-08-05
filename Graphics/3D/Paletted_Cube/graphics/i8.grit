@@ -1,0 +1,11 @@
+#enable texture mode
+-gx 
+
+#enable bitmap mode
+-gb 
+
+#required texture format
+-gB8
+
+#generate binary file and no header
+-ftb
