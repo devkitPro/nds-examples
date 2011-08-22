@@ -19,20 +19,18 @@ int main(int argc, char **argv) {
 	
 		DIR *pdir;
 		struct dirent *pent;
-		struct stat statbuf;
 
 		pdir=opendir("/");
 
 		if (pdir){
 
 			while ((pent=readdir(pdir))!=NULL) {
-	    		stat(pent->d_name,&statbuf);
 	    		if(strcmp(".", pent->d_name) == 0 || strcmp("..", pent->d_name) == 0)
 	        		continue;
-	    		if(S_ISDIR(statbuf.st_mode))
-	        		iprintf("%s <dir>\n", pent->d_name);
-	    		if(!(S_ISDIR(statbuf.st_mode)))
-	        		iprintf("%s %ld\n", pent->d_name, statbuf.st_size);
+	    		if(pent->d_type == DT_DIR)
+	        		iprintf("[%s]\n", pent->d_name);
+	    		else
+	        		iprintf("%s\n", pent->d_name);
 			}
 			closedir(pdir);
 		} else {
