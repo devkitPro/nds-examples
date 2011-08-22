@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 	// Initialise the console, required for printf
 	consoleDemoInit();
 	
-	if (nitroFSInit()) {
+	if (nitroFSInit(NULL)) {
 
 		dirlist("/");
 		
