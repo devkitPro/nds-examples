@@ -148,7 +148,61 @@ void advScaling(void)
 		
 	}
 }
-void advExtendedPalette(void){}
+void advExtendedPalette(void)
+{
+  /*
+  When extended palettes are enabled all tiled backgrounds which utilize 
+  16 bit map entries will use extended palettes.  Everything else will continue
+  to use standard palette memory.
+
+  Each tile on the screen may chose one of 16 256-color palettes.  Each background 
+  has its own set of 16 palettes meaning you can have 4*16*256 colors on screen 
+
+  Each background uses 8K of palette memory starting at the base of the vram bank
+  you allocate (which bank is up to you within limits, see the vram usage table
+  to determine which banks can be mapped for textures).  These 8K blocks are often
+  refered to as "slots" with each background getting its own slot.  
+
+   By default, Background 0 uses slot 0 ... Background 3 uses slot 3.  It is possible
+   to assign Background 0 to slot 2 and Background 1 to slot 3 (only these two are configurable)
+  
+  For more information: <a href="http://nocash.emubase.de/gbatek.htm#dsvideoextendedpalettes">gbatek</a>
+  */
+
+  u16* paletteSlots[4] = 
+  {
+    &VRAM_E[0*16*256], &VRAM_E[1*16*256], &VRAM_E[2*16*256], &VRAM_E[3*16*256]
+  };
+
+  videoSetMode(MODE_0_2D);
+  vramSetBankA(VRAM_A_MAIN_BG);
+
+  //enable extended palettes for background. Once on, the standard BG_PALETTE will 
+  //be ignored for tiled backgrounds with 16 bit map entries (everything else still uses
+  //the standard palette)
+  paletteExtEnable(EXT_PALETTE_BG);
+  
+  int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x256, 0,1);
+	
+	dmaCopy(TextBackgroundsTiles, bgGetGfxPtr(bg), sizeof(TextBackgroundsTiles));
+	dmaCopy(Layer256x256Map, bgGetMapPtr(bg),  Layer256x256MapLen);
+  
+  //lock vram E as we are going to use it for 
+  //extended palettes (see documentation for which vram 
+  //banks can be utilized).  You cannot write to it once
+  //it is mapped to the GPU.  These means you should
+  //not update your ext palettes outside of a blank period
+  vramSetBankE(VRAM_E_LCD);
+  dmaCopy(TextBackgroundsPal, paletteSlots[0], sizeof(TextBackgroundsPal));
+  
+  //tell the GPU to use vram E as extended palette memory
+  vramSetBankE(VRAM_E_BG_EXT_PALETTE);
+
+	scroll(bg, 256, 256);
+  
+
+}
+
 void advMultipleLayers(void)
 {
 	videoSetMode(MODE_5_2D);
