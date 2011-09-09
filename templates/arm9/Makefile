@@ -15,6 +15,7 @@ include $(DEVKITARM)/ds_rules
 # INCLUDES is a list of directories containing extra header files
 # DATA is a list of directories containing binary files embedded using bin2o
 # GRAPHICS is a list of directories containing image files to be converted with grit
+# ICON is the image used to create the game icon, leave blank to use default rule
 #---------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
 BUILD		:=	build
@@ -22,6 +23,7 @@ SOURCES		:=	source
 INCLUDES	:=	include
 DATA		:=	data  
 GRAPHICS	:=	gfx  
+ICON		:=
 
 # specify a directory which contains the nitro filesystem
 # this is relative to the Makefile
@@ -69,7 +71,8 @@ ifneq ($(BUILD),$(notdir $(CURDIR)))
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
-export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
+export VPATH	:=	$(CURDIR)/$(subst /,,$(dir $(ICON))) \
+					$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir))
 
@@ -105,13 +108,21 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
  
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-icons := $(wildcard *.bmp)
-
-ifneq (,$(findstring $(TARGET).bmp,$(icons)))
-	export GAME_ICON := $(CURDIR)/$(TARGET).bmp
+ifeq ($(strip $(ICON)),)
+	icons := $(wildcard *.bmp)
+	
+	ifneq (,$(findstring $(TARGET).bmp,$(icons)))
+		export GAME_ICON := $(CURDIR)/$(TARGET).bmp
+	else
+		ifneq (,$(findstring icon.bmp,$(icons)))
+			export GAME_ICON := $(CURDIR)/icon.bmp
+		endif
+	endif
 else
-	ifneq (,$(findstring icon.bmp,$(icons)))
-		export GAME_ICON := $(CURDIR)/icon.bmp
+	ifeq ($(suffix $(ICON)), .grf)
+		export GAME_ICON := $(CURDIR)/$(ICON)
+	else
+		export GAME_ICON := $(CURDIR)/$(BUILD)/$(notdir $(basename $(ICON))).grf
 	endif
 endif
  
@@ -133,7 +144,7 @@ else
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(OUTPUT).nds	: 	$(OUTPUT).elf
+$(OUTPUT).nds	: 	$(OUTPUT).elf $(GAME_ICON)
 $(OUTPUT).elf	:	$(OFILES)
  
 #---------------------------------------------------------------------------------
@@ -151,6 +162,14 @@ $(OUTPUT).elf	:	$(OFILES)
 %.s %.h   : %.png %.grit
 #---------------------------------------------------------------------------------
 	grit $< -fts -o$*
+
+#---------------------------------------------------------------------------------
+# Convert non-GRF game icon to GRF if needed
+#---------------------------------------------------------------------------------
+$(GAME_ICON): $(notdir $(ICON))
+#---------------------------------------------------------------------------------
+	@echo convert $(notdir $<)
+	@grit $< -g -gt -gB4 -gT FF00FF -m! -p -pe 16 -fh! -ftr
 
 -include $(DEPSDIR)/*.d
  
