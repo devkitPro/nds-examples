@@ -180,7 +180,7 @@ void advExtendedPalette(void)
   //enable extended palettes for background. Once on, the standard BG_PALETTE will 
   //be ignored for tiled backgrounds with 16 bit map entries (everything else still uses
   //the standard palette)
-  paletteExtEnable(EXT_PALETTE_BG);
+  bgExtPaletteEnable();
   
   int bg = bgInit(0, BgType_Text8bpp, BgSize_T_256x256, 0,1);
 	
