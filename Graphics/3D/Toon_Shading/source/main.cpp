@@ -7,29 +7,26 @@
 #include "statue_bin.h"
 
 
-static void get_pen_delta( int *dx, int *dy )
-{
+static void get_pen_delta( int *dx, int *dy ) {
 	static int prev_pen[2] = { 0x7FFFFFFF, 0x7FFFFFFF };
 
 	u32 keys = keysHeld();
 
 	touchPosition touchXY;
 
-	if( keys & KEY_TOUCH )
-	{
+	if( keys & KEY_TOUCH ) {
 		
 		touchRead(&touchXY);
-		if( prev_pen[0] != 0x7FFFFFFF )
-		{
+		if( prev_pen[0] != 0x7FFFFFFF ) {
 			*dx = (prev_pen[0] - touchXY.rawx);
 			*dy = (prev_pen[1] - touchXY.rawy);
+		} else {
+			*dx = *dy = 0;
 		}
 
 		prev_pen[0] = touchXY.rawx;
 		prev_pen[1] = touchXY.rawy;
-	}
-	else
-	{
+	} else {
 		prev_pen[0] = prev_pen[1] = 0x7FFFFFFF;
 		*dx = *dy = 0;
 	}
@@ -78,8 +75,7 @@ int main() {
 				0.0, 0.0, 0.0,		//look at
 				0.0, 1.0, 0.0);		//up
 	
-	while(1)
-	{
+	while(1) {
 
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
@@ -108,7 +104,6 @@ int main() {
 			rotateY -= pen_delta[0];
 			rotateX -= pen_delta[1];
 
-
 			glCallList((u32*)statue_bin);
 			glPopMatrix(1);
 
@@ -118,4 +113,4 @@ int main() {
 	}
 
 	return 0;
-}//end main
+}
