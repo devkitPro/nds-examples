@@ -1,7 +1,6 @@
 #include <nds.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <nds/arm9/console.h> //basic print funcionality
 
 #include "i2.h" //deleted
 //tinted
