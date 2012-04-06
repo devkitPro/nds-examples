@@ -5,37 +5,34 @@
 #include "cafe_bin.h"
 
 
-static void get_pen_delta( int *dx, int *dy )
-{
+static void get_pen_delta( int *dx, int *dy ) {
+
 	static int prev_pen[2] = { 0x7FFFFFFF, 0x7FFFFFFF };
 	touchPosition touchXY;
 	
 	u32 keys = keysHeld();
 
-	if( keys & KEY_TOUCH )
-	{
+	if( keys & KEY_TOUCH ) {
 		
 		touchRead(&touchXY);
 
-		if( prev_pen[0] != 0x7FFFFFFF )
-		{
+		if( prev_pen[0] != 0x7FFFFFFF ) {
 			*dx = (prev_pen[0] - touchXY.rawx);
 			*dy = (prev_pen[1] - touchXY.rawy);
+		} else {
+			*dx = *dy = 0;
 		}
 
 		prev_pen[0] = touchXY.rawx;
 		prev_pen[1] = touchXY.rawy;
-	}
-	else
-	{
+	} else {
 		prev_pen[0] = prev_pen[1] = 0x7FFFFFFF;
 		*dx = *dy = 0;
 	}
 }
 
 
-int main()
-{
+int main() {
 
 	int rotateX = 0;
 	int rotateY = 0;
@@ -71,8 +68,7 @@ int main()
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
 	
-	while(1)
-	{
+	while(1) {
 		//TEXGEN_NORMAL helpfully pops our normals into this matrix and uses the result as texcoords
 		glMatrixMode(GL_TEXTURE);
 		glLoadIdentity();
