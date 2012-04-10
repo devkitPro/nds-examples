@@ -3,3 +3,4 @@
 *build
 *.dldi
 templates/arm9lib/lib
+*.bz2
