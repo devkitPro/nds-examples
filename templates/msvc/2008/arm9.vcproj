@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="arm9"
+	ProjectGUID="{7307DF27-4FCC-435D-961B-7193C9A11465}"
+	RootNamespace="arm9"
+	Keyword="MakeFileProj"
+	TargetFrameworkVersion="196613"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="build.bat BUILD"
+				ReBuildCommandLine="build.bat REBUILD"
+				CleanCommandLine="build.bat CLEAN"
+				Output="2008.nds"
+				PreprocessorDefinitions="ARM9;_HAVE_STDC;__GNUC_VA_LIST"
+				IncludeSearchPath="$(DEVKITPRO_WIN)\devkitARM\lib\gcc\arm-none-eabi\4.7.1\include;$(DEVKITPRO_WIN)\devkitARM\arm-none-eabi\include;$(DEVKITPRO_WIN)\libnds\include;$(NMakeIncludeSearchPath)"
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies="/D__attribute__(X)= /D__extension__="
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine=""
+				ReBuildCommandLine=""
+				CleanCommandLine=""
+				Output="arm9.exe"
+				PreprocessorDefinitions="WIN32;NDEBUG"
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="source"
+			>
+			<File
+				RelativePath=".\source\main.cpp"
+				>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

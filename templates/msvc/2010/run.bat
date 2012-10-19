@@ -1,0 +1,1 @@
+start desmume\desmume.exe %1
