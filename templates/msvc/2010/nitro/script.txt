@@ -1,0 +1,4 @@
+The source of all your trouble,
+Causing your nightmare:
+You test in emulator,
+But run it on hardware!

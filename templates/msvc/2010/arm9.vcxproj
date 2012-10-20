@@ -13,9 +13,10 @@
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
-  <PropertyGroup>
-    <LastBuildState>build\msvc-lastbuildstate</LastBuildState>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="nitro\script.txt" />
+  </ItemGroup>
   <PropertyGroup>
     <LastBuildUnsuccessful>false</LastBuildUnsuccessful>
   </PropertyGroup>
@@ -52,7 +53,7 @@
     <NMakeIncludeSearchPath>$(DEVKITPRO_WIN)\devkitARM\lib\gcc\arm-none-eabi\4.7.1\include;$(DEVKITPRO_WIN)\devkitARM\arm-none-eabi\include;$(DEVKITPRO_WIN)\libnds\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <AdditionalOptions>/D__attribute__(X)= /D__extension__=</AdditionalOptions>
     <ExecutablePath />
-    <IncludePath />
+    <IncludePath>build</IncludePath>
     <ReferencePath />
     <LibraryPath />
     <SourcePath />
