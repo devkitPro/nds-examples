@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
 
   // initialize backgrounds
   // extended palettes only work on 8bpp tiled bg's with 16-bit map entries
+  // this means you can only use BgType_Text8bpp or BgType_ExRotation
   // http://mtheall.com/vram.html#T0=1&NT0=192&MB0=6&TB0=0&S0=0&T1=1&NT1=576&MB1=7&TB1=1&S1=0
   bg[0] = bgInit   (0, BgType_Text8bpp, BgSize_T_256x256, 6, 0);
   bg[1] = bgInit   (1, BgType_Text8bpp, BgSize_T_256x256, 7, 1);
