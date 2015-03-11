@@ -281,7 +281,7 @@ int main()
 				nTexture=ARRAY_SIZE(textureIDS)-1;
 		}
 
-		glBindTexture(nTexture, textureIDS[nTexture]);
+		glBindTexture(0, textureIDS[nTexture]);
 
 		//draw the obj
 		glColor3b(255,255,255);
