@@ -10,13 +10,14 @@
 #include <ctype.h>
 
 //---------------------------------------------------------------------------------
-void pause() {
+void ButtonWait() {
 //---------------------------------------------------------------------------------
-	iprintf("Press start...\n");
+	iprintf("Press a key, start to exit...\n");
 	while(1) {
 		scanKeys();
-		if(keysDown() & KEY_START)
-			break;
+		int buttons = keysDown();
+		if(buttons & KEY_START)	exit(0);
+		if(buttons) break;
 		swiWaitForVBlank();
 	}
 	scanKeys();
@@ -45,7 +46,7 @@ int main(void) {
 		while(memcmp(header1, header2, 32) != 0) {
 			// If not, the card needs ejected and reinserted into the DS
 			iprintf("Please eject & reinsert DS card.\n");
-			pause();
+			ButtonWait();
 			cardReadHeader(header1);
 			cardReadHeader(header2);
 		}
@@ -61,7 +62,7 @@ int main(void) {
 		iprintf("EEPROM:\n");
 		iprintf(" Type: %d\n", type);
 		iprintf(" Size: %d\n", size);
-		pause();
+		ButtonWait();
 
 		// Read the first 512 bytes of EEPROM
 		static u8 data[512];
@@ -88,7 +89,7 @@ int main(void) {
 		}
 
 		iprintf("Insert a new card to read again\n");
-		pause();
+		ButtonWait();
 	}
 
 	return 0;
