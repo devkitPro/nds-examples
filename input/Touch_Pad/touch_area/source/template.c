@@ -15,9 +15,6 @@ relative pressure of the touch.
 int main(void) {
 //---------------------------------------------------------------------------------
 
-	//my experimental value for pen vs finger (higher value == lower area)
-	const int threshold = 400;
-
 	touchPosition touch;
 
 	consoleDemoInit(); 
@@ -28,19 +25,25 @@ int main(void) {
 	{
 
 		scanKeys();
+		int held = keysHeld();
 
-		touchRead(&touch);
+		if(held & KEY_START) break;
 
-		area = touch.px * touch.z2 / touch.z1 - touch.px;
+		if(held & KEY_TOUCH) {
 
-		iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
+			touchRead(&touch);
 
-		iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
+			if (touch.z1 != 0 ) {
+				area = touch.px * touch.z2 / touch.z1 - touch.px;
+			}
 
-		iprintf("Touch Area (pressure) %04i\n", area);
+			iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
 
-		if(keysHeld() & KEY_TOUCH)
-			iprintf("Last touched by: %s", area > threshold ? "pen   " : "finger");
+			iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
+
+			iprintf("Touch Area (pressure) %04i\n", area);
+
+		}
 
 		swiWaitForVBlank();
 	}
