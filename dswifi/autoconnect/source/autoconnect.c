@@ -38,6 +38,8 @@ int main(void) {
 	
 	while(1) {
 		swiWaitForVBlank();
+		int keys = keysDown();
+		if(keys & KEY_START) break;
 	}
 
 	return 0;

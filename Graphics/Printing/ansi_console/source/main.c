@@ -37,7 +37,14 @@ int main(void) {
 	iprintf("\x1b[5CColumn 20");
 
 	while(1) {
+
 		swiWaitForVBlank();
+		scanKeys();
+
+		int keys = keysDown();
+
+		if(keys & KEY_START) break;
+
 	}
 
 	return 0;

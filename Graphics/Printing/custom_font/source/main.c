@@ -37,7 +37,14 @@ int main(void) {
 	iprintf("for libnds examples\n");
 
 	while(1) {
+
 		swiWaitForVBlank();
+		scanKeys();
+
+		int keys = keysDown();
+
+		if(keys & KEY_START) break;
+
 	}
 
 	return 0;

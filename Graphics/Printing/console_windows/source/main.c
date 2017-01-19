@@ -51,6 +51,8 @@ int main(void) {
 		scanKeys();
 		
 		keys = keysHeld();
+
+		if(keys & KEY_START) break;
 		
 		if(keys & KEY_TOUCH)
 		{

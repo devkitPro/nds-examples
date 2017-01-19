@@ -210,6 +210,12 @@ int main(void)  {
 		updateSprites();
 
 		swiWaitForVBlank();
+
+		scanKeys();
+
+		int keys = keysDown();
+
+		if(keys & KEY_START) break;
 		
 		//api: updates real oam memory 
 		oamUpdate(oam);
@@ -222,7 +228,7 @@ int main(void)  {
 		
 		printf("Memory usage: %i %i%% \n",  spriteMemoryUsage, 100 * spriteMemoryUsage / (spriteMemSize));
 		printf("Percentage fail: %i%% \n", oomCount * 100 / allocationCount);
-		printf("Lowest Usage at fail %i %i%% \n", memUsageTemp, 100 * memUsageTemp / (spriteMemSize));				
+		printf("Lowest Usage at fail %i %li%% \n", memUsageTemp, 100 * memUsageTemp / (spriteMemSize));				
 	}
 
 	return 0;

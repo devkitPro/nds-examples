@@ -32,9 +32,13 @@ int main(void) {
 
 		scanKeys();
 
-		if(keysHeld() & KEY_LEFT)
+		int held = keysHeld();
+
+		if(held & KEY_START)
+			break;
+		if(held & KEY_LEFT)
 			angle += degreesToAngle(2);
-		if(keysHeld() & KEY_RIGHT)
+		if(held & KEY_RIGHT)
 			angle -= degreesToAngle(2);
 
 		//-------------------------------------------------------------------------

@@ -106,6 +106,8 @@ int main() {
 		glCallList((u32*)teapot_bin);
 
 		glFlush(0);
+
+		if(keys & KEY_START) break;
 	}
 
 	return 0;

@@ -40,8 +40,12 @@ int main(void) {
 
 		scanKeys();
 
-		if(keysHeld() & KEY_TOUCH)
+		int held = keysHeld();
+
+		if(held & KEY_TOUCH)
 			touchRead(&touch);
+
+		if(held & KEY_START) break;
 
 		oamSet(&oamMain, //main graphics engine context
 			0,           //oam index (0 to 127)  

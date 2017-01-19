@@ -28,7 +28,11 @@ Wifi_AccessPoint* findAP(void){
 
 	int pressed = 0;
 	do {
+
 		scanKeys();
+		pressed = keysDown();
+
+		if(pressed & KEY_START) exit(0);
 
 		//find out how many APs there are in the area
 		count = Wifi_GetNumAP();
@@ -56,7 +60,6 @@ Wifi_AccessPoint* findAP(void){
 
 		}
 
-		pressed = keysDown();
 		//move the selection asterick
 		if(pressed & KEY_UP) {
 			selected--;
@@ -152,7 +155,7 @@ int main(void) {
 		if(status == ASSOCSTATUS_ASSOCIATED) {
 			u32 ip = Wifi_GetIP();
 
-			iprintf("\nip: [%i.%i.%i.%i]\n", (ip ) & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
+			iprintf("\nip: [%li.%li.%li.%li]\n", (ip ) & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
 			while(1) {
 
 				scanf("%s", url);

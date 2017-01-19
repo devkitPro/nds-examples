@@ -78,6 +78,8 @@ int main() {
 		glFlush(0);
 
 		swiWaitForVBlank();
+
+		if(keys & KEY_START) break;
 	}
 
 	return 0;

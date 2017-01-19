@@ -170,17 +170,21 @@ int main() {
 		//these little button functions are pretty handy
 		scanKeys();
 
-		if (keysHeld() & (KEY_LEFT|KEY_Y))
+		int held = keysHeld();
+
+		if (held & KEY_START) break;
+
+		if (held & (KEY_LEFT|KEY_Y))
 		{
 			xpos -= sinLerp(heading + degreesToAngle(90)) >> 5;
 			zpos += cosLerp(heading + degreesToAngle(90)) >> 5;
 		}
-		if (keysHeld() & (KEY_RIGHT|KEY_A))
+		if (held & (KEY_RIGHT|KEY_A))
 		{
 			xpos += sinLerp(heading + degreesToAngle(90)) >> 5;
 			zpos -= cosLerp(heading + degreesToAngle(90)) >> 5;
 		}
-		if (keysHeld() & (KEY_DOWN|KEY_B))
+		if (held & (KEY_DOWN|KEY_B))
 		{
 
 			xpos -= sinLerp(heading)>>5;
@@ -190,7 +194,7 @@ int main() {
 
 			walkbias = sinLerp(walkbiasangle)>>4;
 		}
-		if (keysHeld() & (KEY_UP|KEY_X))
+		if (held & (KEY_UP|KEY_X))
 		{
 			xpos += sinLerp(heading) >> 5;
 			zpos -= cosLerp(heading) >> 5;
@@ -208,7 +212,7 @@ int main() {
 
 		// Camera rotation by touch screen
 
-		if (keysHeld() & KEY_TOUCH)
+		if (held & KEY_TOUCH)
 		{
 			touchRead(&thisXY);
 
@@ -221,8 +225,7 @@ int main() {
 				if(dx>-3&&dx<3)
 					dx=0;
 
-				if(dy>-2&&dy<2)
-					dy=0;
+				if(dy>-2&&dy<2) dy=0;
 
 					lookupdown -= degreesToAngle(dy);
 

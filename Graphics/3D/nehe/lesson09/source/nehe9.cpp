@@ -115,6 +115,12 @@ int main() {
 		
 		// wait for the screen to refresh
 		swiWaitForVBlank();
+
+		scanKeys();
+
+		int pressed = keysDown();
+
+		if(pressed & KEY_START) break;
 	}
 	
 	return 0;

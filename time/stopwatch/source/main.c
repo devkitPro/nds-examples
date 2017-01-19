@@ -29,6 +29,8 @@ int main()
 		scanKeys();
 		down = keysDown();
 
+		if(down & KEY_START) break;
+
 		if(state == timerState_Running)
 		{
 			ticks += timerElapsed(0);

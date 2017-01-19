@@ -126,6 +126,17 @@ int main( void ) {
 		// wait until next frame
 		swiWaitForVBlank();
 		
+		//-----------------------------------------------------
+		// get new keypad input
+		//-----------------------------------------------------
+		scanKeys();
+		int keys = keysDown();
+
+		//-----------------------------------------------------
+		// START: exit
+		//-----------------------------------------------------
+		if( keys & KEY_START) break;
+
 		// set backdrop to show cpu usage
 		BG_PALETTE_SUB[0] = cpu_colour;
 	}

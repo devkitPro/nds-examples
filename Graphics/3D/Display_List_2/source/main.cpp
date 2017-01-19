@@ -53,6 +53,7 @@ int main() {
 		
 		scanKeys();
 		u16 keys = keysHeld();
+
 		if(!(keys & KEY_UP)) rotateX += 3;
 		if(!(keys & KEY_DOWN)) rotateX -= 3;
 		if(!(keys & KEY_LEFT)) rotateY += 3;
@@ -63,6 +64,8 @@ int main() {
 		glPopMatrix(1);
 			
 		glFlush(0);
+
+		if(keys & KEY_START) break;
 	}
 
 	return 0;

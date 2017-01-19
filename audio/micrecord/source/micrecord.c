@@ -78,6 +78,8 @@ int main(void)
 			iprintf("%s\n", recording ? "recording" : "playing");
 		}
 
+		if(key & KEY_START) break;
+
 		swiWaitForVBlank();
 
 	}

@@ -177,6 +177,10 @@ int main() {
 		// wait for capture unit to be ready
 		while(REG_DISPCAPCNT & DCAP_ENABLE);
  
+		scanKeys();
+		int keys = keysDown();
+		if (keys & KEY_START) break;
+
 		//-------------------------------------------------------
 		//	 Switch render targets
 		//-------------------------------------------------------
@@ -205,6 +209,7 @@ int main() {
 		renderScene(top);
  
 		glFlush(0);
+
 	}
  
 	return 0;

@@ -103,28 +103,31 @@ int main() {
 	{
 		//these little button functions are pretty handy
 		scanKeys();
+
+		int held = keysHeld();
+		int pressed = keysDown();
 		
-		if (keysHeld() & KEY_R)
+		if (held & KEY_R)
 		{
 			z-=0.02f;
 		}
-		if (keysHeld() & KEY_L)
+		if (held & KEY_L)
 		{
 			z+=0.02f;
 		}
-		if (keysHeld() & KEY_LEFT)
+		if (held & KEY_LEFT)
 		{
 			xspeed-=0.01f;
 		}
-		if (keysHeld() & KEY_RIGHT)
+		if (held & KEY_RIGHT)
 		{
 			xspeed+=0.01f;
 		}
-		if (keysHeld() & KEY_UP)
+		if (held & KEY_UP)
 		{
 			yspeed+=0.01f;
 		}
-		if (keysHeld() & KEY_DOWN)
+		if (held & KEY_DOWN)
 		{
 			yspeed-=0.01f;
 		}
@@ -136,6 +139,8 @@ int main() {
 		
 		// wait for the screen to refresh
 		swiWaitForVBlank();
+
+		if(pressed & KEY_START) break;
 	}
 	
 	return 0;

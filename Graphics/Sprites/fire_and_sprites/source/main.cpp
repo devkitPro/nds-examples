@@ -92,7 +92,7 @@ uint16_t hsl2rgb(unsigned char hue, unsigned char sat, unsigned char lum) {
 #define WIDTH 256
 #define HEIGHT 196
 
-u8 fire[HEIGHT][WIDTH];
+u8 fire[HEIGHT+1][WIDTH];
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -242,6 +242,12 @@ int main(void) {
 		dmaCopy(fire,(void *)0x06000000, 256*192);
 
 		swiWaitForVBlank();
+
+		scanKeys();
+
+		int pressed = keysDown();
+
+		if (pressed & KEY_START) break;
 
 		updateOAM();
 

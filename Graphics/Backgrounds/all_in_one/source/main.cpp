@@ -131,8 +131,8 @@ struct Category categories[] =
 	{"Basic", basicExamples, sizeof(basicExamples) / sizeof(Demo)},
 	{"Bitmap", bitmapExamples, sizeof(bitmapExamples) / sizeof(Demo)},
 	{"Scrolling", scrollingExamples, sizeof(scrollingExamples) / sizeof(Demo)},
-	{"Advanced", advancedExamples, sizeof(advancedExamples) / sizeof(Demo)}
-
+	{"Advanced", advancedExamples, sizeof(advancedExamples) / sizeof(Demo)},
+	{"Exit", 0, 0},
 };
 
 //---------------------------------------------------------------------------------
@@ -177,6 +177,8 @@ int main(void) {
 		selected = false;
 		
 		demoCount = categories[selectedCategory].count;
+
+		if ( 0 == demoCount ) exit(0);
 		
 		while(!selected) {
 

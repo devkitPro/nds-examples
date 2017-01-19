@@ -311,27 +311,28 @@ int main() {
 	{
 		//these little button functions are pretty handy
 		scanKeys();
-				
+
+		int held = keysHeld();
 	
-		if (keysHeld() & KEY_A)
+		if (held & KEY_A)
 		{
 			lookupdown -= 1.0f;
 		}
-		if (keysHeld() & KEY_B)
+		if (held & KEY_B)
 		{
 			lookupdown += 1.0f;
 		}
-		if (keysHeld() & KEY_LEFT)
+		if (held & KEY_LEFT)
 		{
 			heading += 1.0f;	
 			yrot = heading;
 		}
-		if (keysHeld() & KEY_RIGHT)
+		if (held & KEY_RIGHT)
 		{
 			heading -= 1.0f;
 			yrot = heading;
 		}
-		if (keysHeld() & KEY_DOWN)
+		if (held & KEY_DOWN)
 		{
 			
 			xpos += (float)sin(heading) * 0.05f;
@@ -348,7 +349,7 @@ int main() {
 			
 			walkbias = (float)sin(walkbiasangle)/20.0f;
 		}
-		if (keysHeld() & KEY_UP)
+		if (held & KEY_UP)
 		{
 			xpos -= (float)sin(heading) * 0.05f;
 			zpos -= (float)cos(heading) * 0.05f;
@@ -372,6 +373,8 @@ int main() {
 		
 		// wait for the screen to refresh
 		swiWaitForVBlank();
+
+		if(held & KEY_START) break;
 	}
 	
 	return 0;

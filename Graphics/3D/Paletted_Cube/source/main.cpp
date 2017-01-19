@@ -324,6 +324,8 @@ int main()
 		iprintf("use A/B to zoom\n");
 
 		swiWaitForVBlank();
+
+		if(keysPressed & KEY_START) break;
 	}
 
 	return 0;

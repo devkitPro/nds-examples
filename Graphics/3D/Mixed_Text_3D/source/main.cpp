@@ -61,6 +61,12 @@ int main() {
 		// wait for the screen to refresh
 		swiWaitForVBlank();
 
+		scanKeys();
+
+		int keys = keysDown();
+
+		if(keys & KEY_START) break;
+
 		printf("\x1b[15;5H rtri  = %f     \n", rtri);
 		printf("\x1b[16;5H rquad = %f     \n", rquad);
 		rtri+=0.9f;										// Increase The Rotation Variable For The Triangle ( NEW )

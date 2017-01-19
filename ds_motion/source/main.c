@@ -39,7 +39,11 @@ int main(void) {
 	{	
 		scanKeys();
 		
-		if(keysDown() & KEY_A) Calibrate();
+		int keys = keysDown();
+
+		if(keys & KEY_A) Calibrate();
+
+		if(keys & KEY_START) break;
 		
 		consoleClear();
 		iprintf("Nds is%s inserted\n", motion_init() ? "" : " not");

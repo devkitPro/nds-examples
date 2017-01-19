@@ -50,6 +50,8 @@ int main(void) {
 		scanKeys();
 		u32 keys = keysHeld();
 
+		if ( keys & KEY_START ) break;
+
 		if ( keys & KEY_L ) angle+=64; 
 		if ( keys & KEY_R ) angle-=64;
 

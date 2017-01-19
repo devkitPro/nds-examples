@@ -92,8 +92,10 @@ int main() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		
+		int held = keysHeld();
+
 		// set the projection matrix as either ortho or perspective
-		if(!(keysHeld() & KEY_R)) {
+		if(!(held & KEY_R)) {
 			gluPerspective(70, 256.0 / 192.0, 0.1, 100);
 		}
 		else
@@ -119,6 +121,8 @@ int main() {
 
 		// flush to screen	
 		glFlush(0);
+
+		if(held & KEY_START) break;
 	}
 	
 	return 0;

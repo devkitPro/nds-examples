@@ -208,6 +208,8 @@ int main() {
 		
 		// wait for the screen to refresh
 		swiWaitForVBlank();
+
+		if(held & KEY_START) break;
 	}
 	
 	return 0;

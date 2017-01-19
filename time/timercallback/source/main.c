@@ -33,7 +33,7 @@ int main()
 	//calls the timerCallBack function 5 times per second.
 	timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(5), timerCallBack);
 
-	waitfor(KEY_A);
+	waitfor(KEY_A | KEY_START);
 
 	return 0;
 }

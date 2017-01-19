@@ -52,23 +52,33 @@ typedef struct {
 int main(void) {
 	consoleDemoInit();
 
+	consoleClear();
+
+	if (isDSiMode()) {
+		iprintf("No gamepak addons in DSi mode\n");
+	} else {
+		iprintf("Insert gamepak addon.");
+	}
+
 	while(1) {
 		swiWaitForVBlank();
 
-		consoleClear();
-		iprintf("      Hello DS dev'rs\n");
-		iprintf("     \x1b[32mwww.devkitpro.org\n");
-		iprintf("   \x1b[32;1mwww.drunkencoders.com\x1b[39m");
+		scanKeys();
+
+		if(keysDown() & KEY_START) break;
 
 
-		iprintf("\x1b[4;0Hgba header 96h: %02X\n",GBA_HEADER.is96h);
+		if (isDSiMode()) continue;
+
+
+		iprintf("\x1b[5;0Hgba header 96h: %02X\n",GBA_HEADER.is96h);
 		iprintf("0x08000000: %04X\n",*(vu16*)0x08000000);
 
 		if(guitarGripIsInserted())
 		{
 			guitarGripScanKeys();
 			u8 keys = guitarGripKeysHeld();
-			iprintf("\x1b[7;0HguitarGrip: %02X\n",keys);
+			iprintf("\x1b[8;0HguitarGrip: %02X\n",keys);
 			iprintf("  [%s]  [%s]  [%s]  [%s]",(keys&GUITARGRIP_BLUE)?"BLU":"   ",(keys&GUITARGRIP_YELLOW)?"YEL":"   ",(keys&GUITARGRIP_RED)?"RED":"   ",(keys&GUITARGRIP_GREEN)?"GRN":"   ");
 		}
 
@@ -77,14 +87,14 @@ int main(void) {
 			pianoScanKeys();
 			PianoKeys keys;
 			keys.VAL = pianoKeysHeld();
-			iprintf("\x1b[7;0Hpiano: %04X\n",pianoKeysHeld());
+			iprintf("\x1b[8;0Hpiano: %04X\n",pianoKeysHeld());
 			iprintf("  %s  %s     %s  %s  %s   \n",keys.c_sharp?"C#":"  ",keys.d_sharp?"D#":"  ",keys.f_sharp?"F#":"  ",keys.g_sharp?"G#":"  ",keys.a_sharp?"A#":"  ");
 			iprintf("%s  %s  %s %s  %s  %s  %s  %s\n",keys.c?"C ":"  ",keys.d?"D ":"  ",keys.e?"E ":"  ",keys.f?"F ":"  ",keys.g?"G ":"  ",keys.a?"A ":"  ",keys.b?"B ":"  ",keys.high_c?"C ":"  ");
 		}
 
 		if(paddleIsInserted())
 		{
-			iprintf("\x1b[7;0Hpaddle: %04X\n",paddleRead());
+			iprintf("\x1b[8;0Hpaddle: %04X\n",paddleRead());
 		}
 
 

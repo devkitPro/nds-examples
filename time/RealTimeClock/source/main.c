@@ -76,6 +76,12 @@ int main()
 		update3D(hours, seconds, minutes);
 
 		swiWaitForVBlank();
+
+		scanKeys();
+
+        int keys = keysDown();
+        if(keys & KEY_START) break;
+
 	}
 
 	return 0;

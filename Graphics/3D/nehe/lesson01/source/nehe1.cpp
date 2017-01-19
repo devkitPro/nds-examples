@@ -57,7 +57,12 @@ int main() {
 
 		// flush to screen	
 		glFlush(0);
-	
+
+		scanKeys();
+
+		int pressed = keysDown();
+
+		if(pressed & KEY_START) break;	
 	}
 	
 	return 0;

@@ -221,6 +221,8 @@ int main()
 
 		swiWaitForVBlank();
 
+		if(keys & KEY_START) break;
+
 		//the display capture enable bit must be set again each frame if you want to continue capturing.
 		REG_DISPCAPCNT |= DCAP_ENABLE;
 	}

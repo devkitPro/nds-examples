@@ -80,9 +80,16 @@ int main(int argc, char** argv) {
 
       oamRotateScale(&oamSub, 0, angle, (1 << 8), (1<<8));
 
-	  angle += 64;
+	   angle += 64;
 
       swiWaitForVBlank();
+
+
+      scanKeys();
+
+      int keys = keysDown();
+
+      if(keys & KEY_START) break;
 
       //send the updates to the hardware
       oamUpdate(&oamSub);

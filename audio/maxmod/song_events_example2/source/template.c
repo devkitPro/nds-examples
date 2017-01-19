@@ -145,6 +145,17 @@ int main(void) {
 		
 		//send the updates to the hardware
 		oamUpdate(&oamMain);
+		//-----------------------------------------------------
+		// get new keypad input
+		//-----------------------------------------------------
+		scanKeys();
+		int keys = keysDown();
+
+		//-----------------------------------------------------
+		// START: exit
+		//-----------------------------------------------------
+		if( keys & KEY_START) break;
+
 	}
 
 	return 0;
