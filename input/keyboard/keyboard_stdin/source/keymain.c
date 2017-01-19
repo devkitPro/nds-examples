@@ -25,8 +25,13 @@ int main(void)  {
 
       iprintf("\nHello %s", myName);
 
-      scanKeys();
-      while(!keysDown())scanKeys();
+      int keys = 0;
+
+      while(!keys) {
+         scanKeys();
+         keys = keysDown();
+         if(keys & KEY_START) exit(0);
+      }
 
       swiWaitForVBlank();
       consoleClear();

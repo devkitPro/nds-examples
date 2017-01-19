@@ -24,6 +24,11 @@ int main(void) {
 			iprintf("%c", key);
 
 		swiWaitForVBlank();
+		scanKeys();
+
+		int pressed = keysDown();
+
+		if(pressed & KEY_START) break;
 	}
 
 	return 0;
