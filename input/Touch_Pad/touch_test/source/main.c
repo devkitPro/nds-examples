@@ -94,7 +94,7 @@ int main(void) {
 		iprintf("\x1b[6;5HTouch x = %04X, %04X\n", touch.rawx, touch.px);
 		iprintf("\x1b[7;5HTouch y = %04X, %04X\n", touch.rawy, touch.py);		
 
-		iprintf("\x1b[0;18Hkeys: %08X\n", keysHeld());
+		iprintf("\x1b[0;18Hkeys: %08lX\n", keysHeld());
 		iprintf("\x1b[9;10HFrame %d\n", frame);
 
 		if ( TouchType == SINGLE && !(pressed & KEY_TOUCH) ) continue;

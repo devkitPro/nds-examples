@@ -49,7 +49,7 @@ void play(void)
 {
 	soundMicOff();
 	soundEnable();
-	iprintf("data length: %i\n", data_length);
+	iprintf("data length: %li\n", data_length);
 	soundPlaySample(sound_buffer, SoundFormat_16Bit, data_length, sample_rate, 127, 64, false, 0);
 }
 

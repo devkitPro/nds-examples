@@ -111,15 +111,11 @@ int main() {
 		spriteRotations[0].vdy = spriteRotations[0].hdx;
 		
 		swiWaitForVBlank();
-		
-		u32 display_temp = 0;
 
 		scanKeys();
 		if(keysDown()&KEY_A) {
 		
 			screenshotbmp("shot.bmp");
-
-			display_temp=REG_DISPCNT;
 			REG_DISPCNT=MODE_FB1;
 
 		}

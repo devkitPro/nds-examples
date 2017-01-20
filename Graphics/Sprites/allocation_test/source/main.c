@@ -226,8 +226,8 @@ int main(void)  {
 
 		consoleClear();
 		
-		printf("Memory usage: %i %i%% \n",  spriteMemoryUsage, 100 * spriteMemoryUsage / (spriteMemSize));
-		printf("Percentage fail: %i%% \n", oomCount * 100 / allocationCount);
+		printf("Memory usage: %li %li%% \n",  spriteMemoryUsage, 100 * spriteMemoryUsage / (spriteMemSize));
+		printf("Percentage fail: %li%% \n", oomCount * 100 / allocationCount);
 		printf("Lowest Usage at fail %i %li%% \n", memUsageTemp, 100 * memUsageTemp / (spriteMemSize));				
 	}
 

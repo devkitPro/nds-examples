@@ -20,7 +20,7 @@ int main(void) {
 			}
 		}
 
-		iprintf("%d %d %d\n",values[0],values[1],values[2]);
+		iprintf("%ld %ld %ld\n",values[0],values[1],values[2]);
 
 		swiWaitForVBlank();
 		scanKeys();
