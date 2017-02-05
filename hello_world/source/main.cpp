@@ -35,6 +35,10 @@ int main(void) {
 	while(1) {
 	
 		swiWaitForVBlank();
+		scanKeys();
+		int keys = keysDown();
+		if (keys & KEY_START) break;
+
 		touchRead(&touchXY);
 
 		// print at using ansi escape sequence \x1b[line;columnH 
