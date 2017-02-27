@@ -23,7 +23,7 @@ TARGET   := $(shell basename $(CURDIR))
 BUILD    := build
 SOURCES  := source
 INCLUDES := include
-DATA     :=
+DATA     := data
 GRAPHICS :=
 AUDIO    :=
 ICON     :=
@@ -33,7 +33,7 @@ ICON     :=
 NITRO    :=
 
 # These set the information text in the nds file
-GAME_TITLE     := Advanced ARM9 template
+GAME_TITLE     := Display List example
 GAME_SUBTITLE1 := built with devkitARM
 GAME_SUBTITLE2 := http://devitpro.org
 
@@ -124,9 +124,14 @@ else
 endif
 #---------------------------------------------------------------------------------
 
-export OFILES   := $(addsuffix .o,$(BINFILES))\
-                   $(PNGFILES:.png=.o)\
-                   $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+export OFILES_BIN   :=	$(addsuffix .o,$(BINFILES))
+
+export OFILES_SOURCES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+
+export OFILES := $(PNGFILES:.png=.o) $(OFILES_BIN) $(OFILES_SOURCES)
+
+export HFILES := $(PNGFILES:.png=.h) $(addsuffix .h,$(subst .,_,$(BINFILES)))
+
 export INCLUDE  := $(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir))\
                    $(foreach dir,$(LIBDIRS),-I$(dir)/include)\
                    -I$(CURDIR)/$(BUILD)
@@ -171,6 +176,9 @@ else
 $(OUTPUT).nds: $(OUTPUT).elf $(GAME_ICON)
 $(OUTPUT).elf: $(OFILES)
 
+# source files depend on generated headers
+$(OFILES_SOURCES) : $(HFILES)
+
 # need to build soundbank first
 $(OFILES): $(SOUNDBANK)
 
@@ -182,10 +190,10 @@ $(SOUNDBANK) : $(MODFILES)
 	mmutil $^ -d -o$@ -hsoundbank.h
 
 #---------------------------------------------------------------------------------
-%.bin.o: %.bin
+%.bin.o %_bin.h : %.bin
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
-	$(bin2o)
+	@$(bin2o)
 
 #---------------------------------------------------------------------------------
 # This rule creates assembly source files using grit
