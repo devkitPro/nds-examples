@@ -11,7 +11,7 @@ export TARGET		:=	$(shell basename $(CURDIR))
 export TOPDIR		:=	$(CURDIR)
 
 
-.PHONY: checkarm7 checkarm9
+.PHONY: checkarm7 checkarm9 clean
 
 #---------------------------------------------------------------------------------
 # main targets
