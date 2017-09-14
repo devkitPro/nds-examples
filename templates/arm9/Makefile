@@ -6,6 +6,11 @@ ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
+# These set the information text in the nds file
+#GAME_TITLE     := My Wonderful Homebrew
+#GAME_SUBTITLE1 := built with devkitARM
+#GAME_SUBTITLE2 := http://devitpro.org
+
 include $(DEVKITARM)/ds_rules
 
 #---------------------------------------------------------------------------------
@@ -31,11 +36,6 @@ ICON     :=
 # specify a directory which contains the nitro filesystem
 # this is relative to the Makefile
 NITRO    :=
-
-# These set the information text in the nds file
-GAME_TITLE     := Display List example
-GAME_SUBTITLE1 := built with devkitARM
-GAME_SUBTITLE2 := http://devitpro.org
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -173,7 +173,7 @@ else
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(OUTPUT).nds: $(OUTPUT).elf $(GAME_ICON)
+$(OUTPUT).nds: $(OUTPUT).elf $(NITRO_FILES) $(GAME_ICON)
 $(OUTPUT).elf: $(OFILES)
 
 # source files depend on generated headers
