@@ -61,6 +61,7 @@ int main() {
 	// Start the RTC tracking IRQ
 	initClockIRQ();
 	fifoInit();
+	touchInit();
 
 	mmInstall(FIFO_MAXMOD);
 
@@ -75,8 +76,8 @@ int main() {
 	irqSet(IRQ_VBLANK, VblankHandler);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT | IRQ_NETWORK);
-	
-	setPowerButtonCB(powerButtonCB);   
+
+	setPowerButtonCB(powerButtonCB);
 
 	// Keep the ARM7 mostly idle
 	while (!exitflag) {
