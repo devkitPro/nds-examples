@@ -4,8 +4,7 @@
 
 SpriteEntry OAMCopy[128];
 
-#include "ballpalette_bin.h"
-#include "balldata_bin.h"
+#include "ball.h"
 
 //---------------------------------------------------------------------------------
 void initOAM(void) {
@@ -58,10 +57,10 @@ int main(void) {
 	
 	// Sprite initialisation
 	for(i = 0; i < 256; i++)
-		SPRITE_PALETTE[i] = ((u16*)ballpalette_bin)[i];
+		SPRITE_PALETTE[i] = ((u16*)ballPal)[i];
 
 	for(i = 0; i< 32*16; i++)
-		SPRITE_GFX[i] = ((u16*)balldata_bin)[i];
+		SPRITE_GFX[i] = ((u16*)ballTiles)[i];
 
  
 	consoleInit(0, 0,BgType_Text4bpp, BgSize_T_256x256, 31,0, true, true); 

@@ -23,8 +23,8 @@ TARGET   := $(shell basename $(CURDIR))
 BUILD    := build
 SOURCES  := source
 INCLUDES := include
-DATA     := data
-GRAPHICS :=
+DATA     :=
+GRAPHICS := graphics
 AUDIO    :=
 ICON     :=
 
@@ -33,7 +33,7 @@ ICON     :=
 NITRO    :=
 
 # These set the information text in the nds file
-GAME_TITLE     := Display List example
+GAME_TITLE     := touch_test
 GAME_SUBTITLE1 := built with devkitARM
 GAME_SUBTITLE2 := http://devitpro.org
 
@@ -128,7 +128,7 @@ export OFILES_BIN   :=	$(addsuffix .o,$(BINFILES))
 
 export OFILES_SOURCES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
 
-export OFILES := $(PNGFILES:.png=.o) $(OFILES_BIN) $(OFILES_SOURCES)
+export OFILES :=  $(PNGFILES:.png=.o) $(OFILES_BIN) $(OFILES_SOURCES)
 
 export HFILES := $(PNGFILES:.png=.h) $(addsuffix .h,$(subst .,_,$(BINFILES)))
 
@@ -191,12 +191,6 @@ $(SOUNDBANK) : $(MODFILES)
 
 #---------------------------------------------------------------------------------
 %.bin.o %_bin.h : %.bin
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@$(bin2o)
-
-#---------------------------------------------------------------------------------
-%.pcx.o %_pcx.h : %.pcx
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
