@@ -32,11 +32,6 @@ ICON     :=
 # this is relative to the Makefile
 NITRO    :=
 
-# These set the information text in the nds file
-GAME_TITLE     := Advanced ARM9 template
-GAME_SUBTITLE1 := built with devkitARM
-GAME_SUBTITLE2 := http://devitpro.org
-
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
