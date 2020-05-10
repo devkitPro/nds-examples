@@ -34,6 +34,9 @@ int main(void) {
 	// using swiWaitForVBlank here puts the DS into a low power loop
 	while(1) {
 		swiWaitForVBlank();
+		scanKeys();
+		int pressed = keysDown();
+		if(pressed & KEY_START) break;
 	}
 
 	return 0;
