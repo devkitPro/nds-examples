@@ -22,9 +22,9 @@ void screenshot(u8* buffer) {
 
 	dmaCopy(VRAM_A, buffer, 256*192*2);
 	dmaCopy(vram_temp, VRAM_A, 128*1024);
-	
+
 	VRAM_A_CR=vram_cr_temp;
-	
+
 	free(vram_temp);
 
 }
@@ -41,26 +41,22 @@ void screenshot(char* filename) {
 	free(temp);
 }
 
-void write16(u16* address, u16 value) {
+void write16(void* address, u16 value) {
 
-	u8* first=(u8*)address;
-	u8* second=first+1;
+	u8* array=(u8*)address;
 
-	*first=value&0xff;
-	*second=value>>8;
+	array[0]=value&0xff;
+	array[1]=value>>8;
 }
 
-void write32(u32* address, u32 value) {
+void write32(void* address, u32 value) {
 
-	u8* first=(u8*)address;
-	u8* second=first+1;
-	u8* third=first+2;
-	u8* fourth=first+3;
+	u8* array=(u8*)address;
 
-	*first=value&0xff;
-	*second=(value>>8)&0xff;
-	*third=(value>>16)&0xff;
-	*fourth=(value>>24)&0xff;
+	array[0]=value&0xff;
+	array[1]=(value>>8)&0xff;
+	array[2]=(value>>16)&0xff;
+	array[3]=(value>>24)&0xff;
 }
 
 void screenshotbmp(const char* filename) {

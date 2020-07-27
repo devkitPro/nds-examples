@@ -2,11 +2,13 @@
 #define _bmp_h_
 
 typedef struct {
-	u16 type;						/* Magic identifier            */
-	u32 size;                       /* File size in bytes          */
+	u16 type;			/* Magic identifier            */
+	u8  size[4];                       /* File size in bytes          */
 	u16 reserved1, reserved2;
 	u32 offset;                     /* Offset to image data, bytes */
-} PACKED HEADER;
+} HEADER;
+
+static_assert(sizeof(HEADER)!=14,"HEADER wrong size");
 
 typedef struct {
 	u32 size;						/* Header size in bytes      */
@@ -18,6 +20,8 @@ typedef struct {
 	u32 xresolution,yresolution;	/* Pixels per meter          */
 	u32 ncolours;					/* Number of colours         */
 	u32 importantcolours;			/* Important colours         */
-} PACKED INFOHEADER;
+} INFOHEADER;
+
+static_assert(sizeof(INFOHEADER)!=32,"INFOHEADER wrong size");
 
 #endif //_bmp_h_
