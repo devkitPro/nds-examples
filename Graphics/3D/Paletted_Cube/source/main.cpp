@@ -22,8 +22,7 @@ static const char* test_names[] = {
 	"4x4 compressed (GL_COMPRESSED)"
 };
 
-// I wish I could remember where I got this compressed texture from, but I'm sure that someone
-// who sees it might know where it comes from.
+// Texture obtained from https://github.com/kusma/nds_texcompress
 #include "texture10_COMP_tex_bin.h"
 #include "texture10_COMP_texExt_bin.h"
 #include "texture10_COMP_pal_bin.h"
