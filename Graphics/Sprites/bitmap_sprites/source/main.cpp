@@ -25,8 +25,6 @@ int main(int argc, char** argv) {
       {0, SpriteSize_32x32, SpriteColorFormat_16Color, 0, 1, 20, 136}
    };
 
-   videoSetModeSub(MODE_0_2D);
-
    consoleDemoInit();
    
    //initialize the sub sprite engine with 1D mapping 128 byte boundary
