@@ -80,7 +80,7 @@ void getHttp(char* url) {
     while( ( recvd_len = recv( my_socket, incoming_buffer, 255, 0 ) ) != 0 ) { // if recv returns 0, the socket has been closed.
         if(recvd_len>0) { // data was received!
             incoming_buffer[recvd_len] = 0; // null-terminate
-            iprintf(incoming_buffer);
+            iprintf("%s", incoming_buffer);
 		}
 	}
 
