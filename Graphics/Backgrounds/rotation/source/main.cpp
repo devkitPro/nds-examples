@@ -44,7 +44,7 @@ int main(void) {
 	s16 rcX = 128;
 	s16 rcY = 96;
 
-	while(1) {
+	while(pmMainLoop()) {
 		// Print status
 
 		iprintf("\n\n\tHello DS devers\n");

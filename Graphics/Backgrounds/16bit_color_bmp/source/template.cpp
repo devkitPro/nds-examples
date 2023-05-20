@@ -24,10 +24,10 @@ int main(void) {
 
 	// set up our bitmap background
 	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
-	
+
 	decompress(drunkenlogoBitmap, BG_GFX,  LZ77Vram);
-	
-	while(1) {
+
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		scanKeys();
 		if (keysDown()&KEY_START) break;

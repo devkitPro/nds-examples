@@ -23,7 +23,7 @@ int main(void)
 	dmaCopy(drunkenlogoBitmap, bgGetGfxPtr(bg3), 256*256);
 	dmaCopy(drunkenlogoPal, BG_PALETTE, 256*2);
 
-	while(1) {
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		scanKeys();
 		if (keysDown()&KEY_START) break;

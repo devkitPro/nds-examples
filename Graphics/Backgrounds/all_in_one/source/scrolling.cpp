@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//reusable scroll function to allow the user to explore 
+//reusable scroll function to allow the user to explore
 //the maps somewhat
 void scroll(int id, int width, int height)
 {
@@ -15,7 +15,7 @@ void scroll(int id, int width, int height)
    int sx = 0;
    int sy = 0;
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       scanKeys();
 
@@ -62,7 +62,7 @@ void scrollText(void)
    dmaCopy(Layer256x512Map, bgGetMapPtr(bg),  Layer256x512MapLen);
    dmaCopy(TextBackgroundsPal, BG_PALETTE, sizeof(TextBackgroundsPal));
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       scanKeys();
 
@@ -82,7 +82,7 @@ void scrollText(void)
       swiWaitForVBlank();
 
       //normally would call bgSetScroll(id, sx, sy) here
-      //but to demonstrate the hardware difference between 
+      //but to demonstrate the hardware difference between
       //scrolling rotation and text backgrounds we will use
       //direct register access
 
@@ -111,7 +111,7 @@ void scrollRotation(void)
    dmaCopy(TextBackgroundsPal, BG_PALETTE, sizeof(TextBackgroundsPal));
    dmaCopy(Layer512x512Map, bgGetMapPtr(bg),  Layer512x512MapLen);
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       scanKeys();
 
@@ -131,7 +131,7 @@ void scrollRotation(void)
       swiWaitForVBlank();
 
       //normally would call bgSetScroll(id, sx, sy) here
-      //but to demonstrate the hardware difference between 
+      //but to demonstrate the hardware difference between
       //scrolling rotation and text backgrounds we will use
       //direct register access
 
@@ -164,7 +164,7 @@ void scrollVertical(void)
    int keys = 0;
    int offset = 0;
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       scanKeys();
 
@@ -181,7 +181,7 @@ void scrollVertical(void)
 
          scroll_y--;
       }
-      if(keys & KEY_DOWN)		
+      if(keys & KEY_DOWN)
       {
          offset = scroll_y / 8 + 24;
 
@@ -217,7 +217,7 @@ void scrollHorizontalText(void)
    int layerOffset = 0;
    int mapOffset = 0;
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       scanKeys();
 
@@ -237,7 +237,7 @@ void scrollHorizontalText(void)
 
          scroll_x--;
       }
-      if(keys & KEY_RIGHT)		
+      if(keys & KEY_RIGHT)
       {
          mapOffset = scroll_x / 8 + 32;
          layerOffset = (mapOffset & 63);
@@ -279,7 +279,7 @@ void scrollHorizontalExRotation(void)
    int keys = 0;
    int offset = 0;
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       scanKeys();
 
@@ -296,7 +296,7 @@ void scrollHorizontalExRotation(void)
 
          scroll_x--;
       }
-      if(keys & KEY_RIGHT)		
+      if(keys & KEY_RIGHT)
       {
          offset = scroll_x / 8 + 32;
 
@@ -347,7 +347,7 @@ void scroll4wayText(void)
    bool movingHorizontal = false;
    bool movingVertical = false;
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       movingHorizontal = false;
       movingVertical = false;
@@ -363,19 +363,19 @@ void scroll4wayText(void)
          offset_x = scroll_x / 8 - 1;
          scroll_x--;
 
-         if(scroll_x < 0) 
+         if(scroll_x < 0)
             scroll_x = 0;
-         else 
+         else
             movingHorizontal = true;
       }
-      else if(keys & KEY_RIGHT)		
+      else if(keys & KEY_RIGHT)
       {
          offset_x = scroll_x / 8 + screenWidth;
          scroll_x++;
 
-         if(scroll_x >= (mapWidth - screenWidth) * tileWidth) 
+         if(scroll_x >= (mapWidth - screenWidth) * tileWidth)
             scroll_x = (mapWidth - screenWidth) * tileWidth - 1;
-         else 
+         else
             movingHorizontal = true;
       }
 
@@ -384,20 +384,20 @@ void scroll4wayText(void)
          offset_y = scroll_y / 8 - 1;
          scroll_y--;
 
-         if(scroll_y < 0) 
+         if(scroll_y < 0)
             scroll_y = 0;
-         else 
+         else
             movingVertical = true;
 
       }
-      else if(keys & KEY_DOWN)		
+      else if(keys & KEY_DOWN)
       {
          offset_y = scroll_y / 8 + screenHeight;
          scroll_y++;
 
-         if(scroll_y >= (mapHeight - screenHeight) * tileWidth) 
+         if(scroll_y >= (mapHeight - screenHeight) * tileWidth)
             scroll_y = (mapHeight - screenHeight) * tileWidth - 1;
-         else 
+         else
             movingVertical = true;
       }
 
@@ -406,19 +406,19 @@ void scroll4wayText(void)
          u16* bgTemp = ((offset_x & 63) >= bgWidth) ? bgRightHalf : bgLeftHalf;
 
          for(int iy = scroll_y / 8 - 1 ; iy < scroll_y / 8 + screenHeight + 1; iy++)
-         {	
-            bgTemp[(offset_x & (bgWidth - 1)) + (iy & (bgHeight - 1)) * 32] = 
-               Layer1024x1024Map[offset_x + iy * mapWidth];	
+         {
+            bgTemp[(offset_x & (bgWidth - 1)) + (iy & (bgHeight - 1)) * 32] =
+               Layer1024x1024Map[offset_x + iy * mapWidth];
          }
       }
       if(movingVertical)
-      {	
+      {
          for(int ix = scroll_x / 8 - 1 ; ix < scroll_x / 8 + screenWidth + 1; ix++)
          {
             u16* bgTemp = ((ix & 63) >= bgWidth) ? bgRightHalf : bgLeftHalf;
 
-             bgTemp[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* 32] = 
-                 Layer1024x1024Map[ix + offset_y * mapWidth];	
+             bgTemp[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* 32] =
+                 Layer1024x1024Map[ix + offset_y * mapWidth];
          }
       }
 
@@ -462,7 +462,7 @@ void scroll4wayExRotation(void)
    bool movingHorizontal = false;
    bool movingVertical = false;
 
-   while(!(keys & KEY_B))
+   while(pmMainLoop() && !(keys & KEY_B))
    {
       movingHorizontal = false;
       movingVertical = false;
@@ -478,19 +478,19 @@ void scroll4wayExRotation(void)
          offset_x = scroll_x / 8 - 1;
          scroll_x--;
 
-         if(scroll_x < 0) 
+         if(scroll_x < 0)
             scroll_x = 0;
-         else 
+         else
             movingHorizontal = true;
       }
-      else if(keys & KEY_RIGHT)		
+      else if(keys & KEY_RIGHT)
       {
          offset_x = scroll_x / 8 + screenWidth;
          scroll_x++;
 
-         if(scroll_x >= (mapWidth - screenWidth) * tileWidth) 
+         if(scroll_x >= (mapWidth - screenWidth) * tileWidth)
             scroll_x = (mapWidth - screenWidth) * tileWidth - 1;
-         else 
+         else
             movingHorizontal = true;
       }
 
@@ -499,34 +499,34 @@ void scroll4wayExRotation(void)
          offset_y = scroll_y / 8 - 1;
          scroll_y--;
 
-         if(scroll_y < 0) 
+         if(scroll_y < 0)
             scroll_y = 0;
-         else 
+         else
             movingVertical = true;
 
       }
-      else if(keys & KEY_DOWN)		
+      else if(keys & KEY_DOWN)
       {
          offset_y = scroll_y / 8 + screenHeight;
          scroll_y++;
 
-         if(scroll_y >= (mapHeight - screenHeight) * tileWidth) 
+         if(scroll_y >= (mapHeight - screenHeight) * tileWidth)
             scroll_y = (mapHeight - screenHeight) * tileWidth - 1;
-         else 
+         else
             movingVertical = true;
       }
 
       if(movingHorizontal)
       {
          for(int iy = scroll_y / 8 - 1 ; iy < scroll_y / 8 + screenHeight + 1; iy++)
-            bgTileMap[(offset_x & (bgWidth - 1)) + (iy & (bgHeight - 1)) * bgWidth] = 
-               Layer1024x1024Map[offset_x  + iy * mapWidth];	
+            bgTileMap[(offset_x & (bgWidth - 1)) + (iy & (bgHeight - 1)) * bgWidth] =
+               Layer1024x1024Map[offset_x  + iy * mapWidth];
       }
       if(movingVertical)
-      {	
+      {
          for(int ix = scroll_x / 8 - 1 ; ix < scroll_x / 8 + screenWidth + 1; ix++)
-            bgTileMap[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* bgWidth] = 
-               Layer1024x1024Map[ix + offset_y * mapWidth];	
+            bgTileMap[(ix & (bgWidth - 1)) + (offset_y & (bgHeight - 1))* bgWidth] =
+               Layer1024x1024Map[ix + offset_y * mapWidth];
       }
 
       bgSetScroll(bg, scroll_x, scroll_y);

@@ -13,13 +13,13 @@
 int main(void) {
 //---------------------------------------------------------------------------------
 	//set the mode for 2 text layers and two extended background layers
-	videoSetMode(MODE_5_2D); 
+	videoSetMode(MODE_5_2D);
 
 	//set the first two banks as background memory and the third as sub background memory
 	//D is not used..if you need a bigger background then you will need to map
 	//more vram banks consecutivly (VRAM A-D are all 0x20000 bytes in size)
-	vramSetPrimaryBanks(	VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000, 
-		VRAM_C_SUB_BG , VRAM_D_LCD); 
+	vramSetPrimaryBanks(	VRAM_A_MAIN_BG_0x06000000, VRAM_B_MAIN_BG_0x06020000,
+		VRAM_C_SUB_BG , VRAM_D_LCD);
 
 	consoleDemoInit();
 
@@ -34,11 +34,11 @@ int main(void) {
 
 	u16* backBuffer = (u16*)bgGetGfxPtr(bg) + 256*256;
 
-	while(1) 
+	while(pmMainLoop())
 	{
 		//draw a box (60,60,196,136)
 		for(int iy = 60; iy < 196 - 60; iy++)
-			for(int ix = 60; ix < 256 - 60; ix++) 
+			for(int ix = 60; ix < 256 - 60; ix++)
 				backBuffer[iy * 256 + ix] = (rand() & colorMask) | BIT(15);
 
 		swiWaitForVBlank();
