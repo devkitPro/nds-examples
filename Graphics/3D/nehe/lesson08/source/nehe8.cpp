@@ -48,65 +48,65 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 }
 
 int main() {
-	
-	// Setup the Main screen for 3D 
+
+	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
 
 	// initialize the geometry engine
 	glInit();
-	
+
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
-	
+
 	glEnable(GL_BLEND);
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
 	glClearDepth(0x7FFF);
-	
+
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);
-	
+
 	LoadGLTextures();
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
-	
-	//set up a directional ligth arguments are light number (0-3), light color, 
+
+	//set up a directional ligth arguments are light number (0-3), light color,
 	//and an x,y,z vector that points in the direction of the light
 	glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0);
 
 	glColor3f(1,1,1);
-	
+
 	glMatrixMode(GL_MODELVIEW);
-	
+
 	//need to set up some material properties since DS does not have them set by default
-	
+
 	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
 	glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
 	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
 	glMaterialf(GL_EMISSION, RGB15(16,16,16));
-	
+
 	//ds uses a table for shinyness..this generates a half-ass one
 	glMaterialShinyness();
-	
+
 	// Set the current matrix to be the model matrix
 	glMatrixMode(GL_MODELVIEW);
-	
-	while (1) 
+
+	while (pmMainLoop())
 	{
 		//these little button functions are pretty handy
 		scanKeys();
 
 		int held = keysHeld();
 		int pressed = keysDown();
-		
+
 		if (held & KEY_R)
 		{
 			z-=0.02f;
@@ -134,15 +134,15 @@ int main() {
 
 		DrawGLScene();
 
-		// flush to screen	
+		// flush to screen
 		glFlush(0);
-		
+
 		// wait for the screen to refresh
 		swiWaitForVBlank();
 
 		if(pressed & KEY_START) break;
 	}
-	
+
 	return 0;
 }
 
@@ -153,11 +153,11 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 
 	glRotatef(xrot,1.0f,0.0f,0.0f);
 	glRotatef(yrot,0.0f,1.0f,0.0f);
-	
+
 	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE  | POLY_FORMAT_LIGHT0);
 
 	glBindTexture(GL_TEXTURE_2D, texture[0]);  //no filters to swtich between
-	
+
 	glBegin(GL_QUADS);
 		// Front Face
 		glNormal3f( 0.0f, 0.0f, 1.0f);
@@ -192,9 +192,9 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 	glEnd();
 
 	glPolyFmt(POLY_ALPHA(15) | POLY_CULL_BACK  | POLY_FORMAT_LIGHT0);
-	
+
 	glBegin(GL_QUADS);
-	
+
 	// Left Face
 		glNormal3f(-1.0f, 0.0f, 0.0f);
 		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);

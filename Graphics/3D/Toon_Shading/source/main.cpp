@@ -15,7 +15,7 @@ static void get_pen_delta( int *dx, int *dy ) {
 	touchPosition touchXY;
 
 	if( keys & KEY_TOUCH ) {
-		
+
 		touchRead(&touchXY);
 		if( prev_pen[0] != 0x7FFFFFFF ) {
 			*dx = (prev_pen[0] - touchXY.rawx);
@@ -44,10 +44,10 @@ int main() {
 
 	// initialize gl
 	glInit();
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
@@ -60,22 +60,22 @@ int main() {
 	//We block-fill it in two halves, we get cartoony 2-tone lighting
 	glSetToonTableRange( 0, 15, RGB15(8,8,8) );
 	glSetToonTableRange( 16, 31, RGB15(24,24,24) );
-	
+
 	//any floating point gl call is being converted to fixed prior to being implemented
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
-	
+
 	//NB: When toon-shading, the hw ignores lights 2 and 3
 	//Also note that the hw uses the RED component of the lit vertex to index the toon-table
 	glLight(0, RGB15(16,16,16) , 0,		floattov10(-1.0),		0);
 	glLight(1, RGB15(16,16,16),   floattov10(-1.0),	0,		0);
-	
-	gluLookAt(	0.0, 0.0, -3.0,		//camera possition 
+
+	gluLookAt(	0.0, 0.0, -3.0,		//camera possition
 				0.0, 0.0, 0.0,		//look at
 				0.0, 1.0, 0.0);		//up
-	
-	while(1) {
+
+	while(pmMainLoop()) {
 
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();

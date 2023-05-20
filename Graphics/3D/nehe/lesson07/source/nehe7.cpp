@@ -49,19 +49,19 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 }
 
 int main() {
-	// Setup the Main screen for 3D 
+	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
-	
+
 	// initialize the geometry engine
 	glInit();
-	
+
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
@@ -69,30 +69,30 @@ int main() {
 
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);
-	
+
 	LoadGLTextures();
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
-	
-	//set up a directional light arguments are light number (0-3), light color, 
+
+	//set up a directional light arguments are light number (0-3), light color,
 	//and an x,y,z vector that points in the direction of the light, the direction must be normalized
 	glLight(0, RGB15(31,31,31) , 0, floattov10(-1.0), 0);
-	
+
 	//need to set up some material properties since DS does not have them set by default
 	glMaterialf(GL_AMBIENT, RGB15(8,8,8));
 	glMaterialf(GL_DIFFUSE, RGB15(8,8,8));
 	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
 	glMaterialf(GL_EMISSION, RGB15(16,16,16));
-	
+
 	//ds uses a table for shinyness..this generates a half-ass one
 	glMaterialShinyness();
-	
+
 	// Set the current matrix to be the model matrix
 	glMatrixMode(GL_MODELVIEW);
-	
-	while (1) 
+
+	while (pmMainLoop())
 	{
 		//these little button functions are pretty handy
 		scanKeys();
@@ -110,33 +110,33 @@ int main() {
 		if (held & KEY_RIGHT) xspeed+=0.01f;
 		if (held & KEY_UP) yspeed+=0.01f;
 		if (held & KEY_DOWN) yspeed-=0.01f;
-		
-		
+
+
 		glColor3f(1,1,1);
-		
+
 		if (!light)
 		{
-			//ds specific, several attributes can be set here including turning on our light	
+			//ds specific, several attributes can be set here including turning on our light
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK);
 		}
 		else
 		{
-			//ds specific, several attributes can be set here including turning on our light	
+			//ds specific, several attributes can be set here including turning on our light
 			glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK  | POLY_FORMAT_LIGHT0);
 		}
 
 		DrawGLScene();
 
-		// flush to screen	
+		// flush to screen
 		glFlush(0);
-		
+
 		// wait for the screen to refresh
 		swiWaitForVBlank();
 
 		if (pressed & KEY_START) break;
 
 	}
-	
+
 	return 0;
 }
 

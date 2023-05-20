@@ -32,11 +32,11 @@ static const char* test_names[] = {
 
 //verticies for the cube
 v16 CubeVectors[] = {
-	floattov16(-0.5), floattov16(-0.5), floattov16(0.5), 
+	floattov16(-0.5), floattov16(-0.5), floattov16(0.5),
 	floattov16(0.5),  floattov16(-0.5), floattov16(0.5),
 	floattov16(0.5),  floattov16(-0.5), floattov16(-0.5),
 	floattov16(-0.5), floattov16(-0.5), floattov16(-0.5),
-	floattov16(-0.5), floattov16(0.5),  floattov16(0.5), 
+	floattov16(-0.5), floattov16(0.5),  floattov16(0.5),
 	floattov16(0.5),  floattov16(0.5),	floattov16(0.5),
 	floattov16(0.5),  floattov16(0.5),  floattov16(-0.5),
 	floattov16(-0.5), floattov16(0.5),  floattov16(-0.5)
@@ -75,7 +75,7 @@ u32 normals[] =
 
 //draw a cube face at the specified color
 void drawQuad(int poly)
-{	
+{
 
 	u32 f1 = CubeFaces[poly * 4] ;
 	u32 f2 = CubeFaces[poly * 4 + 1] ;
@@ -105,7 +105,7 @@ void TintPalette(u16* dst, u16* src, int count, int r, int g, int b)
 }
 
 int main()
-{	
+{
 	consoleDebugInit(DebugDevice_NOCASH);
 
 	int textureIDS[8];
@@ -137,7 +137,7 @@ int main()
 	//You may comment/uncomment what you like, as the integration of nglVideo into libnds works
 	// by examining the state of the banks, and deciding where to put textures/texpalettes based on that.
 	//There are some exceptions to get certain stuff working though...
-	// At least one main bank (A-D) must be allocated to textures to load/use them obviously, as well as 
+	// At least one main bank (A-D) must be allocated to textures to load/use them obviously, as well as
 	//  sub banks (E-G) for texture palettes
 	// Compressed textures require bank B allocated, as well as bank A or C (or both) to be loadable/usable
 	// 4 color palettes (not 4-bit) require either bank E, or bank F/G as slot0/1
@@ -165,7 +165,7 @@ int main()
 	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i2Bitmap);
 	u16 tempPalette[4];
 	glGenTextures(6, &paletteIDS[0]);
-	
+
 	static const int tintColors[][3] = {
 		{0,31,0},
 		{0,0,31},
@@ -178,13 +178,13 @@ int main()
 	for(int i=0;i<6;i++)
 	{
 		TintPalette(tempPalette,(u16*)i2Pal,4, tintColors[i][0], tintColors[i][1], tintColors[i][2]);
-		glBindTexture(0, paletteIDS[i]); 
+		glBindTexture(0, paletteIDS[i]);
 		glColorTableEXT(0,0,4,0,0,tempPalette);
 	}
 
 	// Just to show that this works, let's go and delete that very first texture that was loaded and load it again
-	glDeleteTextures( 1, &textureIDS[ 0 ] );	
-	
+	glDeleteTextures( 1, &textureIDS[ 0 ] );
+
 	//I2 (tinted)
 	glBindTexture(0, textureIDS[1]);
 	glTexImage2D(0, 0, GL_RGB4, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, TEXGEN_TEXCOORD, (u8*)i2Bitmap);
@@ -243,13 +243,13 @@ int main()
 	float fCamera = 1.25;
 	int nTexture = 0;
 
-	for(;;)
+	while (pmMainLoop())
 	{
 
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 
-		gluLookAt(	0.0, 0.0, fCamera,		//camera possition 
+		gluLookAt(	0.0, 0.0, fCamera,		//camera possition
 			0.0, 0.0, 0.0,		//look at
 			0.0, 1.0, 0.0);		//up
 
@@ -272,12 +272,12 @@ int main()
 		u16 keysPressed = keysDown();
 		if(keysPressed & KEY_R)
 		{
-			if( ++nTexture == ARRAY_SIZE(textureIDS) )	
+			if( ++nTexture == ARRAY_SIZE(textureIDS) )
 				nTexture=0;
 		}
-		if(keysPressed & KEY_L) 
+		if(keysPressed & KEY_L)
 		{
-			if( --nTexture == -1 )	
+			if( --nTexture == -1 )
 				nTexture=ARRAY_SIZE(textureIDS)-1;
 		}
 
@@ -304,7 +304,7 @@ int main()
 				glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK | POLY_MODULATION | POLY_ID(polyid) ) ;
 				glBegin(GL_QUAD);
 				drawQuad(i);
-				glEnd();				
+				glEnd();
 				polyid++;
 			}
 
@@ -329,4 +329,4 @@ int main()
 	}
 
 	return 0;
-}//end main 
+}//end main

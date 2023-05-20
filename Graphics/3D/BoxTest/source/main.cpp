@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	
+
 	Box test to demonstrate 3D bounding box es.  also shows the effect of culling and
 	clipping on vertex usage
 *--------------------------------------------------------------------------------*/
@@ -10,19 +10,6 @@
 #include <stdio.h>
 
 
-
-//some code for profiling
-//---------------------------------------------------------------------------------
-u16 startTimer(int timer) {
-//---------------------------------------------------------------------------------
-
-	TIMER_CR(timer) = 0;
-	TIMER_DATA(0) = 0;
-	TIMER_CR(timer) = TIMER_DIV_1 | TIMER_ENABLE;
-	return TIMER_DATA(0);
-}
-
-#define getTimer(timer) (TIMER_DATA(timer))
 
 //---------------------------------------------------------------------------------
 //draws a box...same signature as boxTest
@@ -78,7 +65,7 @@ void DrawBox(float x, float y, float z, float width, float height, float depth) 
 }
 
 //---------------------------------------------------------------------------------
-int main() {	
+int main() {
 //---------------------------------------------------------------------------------
 
 	touchPosition touchXY;
@@ -89,35 +76,32 @@ int main() {
 	//setup the sub screen for basic printing
 	consoleDemoInit();
 
-	// Setup the Main screen for 3D 
+	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 
 	// initialize gl
 	glInit();
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
 	glClearDepth(0x7FFF);
-	
+
 	// Set our view port to be the same size as the screen
 	glViewport(0,0,255,191);
-	
+
 	//camera
 	float rotX = 0, rotY = 0;
 	float translate = -5;
-
-	//some profiling code
-	u16 time;
 
 	//keep track of vertex ram usage
 	int polygon_count;
 	int vertex_count;
 
-	//object 
+	//object
 	int rx = 50, ry = 15;
 	int oldx = 0, oldy = 0;
 
@@ -129,17 +113,17 @@ int main() {
 	printf("\nTouch screen to rotate cube");
 
 	//main loop
-	while (1) {
+	while (pmMainLoop()) {
 
 		//process input
 		scanKeys();
 
 		touchRead(&touchXY);
 
-		
+
 		int held = keysHeld();
 		int pressed = keysDown();
-		
+
 		if( held & KEY_LEFT) rotY++;
 		if( held & KEY_RIGHT) rotY--;
 		if( held & KEY_UP) rotX ++;
@@ -155,18 +139,18 @@ int main() {
 
 		//if user drags then grab the delta
 		if( held & KEY_TOUCH) {
-			rx += touchXY.px - oldx; 
+			rx += touchXY.px - oldx;
 			ry += touchXY.py - oldy;
 			oldx = touchXY.px;
 			oldy = touchXY.py;
 		}
 
-		
+
 		//change ortho vs perspective
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		if(keysHeld() & KEY_B)
-			glOrtho(-4,4,-3,3,0.1,10);	
+			glOrtho(-4,4,-3,3,0.1,10);
 		else {
 			gluPerspective(70, 256.0 / 192.0, 0.1, 10);
 		}
@@ -194,19 +178,19 @@ int main() {
 		swiWaitForVBlank();
 		printf("\x1b[0;0HBox test cycle count");
 
-		time = startTimer(0);
+		cpuStartTiming(0);
 		int hit = BoxTestf(-1,-1,-1,2,2,2);
-		printf("\nSingle test (float): %i", 2*(getTimer(0) - time));
+		printf("\nSingle test (float): %lu us", timerTicks2usec(cpuEndTiming()));
 
-		time = startTimer(0);
+		cpuStartTiming(0);
 		BoxTest(inttov16(-1),inttov16(-1),inttov16(-1),inttov16(2),inttov16(2),inttov16(2));
-		printf("\nSingle test (fixed): %i", 2*(getTimer(0) - time));
+		printf("\nSingle test (fixed): %lu us", timerTicks2usec(cpuEndTiming()));
 
-		time = startTimer(0);
+		cpuStartTiming(0);
 		for(int i = 0; i < 64; i++)
 			BoxTest(inttov16(-1),inttov16(-1),inttov16(-1),inttov16(2),inttov16(2),inttov16(2));
 
-		printf("\n64 tests avg. (fixed): %i", (getTimer(0) - time) / 32);
+		printf("\n64 tests avg. (fixed): %lu us", timerTicks2usec(cpuEndTiming() / 64));
 		printf("\nBox Test result: %s", hit ? "hit" : "miss");
 
 		while (GFX_STATUS & (1<<27)); // wait until the geometry engine is not busy

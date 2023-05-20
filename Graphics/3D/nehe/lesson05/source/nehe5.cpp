@@ -12,58 +12,58 @@ int DrawGLScene();
 float rtri;				// Angle For The Triangle ( NEW )
 float rquad;			// Angle For The Quad ( NEW )
 
-int main() {	
-	
-	// Setup the Main screen for 3D 
+int main() {
+
+	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
-	
+
 	// initialize the geometry engine
 	glInit();
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
 	glClearDepth(0x7FFF);
-	
+
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
-	
-	//ds specific, several attributes can be set here	
+
+	//ds specific, several attributes can be set here
 	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
-	
-	while (1) 
+
+	while (pmMainLoop())
 	{
 		// Set the current matrix to be the model matrix
 		glMatrixMode(GL_MODELVIEW);
-		
+
 		//Push our original Matrix onto the stack (save state)
-		glPushMatrix();	
+		glPushMatrix();
 
 		DrawGLScene();
-		
+
 		// Pop our Matrix from the stack (restore state)
 		glPopMatrix(1);
 
-		// flush to screen	
+		// flush to screen
 		glFlush(0);
-		
+
 		// wait for the screen to refresh
 		swiWaitForVBlank();
-	
+
 		scanKeys();
 
 		int pressed = keysDown();
 
-		if(pressed & KEY_START) break;	
+		if(pressed & KEY_START) break;
 	}
-	
+
 	return 0;
 }
 

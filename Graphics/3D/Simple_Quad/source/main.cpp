@@ -12,10 +12,10 @@ int main()
 
 	// initialize gl
 	glInit();
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
@@ -28,12 +28,12 @@ int main()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
-	
+
 	gluLookAt(	0.0, 0.0, 1.0,		//camera possition
 				0.0, 0.0, 0.0,		//look at
 				0.0, 1.0, 0.0);		//up
 
-	while(1)
+	while(pmMainLoop())
 	{
 		glPushMatrix();
 

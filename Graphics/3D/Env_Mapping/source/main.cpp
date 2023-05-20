@@ -9,12 +9,8 @@ static void get_pen_delta( int *dx, int *dy ) {
 
 	static int prev_pen[2] = { 0x7FFFFFFF, 0x7FFFFFFF };
 	touchPosition touchXY;
-	
-	u32 keys = keysHeld();
 
-	if( keys & KEY_TOUCH ) {
-		
-		touchRead(&touchXY);
+	if( touchRead(&touchXY) ) {
 
 		if( prev_pen[0] != 0x7FFFFFFF ) {
 			*dx = (prev_pen[0] - touchXY.rawx);
@@ -42,10 +38,10 @@ int main() {
 
 	// intialize gl
 	glInit();
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
@@ -56,19 +52,30 @@ int main() {
 
 	vramSetBankA(VRAM_A_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	
+
 	int cafe_texid;
 	glGenTextures( 1, &cafe_texid );
 	glBindTexture( 0, cafe_texid );
 	glTexImage2D( 0, 0, GL_RGB, TEXTURE_SIZE_128 , TEXTURE_SIZE_128, 0, GL_TEXTURE_WRAP_S|GL_TEXTURE_WRAP_T|TEXGEN_NORMAL, (u8*)cafe_bin );
 
-	
+
 	//any floating point gl call is being converted to fixed prior to being implemented
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 40);
-	
-	while(1) {
+
+	while(pmMainLoop()) {
+
+		swiWaitForVBlank();
+		scanKeys();
+		u32 keys = keysHeld();
+
+		if(keys & KEY_START) break;
+		if( keys & KEY_UP ) rotateX += 1<<7;
+		if( keys & KEY_DOWN ) rotateX -= 1<<7;
+		if( keys & KEY_LEFT ) rotateY += 1<<7;
+		if( keys & KEY_RIGHT ) rotateY -= 1<<7;
+
 		//TEXGEN_NORMAL helpfully pops our normals into this matrix and uses the result as texcoords
 		glMatrixMode(GL_TEXTURE);
 		glLoadIdentity();
@@ -88,26 +95,16 @@ int main() {
 
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_BACK );
 
-		scanKeys();
-		u32 keys = keysHeld();
-
-		if( keys & KEY_UP ) rotateX += 3<<3;
-		if( keys & KEY_DOWN ) rotateX -= 3<<3;
-		if( keys & KEY_LEFT ) rotateY += 3<<3;
-		if( keys & KEY_RIGHT ) rotateY -= 3<<3;
-
 		int pen_delta[2];
 		get_pen_delta( &pen_delta[0], &pen_delta[1] );
-		rotateY -= pen_delta[0];
-		rotateX -= pen_delta[1];
-
+		rotateY -= pen_delta[0]<<2;
+		rotateX -= pen_delta[1]<<2;
 
 		glBindTexture( 0, cafe_texid );
 		glCallList((u32*)teapot_bin);
 
 		glFlush(0);
 
-		if(keys & KEY_START) break;
 	}
 
 	return 0;

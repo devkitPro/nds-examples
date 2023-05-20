@@ -44,15 +44,15 @@ float cos(float angle)
 
 	return f32tofloat(c);
 }
- 
- 
+
+
 int LoadGLTextures()									// Load PCX files And Convert To Textures
 {
 	sImage pcx;                //////////////(NEW) and different from nehe.
 
 	//load our texture
 	loadPCX((u8*)drunkenlogo_pcx, &pcx);
-	
+
 	image8to16(&pcx);
 
 	glGenTextures(1, &texture[0]);
@@ -62,46 +62,46 @@ int LoadGLTextures()									// Load PCX files And Convert To Textures
 	return TRUE;
 }
 void InitGL(void) {
-	
-	// Setup the Main screen for 3D 
+
+	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
-	
+
 	// initialize the geometry engine
 	glInit();
-	
+
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
-	
+
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);
-	
+
 	// enable antialiasing
 	glEnable(GL_ANTIALIAS);
-	
+
 	// setup the rear plane
 	glClearColor(0,0,0,31); // BG must be opaque for AA to work
 	glClearPolyID(63); // BG must have a unique polygon ID for AA to work
 	glClearDepth(0x7FFF);
-	
+
 	LoadGLTextures();
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
-	
+
 	//need to set up some material properties since DS does not have them set by default
 	glMaterialf(GL_AMBIENT, RGB15(31,31,31));
 	glMaterialf(GL_DIFFUSE, RGB15(31,31,31));
 	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(16,16,16));
 	glMaterialf(GL_EMISSION, RGB15(31,31,31));
-	
+
 	//ds uses a table for shinyness..this generates a half-ass one
 	glMaterialShinyness();
-	
-	//ds specific, several attributes can be set here	
+
+	//ds specific, several attributes can be set here
 	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE );
-	
+
 	for(int x=0; x<32; x++)
 	{
 		for(int y=0; y<32; y++)
@@ -111,22 +111,22 @@ void InitGL(void) {
 			points[x][y][2]= sinLerp(x * (DEGREES_IN_CIRCLE / 32));
 		}
 	}
-	
+
 	return;
 }
 int main()
-{	
+{
 	InitGL();
-	
+
 	glMatrixMode(GL_MODELVIEW);
-	
-	while (1) 
+
+	while (pmMainLoop())
 	{
 		DrawGLScene();
-		
-		// flush to screen	
+
+		// flush to screen
 		glFlush(0);
-		
+
 		// wait for the screen to refresh
 		swiWaitForVBlank();
 
@@ -136,7 +136,7 @@ int main()
 
 		if(pressed & KEY_START) break;
 	}
-	
+
 	return 0;
 }
 
@@ -144,15 +144,15 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 {
 	int x, y;
 	t16 float_x, float_y, float_xb, float_yb;
-	
+
 	glColor3b(255,255,255);    // set the vertex color
-	
+
 	glLoadIdentity();									// Reset The View
 
 	glTranslatef(0.0f,0.0f,-12.0f);
-	  
+
 	glRotatef(xrot,1.0f,0.0f,0.0f);
-	glRotatef(yrot,0.0f,1.0f,0.0f);  
+	glRotatef(yrot,0.0f,1.0f,0.0f);
 	glRotatef(zrot,0.0f,0.0f,1.0f);
 
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
