@@ -16,25 +16,28 @@ int main(void)  {
 
    kbd->OnKeyPressed = OnKeyPressed;
 
-   while(1) {
-      char myName[256];
+   bool askname = true;
 
-      iprintf("What is your name?\n");
+   while(pmMainLoop()) {
+      swiWaitForVBlank();
+      scanKeys();
 
-      scanf("%s", myName);
-
-      iprintf("\nHello %s", myName);
-
-      int keys = 0;
-
-      while(!keys) {
-         scanKeys();
-         keys = keysDown();
-         if(keys & KEY_START) exit(0);
+      u32 keys = keysDown();
+      if (keys & KEY_START) {
+         break;
+      } else if (keys != 0) {
+         askname = true;
       }
 
-      swiWaitForVBlank();
-      consoleClear();
+      if (askname) {
+         char myName[256];
+
+         consoleClear();
+         iprintf("What is your name?\n");
+         iscanf("%s", myName);
+         iprintf("\nHello %s", myName);
+         askname = false;
+      }
    }
 
    return 0;

@@ -57,7 +57,7 @@ int main()
 
 	init3D();
 
-	while(true)
+	while(pmMainLoop())
 	{
 		time_t unixTime = time(NULL);
 		struct tm* timeStruct = gmtime((const time_t *)&unixTime);

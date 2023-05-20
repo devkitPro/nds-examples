@@ -25,18 +25,18 @@ int main(void) {
 		iprintf("Connected\n\n");
 
 		ip = Wifi_GetIPInfo(&gateway, &mask, &dns1, &dns2);
-		
+
 		iprintf("ip     : %s\n", inet_ntoa(ip) );
 		iprintf("gateway: %s\n", inet_ntoa(gateway) );
 		iprintf("mask   : %s\n", inet_ntoa(mask) );
 		iprintf("dns1   : %s\n", inet_ntoa(dns1) );
 		iprintf("dns2   : %s\n", inet_ntoa(dns2) );
-		
-		
+
+
 	}
-	
-	
-	while(1) {
+
+
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		int keys = keysDown();
 		if(keys & KEY_START) break;

@@ -16,8 +16,8 @@ int main(void) {
 
 	keyboardShow();
 
-	while(1) {
-		
+	while(pmMainLoop()) {
+
 		int key = keyboardUpdate();
 
 		if(key > 0)

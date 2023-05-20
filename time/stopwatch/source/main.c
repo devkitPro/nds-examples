@@ -20,14 +20,13 @@ int main()
 
 	uint ticks = 0;
 	TimerStates state = timerState_Stop;
-	int down = keysDown();
 
-	while(!(down & KEY_START))
+	while(pmMainLoop())
 	{
 		swiWaitForVBlank();
 		consoleClear();
 		scanKeys();
-		down = keysDown();
+		u32 down = keysDown();
 
 		if(down & KEY_START) break;
 
@@ -63,7 +62,7 @@ int main()
 
 		iprintf("Press A to start and pause the \ntimer, B to clear the timer \nand start to quit the program.\n\n");
 		iprintf("ticks:  %u\n", ticks);
-		iprintf("second: %u:%u\n", ticks/TIMER_SPEED, ((ticks%TIMER_SPEED)*1000) /TIMER_SPEED);
+		iprintf("second: %u.%03u\n", ticks/TIMER_SPEED, ((ticks%TIMER_SPEED)*1000) /TIMER_SPEED);
 	}
 
 	if(state != timerState_Stop)

@@ -120,54 +120,54 @@ int main() {
 	// Setup the Main screen for 3D
 	videoSetMode(MODE_0_3D);
 	vramSetBankA(VRAM_A_TEXTURE);                        //NEW  must set up some memory for textures
-	
+
 	// initialize the 3D engine
 	glInit();
-	
+
 	// enable textures
 	glEnable(GL_TEXTURE_2D);
-	
+
 	// Set our viewport to be the same size as the screen
 	glViewport(0,0,255,191);
-	
+
 	// setup the projection matrix
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(70, 256.0 / 192.0, 0.1, 100);
-	
+
 	glLight(0, RGB15(31,31,31) , 0,	floattov10(-1.0), 0);
-	
+
 	//need to set up some material properties since DS does not have them set by default
 	glMaterialf(GL_AMBIENT, RGB15(16,16,16));
 	glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
 	glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
 	glMaterialf(GL_EMISSION, RGB15(16,16,16));
-	
+
 	//ds uses a table for shinyness..this generates a half-ass one
 	glMaterialShinyness();
-	
+
 	//ds specific, several attributes can be set here
 	glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE | POLY_FORMAT_LIGHT0);
-	
+
 	// Set the current matrix to be the model matrix
 	glMatrixMode(GL_MODELVIEW);
-	
+
 	// Specify the Clear Color and Depth
 	glClearColor(0,0,0,31);
 	glClearDepth(0x7FFF);
-	
+
 	// set the vertex color to white
 	glColor3f(1.0,1.0,1.0);
-	
+
 	LoadGLTextures();
 	SetupWorld();
 
 	touchPosition	thisXY;
-	touchPosition	lastXY = { 0,0,0,0 };		
+	touchPosition	lastXY = { 0,0,0,0 };
 
-	while (1)
+	while (pmMainLoop())
 	{
-		//these little button functions are pretty handy
+		swiWaitForVBlank();
 		scanKeys();
 
 		int held = keysHeld();

@@ -18,15 +18,18 @@ int main(void) {
 	iprintf("\twww.drunkencoders.com\n");
 	iprintf("\twww.devkitpro.org");
 
-	while(1) {
-
-		touchRead(&touch);
-		iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
-		iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
+	while(pmMainLoop()) {
 
 		swiWaitForVBlank();
 		scanKeys();
 		if (keysDown()&KEY_START) break;
+
+		if (keysHeld()&KEY_TOUCH) {
+			touchRead(&touch);
+			iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
+			iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
+		}
+
 	}
 
 	return 0;

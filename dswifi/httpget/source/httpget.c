@@ -11,7 +11,7 @@
 #include <string.h>
 
 void getHttp(char* url);
-	
+
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
@@ -28,9 +28,9 @@ int main(void) {
 		iprintf("Connected\n\n");
 
 		getHttp("www.akkit.org");	}
-	
-	
-	while(1) {
+
+
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
         int keys = keysDown();
         if(keys & KEY_START) break;
@@ -45,7 +45,7 @@ void getHttp(char* url) {
     // Let's send a simple HTTP request to a server and print the results!
 
     // store the HTTP request for later
-    const char * request_text = 
+    const char * request_text =
         "GET /dswifi/example1.php HTTP/1.1\r\n"
         "Host: www.akkit.org\r\n"
         "User-Agent: Nintendo DS\r\n\r\n";
@@ -53,7 +53,7 @@ void getHttp(char* url) {
     // Find the IP address of the server, with gethostbyname
     struct hostent * myhost = gethostbyname( url );
     iprintf("Found IP Address!\n");
- 
+
     // Create a TCP socket
     int my_socket;
     my_socket = socket( AF_INET, SOCK_STREAM, 0 );

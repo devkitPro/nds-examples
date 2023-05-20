@@ -27,72 +27,52 @@
 		distribution.
 
 ---------------------------------------------------------------------------------*/
+#include <calico.h>
 #include <nds.h>
-#include <dswifi7.h>
 #include <maxmod7.h>
-
-//---------------------------------------------------------------------------------
-void VblankHandler(void) {
-//---------------------------------------------------------------------------------
-	Wifi_Update();
-}
-
-
-//---------------------------------------------------------------------------------
-void VcountHandler() {
-//---------------------------------------------------------------------------------
-	inputGetAndSend();
-}
-
-volatile bool exitflag = false;
-
-//---------------------------------------------------------------------------------
-void powerButtonCB() {
-//---------------------------------------------------------------------------------
-	exitflag = true;
-}
 
 //---------------------------------------------------------------------------------
 int main() {
 //---------------------------------------------------------------------------------
-	// clear sound registers
-	dmaFillWords(0, (void*)0x04000400, 0x100);
 
-	REG_SOUNDCNT |= SOUND_ENABLE;
-	writePowerManagement(PM_CONTROL_REG, ( readPowerManagement(PM_CONTROL_REG) & ~PM_SOUND_MUTE ) | PM_SOUND_AMP );
-	powerOn(POWER_SOUND);
+	// Read settings from NVRAM
+	envReadNvramSettings();
 
-	readUserSettings();
-	ledBlink(0);
+	// Set up extended keypad server (X/Y/hinge)
+	keypadStartExtServer();
 
-	irqInit();
-	// Start the RTC tracking IRQ
-	initClockIRQ();
-	fifoInit();
+	// Configure and enable VBlank interrupt
+	lcdSetIrqMask(DISPSTAT_IE_ALL, DISPSTAT_IE_VBLANK);
+	irqEnable(IRQ_VBLANK);
+
+	// Set up RTC
+	rtcInit();
+	rtcSyncTime();
+
+	// Initialize power management
+	pmInit();
+
+	// Set up block device peripherals
+	blkInit();
+
+	// Set up touch screen driver
 	touchInit();
+	touchStartServer(80, MAIN_THREAD_PRIO);
 
-	mmInstall(FIFO_MAXMOD);
+	// Set up sound and mic driver
+	soundStartServer(MAIN_THREAD_PRIO-0x10);
+	micStartServer(MAIN_THREAD_PRIO-0x18);
 
-	SetYtrigger(80);
+	// Set up wireless manager
+	wlmgrStartServer(MAIN_THREAD_PRIO-8);
 
-	installWifiFIFO();
-	installSoundFIFO();
-
-	installSystemFIFO();
-
-	irqSet(IRQ_VCOUNT, VcountHandler);
-	irqSet(IRQ_VBLANK, VblankHandler);
-
-	irqEnable( IRQ_VBLANK | IRQ_VCOUNT | IRQ_NETWORK);
-
-	setPowerButtonCB(powerButtonCB);
+	// Set up Maxmod
+	mmInstall(MAIN_THREAD_PRIO+1);
 
 	// Keep the ARM7 mostly idle
-	while (!exitflag) {
-		if ( 0 == (REG_KEYINPUT & (KEY_SELECT | KEY_START | KEY_L | KEY_R))) {
-			exitflag = true;
-		}
-		swiWaitForVBlank();
+	while (pmMainLoop()) {
+		threadWaitForVBlank();
 	}
+
 	return 0;
 }

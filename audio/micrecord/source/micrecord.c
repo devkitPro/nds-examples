@@ -65,7 +65,7 @@ int main(void)
 
 	iprintf("Press A to record / play\n");
 
-	while(1) 
+	while(pmMainLoop())
 	{
 
 		scanKeys();

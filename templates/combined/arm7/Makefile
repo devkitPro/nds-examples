@@ -24,13 +24,13 @@ DATA     :=
 #---------------------------------------------------------------------------------
 ARCH := -mthumb-interwork
 
-CFLAGS   := -g -Wall -O3\
+CFLAGS   := -g -Wall -Os\
             $(ARCH) $(INCLUDE) -DARM7
 CXXFLAGS := $(CFLAGS) -fno-rtti -fno-exceptions
 ASFLAGS  := -g $(ARCH)
-LDFLAGS   = -specs=ds_arm7.specs -g $(ARCH) -Wl,--nmagic -Wl,-Map,$(notdir $*).map
+LDFLAGS   = -specs=ds_arm7.specs -g $(ARCH) -Wl,-Map,$(notdir $*).map
 
-LIBS := -ldswifi7 -lmm7 -lnds7
+LIBS := -lmm7 -lnds7
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -105,9 +105,6 @@ DEPENDS	:=	$(OFILES:.o=.d)
 # main targets
 #---------------------------------------------------------------------------------
 $(ARM7ELF) : $(OFILES)
-	@echo linking $(notdir $@)
-	@$(LD)  $(LDFLAGS) $(OFILES) $(LIBPATHS) $(LIBS) -o $@
-
 
 #---------------------------------------------------------------------------------
 %.bin.o %_bin.h : %.bin

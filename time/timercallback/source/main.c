@@ -1,39 +1,45 @@
+#include <stdio.h>
+#include <calico.h>
 #include <nds.h>
 
-void waitfor(int keys)
-{
-	scanKeys();
-	while((keysDown() & keys) == 0)
-	{
-		swiWaitForVBlank();
-		scanKeys();
-	}
-}
+static bool play = true;
+static volatile bool trigger = false;
 
-
-int channel = 0;
-bool play = true;
-
-//this function will be called by the timer.
+// Timer callback. This function is executed in IRQ mode - be careful!
 void timerCallBack()
 {
-	if(play)
-		soundPause(channel);
-	else
-		soundResume(channel);
-
 	play = !play;
+	trigger = true;
 }
 
 int main()
 {
+	consoleDemoInit();
+	iprintf("Timer callback demo\n");
+
 	soundEnable();
-	channel = soundPlayPSG(DutyCycle_50, 10000, 127, 64);
+	int channel = soundPlayPSG(DutyCycle_50, 10000, 127, 64);
 
 	//calls the timerCallBack function 5 times per second.
 	timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(5), timerCallBack);
 
-	waitfor(KEY_A | KEY_START);
+	while (pmMainLoop()) {
+		swiWaitForVBlank();
+		scanKeys();
+
+		if (keysDown() & KEY_START) {
+			break;
+		}
+
+		if (trigger) {
+			trigger = false;
+			if (play) {
+				soundResume(channel);
+			} else {
+				soundPause(channel);
+			}
+		}
+	}
 
 	return 0;
 }

@@ -50,7 +50,7 @@ int main() {
 	// sound effect handle (for cancelling it later)
 	mm_sfxhand amb = 0;
 
-	do {
+	while (pmMainLoop()) {
 
 		int keys_pressed, keys_released;
 		
@@ -76,6 +76,6 @@ int main() {
 		}
 		if( keys_pressed & KEY_START) break;
 
-	} while(1);
+	}
 	return 0;
 }

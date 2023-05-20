@@ -109,13 +109,13 @@ int main( void ) {
 	// periodically (and often enough to avoid buffer underruns)
 	//----------------------------------------------------------------
 	
-	SetYtrigger( 0 );
+	lcdSetVCountCompare(true, 0);
 	irqEnable( IRQ_VCOUNT );
 	
-	while( 1 )
+	while( pmMainLoop() )
 	{
 		// wait until line 0
-		swiIntrWait( 0, IRQ_VCOUNT);
+		swiIntrWait( 1, IRQ_VCOUNT);
 		
 		// update stream
 		mmStreamUpdate();

@@ -112,7 +112,7 @@ int main(void) {
 	// start song playing
 	mmStart( MOD_EXAMPLE2, MM_PLAY_LOOP );
 
-	while(1) {
+	while(pmMainLoop()) {
 		for (i=0; i < 5; i++) {
 			// constantly increase the sprite's y velocity
 			sprites[i].dy += 1;

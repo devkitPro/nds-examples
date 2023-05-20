@@ -10,13 +10,13 @@
 //---------------------------------------------------------------------------------
 int main(int argc, char **argv) {
 //---------------------------------------------------------------------------------
-	
+
 	// Initialise the console, required for printf
 	consoleDemoInit();
-	
+
 	if (fatInitDefault()) {
 
-	
+
 		DIR *pdir;
 		struct dirent *pent;
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
 		iprintf("fatInitDefault failure: terminating\n");
 	}
 
-	while(1) {
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		scanKeys();
 		if(keysDown()&KEY_START) break;

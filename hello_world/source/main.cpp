@@ -11,14 +11,16 @@
 
 #include <stdio.h>
 
-volatile int frame = 0;
+static volatile int frame = 0;
 
 //---------------------------------------------------------------------------------
-void Vblank() {
+// VBlank interrupt handler. This function is executed in IRQ mode - be careful!
+//---------------------------------------------------------------------------------
+static void Vblank() {
 //---------------------------------------------------------------------------------
 	frame++;
 }
-	
+
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
@@ -31,9 +33,9 @@ int main(void) {
 	iprintf("      Hello DS dev'rs\n");
 	iprintf("     \x1b[32mwww.devkitpro.org\n");
 	iprintf("   \x1b[32;1mwww.drunkencoders.com\x1b[39m");
- 
-	while(1) {
-	
+
+	while(pmMainLoop()) {
+
 		swiWaitForVBlank();
 		scanKeys();
 		int keys = keysDown();
@@ -41,11 +43,11 @@ int main(void) {
 
 		touchRead(&touchXY);
 
-		// print at using ansi escape sequence \x1b[line;columnH 
+		// print at using ansi escape sequence \x1b[line;columnH
 		iprintf("\x1b[10;0HFrame = %d",frame);
 		iprintf("\x1b[16;0HTouch x = %04X, %04X\n", touchXY.rawx, touchXY.px);
-		iprintf("Touch y = %04X, %04X\n", touchXY.rawy, touchXY.py);		
-	
+		iprintf("Touch y = %04X, %04X\n", touchXY.rawy, touchXY.py);
+
 	}
 
 	return 0;

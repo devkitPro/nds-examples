@@ -48,11 +48,11 @@ int main(int argc, char **argv) {
 	
 	if (nitroFSInit(NULL)) {
 
-		dirlist("/");
+		dirlist("nitro:/");
 		
 		{
 			// now, try reading a file to make sure things are working OK.
-			FILE* inf = fopen("file1.txt","rb");
+			FILE* inf = fopen("nitro:/file1.txt","rb");
 			if(inf)
 			{
 				int len;
@@ -77,13 +77,13 @@ int main(int argc, char **argv) {
 		}
 
 		iprintf("here is the dirlist once more:\n");
-		dirlist("/");
+		dirlist("nitro:/");
 
 	} else {
 		iprintf("nitroFSInit failure: terminating\n");
 	}
 
-	while(1) {
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		scanKeys();
 		if(keysDown()&KEY_START) break;

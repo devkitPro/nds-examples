@@ -5,16 +5,21 @@
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
 #include <stdio.h>
+
 //---------------------------------------------------------------------------------
-int main(void) {
+int main(int argc, char* argv[]) {
 //---------------------------------------------------------------------------------
+
 	consoleDemoInit();
 	iprintf("Hello World!");
-	while(1) {
+
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		scanKeys();
 		int pressed = keysDown();
 		if(pressed & KEY_START) break;
 	}
+
+	return 0;
 
 }
