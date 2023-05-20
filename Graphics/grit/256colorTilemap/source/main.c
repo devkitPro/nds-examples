@@ -32,7 +32,7 @@ int main(void) {
 	dmaCopy(tilemapPal,BG_PALETTE,tilemapPalLen);
 	// finally, hang around in an infinite loop
 	// using swiWaitForVBlank here puts the DS into a low power loop
-	while(1) {
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 		scanKeys();
 		int pressed = keysDown();

@@ -10,20 +10,20 @@ A very simple window demo which displays a square window
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-    
+
     videoSetMode(MODE_5_2D);
     vramSetBankA(VRAM_A_MAIN_BG);
-	
+
     //enable a background
     int bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_256x256, 0,0);
-    
+
     //use the standard drunken logo
 	dmaCopy(drunkenlogoBitmap, bgGetGfxPtr(bg3), drunkenlogoBitmapLen);
     dmaCopy(drunkenlogoPal, BG_PALETTE, drunkenlogoPalLen);
 
-	//enable window 0 
+	//enable window 0
 	windowEnable(WINDOW_0);
-	
+
 	//enable window 0 on our new background
 	bgWindowEnable(bg3, WINDOW_0);
 
@@ -31,20 +31,21 @@ int main(void) {
 	int y = 60;
 	int size = 100;
 
-	while(1) 
+	while(pmMainLoop())
     {
-		
+
 		scanKeys();
-		//the code below just moves the window around 
+		if(keysHeld() & KEY_START) break;
+		//the code below just moves the window around
 		if(keysHeld() & KEY_UP) y--;
 		if(keysHeld() & KEY_DOWN) y++;
 		if(keysHeld() & KEY_LEFT) x--;
 		if(keysHeld() & KEY_RIGHT) x++;
-		
+
 		if(keysHeld() & KEY_A) size--;
 		if(keysHeld() & KEY_B) size++;
 
-		if(keysHeld() & KEY_X) 
+		if(keysHeld() & KEY_X)
 		{
 			bgWindowDisable(bg3, WINDOW_OUT);
 			bgWindowEnable(bg3, WINDOW_0);

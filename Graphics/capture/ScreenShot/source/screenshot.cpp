@@ -31,8 +31,10 @@ void screenshot(u8* buffer) {
 
 void screenshot(char* filename) {
 
-	fatInitDefault();
 	FILE* file=fopen(filename, "w");
+	if (!file) {
+		return;
+	}
 
 	u8* temp=(u8*)malloc(256*192*2);
 	dmaCopy(VRAM_B, temp, 256*192*2);
@@ -61,8 +63,10 @@ void write32(void* address, u32 value) {
 
 void screenshotbmp(const char* filename) {
 
-	fatInitDefault();
 	FILE* file=fopen(filename, "wb");
+	if (!file) {
+		return;
+	}
 
 	REG_DISPCAPCNT=DCAP_BANK(3)|DCAP_ENABLE|DCAP_SIZE(3);
 	while(REG_DISPCAPCNT & DCAP_ENABLE);

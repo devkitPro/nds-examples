@@ -7,18 +7,18 @@
 //these are placed in an array to allow for random size selection
 //these are defined as part of the new sprite api
 SpriteSize sizes[] = {
-	SpriteSize_8x8, 
+	SpriteSize_8x8,
 	SpriteSize_8x16,
 	SpriteSize_16x8,
 	SpriteSize_8x32,
-	SpriteSize_16x16, 
+	SpriteSize_16x16,
 	SpriteSize_32x8,
-	SpriteSize_16x32,  
-	SpriteSize_32x16, 
-	SpriteSize_32x32, 
-	SpriteSize_32x64, 
-	SpriteSize_64x32, 
-	SpriteSize_64x64, 	
+	SpriteSize_16x32,
+	SpriteSize_32x16,
+	SpriteSize_32x32,
+	SpriteSize_32x64,
+	SpriteSize_64x32,
+	SpriteSize_64x64,
 };
 
 //this is our game entity. Notice it has a bit more info than
@@ -50,15 +50,15 @@ void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColor
 	s->alive = true;
 	s->x = x;
 	s->y = y;
-	s->z = z; 
+	s->z = z;
 	s->dx = dx;
 	s->dy = dy;
 	s->size = size;
 	s->format = format;
-    
+
 	//api: allocate a chunk of sprite graphics memory
 	s->gfx = oamAllocateGfx(oam, size, format);
-	
+
 	allocationCount++;
 	if(s->gfx) {
 		spriteMemoryUsage += (size & 0xFFF) << 5;
@@ -73,10 +73,10 @@ void createSprite(mySprite* s, int x, int y, int z, SpriteSize size, SpriteColor
 
 //sprite deconstructor
 void killSprite(mySprite *s) {
-	s->alive = false;  
- 
+	s->alive = false;
+
 	//api: free the graphics
-	if(s->gfx) {	
+	if(s->gfx) {
 		oamFreeGfx(oam, s->gfx);
 		spriteMemoryUsage -= (s->size & 0xFFF) << 5;
 	}
@@ -89,7 +89,7 @@ int zsort(const void* a, const void* b) {
 	mySprite *first = (mySprite*)a;
 	mySprite *second = (mySprite*)b;
 
-	//the trivial case 
+	//the trivial case
 	if(first == second) return 0;
 
 	//handle nulls
@@ -106,9 +106,9 @@ int zsort(const void* a, const void* b) {
 	if(first->z < second->z ) return -1;
 	if(first->z > second->z) return 1;
 
-	return 0; 
-}  
-  
+	return 0;
+}
+
 //map our sprite to oam entries
 void updateSprites(void) {
 	int i;
@@ -120,26 +120,26 @@ void updateSprites(void) {
 	//set oam to values required by my sprite
 	for(i = 0; i < SPRITE_MAX; i++) {
 		//an api function: void oamSet(OamState* oam, int id,  int x, int y, int priority, int palette_alpha, SpriteSize size, SpriteColorFormat format, const void* gfxOffset, int affineIndex, bool sizeDouble, bool hide);
-		oamSet(oam, 
-			i, 
-			sprites[i].x, sprites[i].y, 
-			0, 
+		oamSet(oam,
+			i,
+			sprites[i].x, sprites[i].y,
+			0,
 			0,
 			sprites[i].size,
-			sprites[i].format, 
-			sprites[i].gfx, 
-			-1, 
-			false, 
+			sprites[i].format,
+			sprites[i].gfx,
+			-1,
+			false,
 			!sprites[i].alive,
 			false,
-			false, 
+			false,
 			false);
 	}
 }
 
-//create a sprite with a random position, speed, and size 
+//create a sprite with a random position, speed, and size
 void randomSprite(mySprite* s) {
-	//pick a random color index 
+	//pick a random color index
 	u8 c = rand() % 256;
 
 	//two pixels at a time
@@ -149,7 +149,7 @@ void randomSprite(mySprite* s) {
 	createSprite(s, rand() % 256, rand() % 192, 0, sizes[(rand() % 12)], SpriteColorFormat_256Color, rand() % 4 - 2, rand() % 4 - 2);
 
 	//dont let sprites get stuck with 0 velocity
-	if(s->dx == 0 && s->dy == 0) {   
+	if(s->dx == 0 && s->dy == 0) {
 		s->dx = rand() % 3 + 1;
 		s->dy = rand() % 3 + 1;
 	}
@@ -158,7 +158,7 @@ void randomSprite(mySprite* s) {
 	//we load new graphics each time as this is as much a test of my allocator as an example of api usage
 	if(s->gfx) {
 		swiCopy(&color, s->gfx, ((s->size & 0xFFF) << 4) | COPY_MODE_FILL);
-	}	else {	
+	}	else {
 		s->alive = false;
 	}
 }
@@ -204,7 +204,7 @@ int main(void)  {
       SPRITE_PALETTE_SUB[i] = rand();
 	}
 
-	while(1) { 
+	while(pmMainLoop()) {
 		moveSprites();
 
 		updateSprites();
@@ -216,19 +216,19 @@ int main(void)  {
 		int keys = keysDown();
 
 		if(keys & KEY_START) break;
-		
-		//api: updates real oam memory 
+
+		//api: updates real oam memory
 		oamUpdate(oam);
 
-		if(oom) {	
+		if(oom) {
 			memUsageTemp = memUsageTemp > spriteMemoryUsage ? spriteMemoryUsage : memUsageTemp;
-    	}	
+    	}
 
 		consoleClear();
-		
+
 		printf("Memory usage: %li %li%% \n",  spriteMemoryUsage, 100 * spriteMemoryUsage / (spriteMemSize));
 		printf("Percentage fail: %li%% \n", oomCount * 100 / allocationCount);
-		printf("Lowest Usage at fail %i %li%% \n", memUsageTemp, 100 * memUsageTemp / (spriteMemSize));				
+		printf("Lowest Usage at fail %i %li%% \n", memUsageTemp, 100 * memUsageTemp / (spriteMemSize));
 	}
 
 	return 0;

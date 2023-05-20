@@ -13,10 +13,10 @@ int main(void) {
 	const int map_base = 20;
 
 
-	videoSetMode(0);	
+	videoSetMode(0);
 
-	videoSetModeSub(MODE_5_2D);	
-	vramSetBankC(VRAM_C_SUB_BG); 
+	videoSetModeSub(MODE_5_2D);
+	vramSetBankC(VRAM_C_SUB_BG);
 
 	PrintConsole *console = consoleInit(0, 3, BgType_ExRotation, BgSize_ER_256x256, map_base, tile_base, false, false);
 
@@ -29,7 +29,7 @@ int main(void) {
 	font.bpp = 8;
 	font.asciiOffset = 32;
 	font.convertSingleColor = false;
-	
+
 	consoleSetFont(console, &font);
 
 	int bg3 = console->bgId;
@@ -39,20 +39,20 @@ int main(void) {
 	iprintf("modified by WinterMute and dovoto\n");
 	iprintf("for libnds examples\n");
 
-	
+
 	unsigned int angle = 0;
     int scrollX = 0;
 	int scrollY = 0;
 	int scaleX = intToFixed(1,8);
 	int scaleY = intToFixed(1,8);
 
-	while(1) {
+	while(pmMainLoop()) {
 		scanKeys();
 		u32 keys = keysHeld();
 
 		if ( keys & KEY_START ) break;
 
-		if ( keys & KEY_L ) angle+=64; 
+		if ( keys & KEY_L ) angle+=64;
 		if ( keys & KEY_R ) angle-=64;
 
 		if ( keys & KEY_LEFT ) scrollX++;

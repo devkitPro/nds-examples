@@ -58,16 +58,17 @@ int main(int argc, char *argv[]) {
   vramSetBankE(VRAM_E_BG_EXT_PALETTE);     // for main engine
   vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE); // for sub engine
 
-  do {
+  while (pmMainLoop()) {
     swiWaitForVBlank();
     frames++;
     bgUpdate();
     scanKeys();
+    if(keysDown()&KEY_START)break;
 
     // let's make it obvious there are multiple backgrounds
     for(i = 0; i < 8; i++)
       bgSetScroll(i, frames/((i&3)+1), frames/((i&3)+1));
-  } while(!keysDown());
+  }
 
   return 0;
 }

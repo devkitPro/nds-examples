@@ -199,7 +199,7 @@ int main(void) {
 	REG_BG3X = 0;
 	REG_BG3Y = 0;
 
-	while (1) {
+	while (pmMainLoop()) {
 		//scroll the background
 		REG_BG0HOFS_SUB = delta ;
 		REG_BG0VOFS_SUB = delta++ ;

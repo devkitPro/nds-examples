@@ -1,13 +1,13 @@
 /*---------------------------------------------------------------------------------
 
-Sprite animation using two naive but common approaches to animating frames.  
+Sprite animation using two naive but common approaches to animating frames.
 
 Sprites were created by via the sprite tool at:
 
 http://charas-project.net/
 http://charas-project.net/charas2/index.php
 
-They were altered from their original 24x32 to 32x32 to make loading of frames simple 
+They were altered from their original 24x32 to 32x32 to make loading of frames simple
 for example purposes only.  They are converted using grit via the supplied sprite.grit file.
 
 The man sprite loads new frame graphics every time the animation frame changes.  This
@@ -15,10 +15,10 @@ has the advantage of only consuming 32x32 bytes of data in sprite video memory a
 disadvantages of having to store the rest of the frames in main memory and having the overhead
 of copying the data in each frame.
 
-The woman sprite loads all animation frames to sprite memory upon initialization.  This 
+The woman sprite loads all animation frames to sprite memory upon initialization.  This
 has the advantage of allowing main memory to be freed, and causes the animation process
 to be significantly faster as only a pointer is changed each frame.  The disadvantage is
-this single sprite is  consuming nearly 10% of available sprite graphics memory for 
+this single sprite is  consuming nearly 10% of available sprite graphics memory for
 the sub display.
 
 If one of these two methods are to be employed I recommend the manly approach as the sprite memory is
@@ -51,7 +51,7 @@ demos will follow this one.
 // and a reference to his frame graphics so they
 // can be loaded as needed
 //---------------------------------------------------------------------
-typedef struct 
+typedef struct
 {
 	int x;
 	int y;
@@ -65,7 +65,7 @@ typedef struct
 
 //---------------------------------------------------------------------
 // The womman sprite
-// she needs an array of pointers to sprite memory since all 
+// she needs an array of pointers to sprite memory since all
 // her frames are to be loaded.
 // she also needs to keep track of which sprite memory pointer is in use
 //---------------------------------------------------------------------
@@ -112,7 +112,7 @@ void animateMan(Man *sprite)
 void initMan(Man *sprite, u8* gfx)
 {
 	sprite->sprite_gfx_mem = oamAllocateGfx(&oamMain, SpriteSize_32x32, SpriteColorFormat_256Color);
-	
+
 	sprite->frame_gfx = (u8*)gfx;
 }
 
@@ -126,7 +126,7 @@ void animateWoman(Woman *sprite)
 }
 
 //---------------------------------------------------------------------
-// Initializing a woman requires us to load all of her graphics frames 
+// Initializing a woman requires us to load all of her graphics frames
 // into memory
 //---------------------------------------------------------------------
 void initWoman(Woman *sprite, u8* gfx)
@@ -145,7 +145,7 @@ void initWoman(Woman *sprite, u8* gfx)
 //---------------------------------------------------------------------
 // main
 //---------------------------------------------------------------------
-int main(void) 
+int main(void)
 {
 	Man man = {0,0};
 	Woman woman = {0,0};
@@ -174,12 +174,12 @@ int main(void)
 	//-----------------------------------------------------------------
 	// main loop
 	//-----------------------------------------------------------------
-	while(1) 
+	while(pmMainLoop())
 	{
 		scanKeys();
 
 		int keys = keysHeld();
-		
+
 		if(keys & KEY_START) break;
 
 		if(keys)
@@ -212,7 +212,7 @@ int main(void)
 
 				man.state = woman.state = W_DOWN;
 			}
-		
+
 			man.anim_frame++;
 			woman.anim_frame++;
 
@@ -225,14 +225,14 @@ int main(void)
 		animateWoman(&woman);
 
 		//-----------------------------------------------------------------
-		// Set oam attributes, notice the only difference is in the sprite 
+		// Set oam attributes, notice the only difference is in the sprite
 		// graphics memory pointer argument.  The man only has one pointer
 		// while the women has an array of pointers
 		//-----------------------------------------------------------------
-		oamSet(&oamMain, 0, man.x, man.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color, 
+		oamSet(&oamMain, 0, man.x, man.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color,
 			man.sprite_gfx_mem, -1, false, false, false, false, false);
-		
-		oamSet(&oamSub, 0, woman.x, woman.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color, 
+
+		oamSet(&oamSub, 0, woman.x, woman.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color,
 			woman.sprite_gfx_mem[woman.gfx_frame], -1, false, false, false, false, false);
 
 		swiWaitForVBlank();

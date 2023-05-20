@@ -14,7 +14,7 @@ int main(void) {
 
 	PrintConsole topScreen;
 	PrintConsole bottomScreen;
-	
+
 	videoSetMode(MODE_0_2D);
 	videoSetModeSub(MODE_0_2D);
 
@@ -32,10 +32,10 @@ int main(void) {
 
 	consoleSelect(&bottomScreen);
 
-	while(1) {
+	while(pmMainLoop()) {
 
 		touchRead(&touch);
-		
+
 		iprintf("\x1b[10;0HTouch x = %04i, %04i\n", touch.rawx, touch.px);
 		iprintf("Touch y = %04i, %04i\n", touch.rawy, touch.py);
 

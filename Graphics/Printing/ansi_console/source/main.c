@@ -11,7 +11,7 @@ int main(void) {
 //---------------------------------------------------------------------------------
 
 	consoleDemoInit();
-	
+
 	// ansi escape sequence to clear screen and home cursor
 	// /x1b[line;columnH
 	iprintf("\x1b[2J");
@@ -36,7 +36,7 @@ int main(void) {
 	// /x1b[columnsC
 	iprintf("\x1b[5CColumn 20");
 
-	while(1) {
+	while(pmMainLoop()) {
 
 		swiWaitForVBlank();
 		scanKeys();

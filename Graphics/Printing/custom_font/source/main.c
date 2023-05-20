@@ -10,12 +10,12 @@
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-	
+
 	const int tile_base = 0;
 	const int map_base = 20;
-	
-	videoSetModeSub(MODE_0_2D);	
-	vramSetBankC(VRAM_C_SUB_BG); 
+
+	videoSetModeSub(MODE_0_2D);
+	vramSetBankC(VRAM_C_SUB_BG);
 
 	PrintConsole *console = consoleInit(0,0, BgType_Text4bpp, BgSize_T_256x256, map_base, tile_base, false, false);
 
@@ -28,15 +28,15 @@ int main(void) {
 	font.bpp = 4;
 	font.asciiOffset = 32;
 	font.convertSingleColor = false;
-	
+
 	consoleSetFont(console, &font);
-	
+
 	iprintf("Custom Font Demo\n");
 	iprintf("   by Poffy\n");
 	iprintf("modified by WinterMute\n");
 	iprintf("for libnds examples\n");
 
-	while(1) {
+	while(pmMainLoop()) {
 
 		swiWaitForVBlank();
 		scanKeys();

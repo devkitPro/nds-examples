@@ -1,14 +1,14 @@
 #ifndef _bmp_h_
 #define _bmp_h_
 
-typedef struct {
+typedef struct PACKED {
 	u16 type;			/* Magic identifier            */
 	u8  size[4];                       /* File size in bytes          */
 	u16 reserved1, reserved2;
 	u32 offset;                     /* Offset to image data, bytes */
 } HEADER;
 
-static_assert(sizeof(HEADER)!=14,"HEADER wrong size");
+static_assert(sizeof(HEADER)==14,"HEADER wrong size");
 
 typedef struct {
 	u32 size;						/* Header size in bytes      */
@@ -22,6 +22,6 @@ typedef struct {
 	u32 importantcolours;			/* Important colours         */
 } INFOHEADER;
 
-static_assert(sizeof(INFOHEADER)!=32,"INFOHEADER wrong size");
+static_assert(sizeof(INFOHEADER)==40,"INFOHEADER wrong size");
 
 #endif //_bmp_h_

@@ -7,7 +7,7 @@
 #include <nds.h>
 #include <stdio.h>
 
-char *border = 
+char *border =
 "------------"
 "|          |"
 "|          |"
@@ -30,9 +30,9 @@ int main(void) {
 //---------------------------------------------------------------------------------
 	touchPosition touch;
 
-	PrintConsole *left = consoleDemoInit();  
-	PrintConsole right = *left;	
-	
+	PrintConsole *left = consoleDemoInit();
+	PrintConsole right = *left;
+
 	consoleSetWindow(left, 15,1,12,16);
 	consoleSetWindow(&right, 1,1,12,16);
 
@@ -43,26 +43,24 @@ int main(void) {
 
 	consoleSetWindow(left, 2,2,10,14);
 	consoleSetWindow(&right,16,2,10,14);
-	
-	while(1) 
+
+	while(pmMainLoop())
 	{
 		int keys;
-		
+
 		scanKeys();
-		
+
 		keys = keysHeld();
 
 		if(keys & KEY_START) break;
-		
-		if(keys & KEY_TOUCH)
+
+		if(touchRead(&touch))
 		{
-			touchRead(&touch);
-			
 			if(touch.px < 128)
 				consoleSelect(left);
 			else
 				consoleSelect(&right);
-				
+
 			iprintf("\nT: %i", touch.px);
 		}
 
