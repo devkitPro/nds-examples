@@ -54,13 +54,15 @@ int main(void) {
 
 	consoleClear();
 
-	if (isDSiMode()) {
-		iprintf("No gamepak addons in DSi mode\n");
+	bool gbaOk = gbacartOpen();
+
+	if (!gbaOk) {
+		iprintf("GBA slot not available\n");
 	} else {
 		iprintf("Insert gamepak addon.");
 	}
 
-	while(1) {
+	while(pmMainLoop()) {
 		swiWaitForVBlank();
 
 		scanKeys();
@@ -68,7 +70,7 @@ int main(void) {
 		if(keysDown() & KEY_START) break;
 
 
-		if (isDSiMode()) continue;
+		if (!gbaOk) continue;
 
 
 		iprintf("\x1b[5;0Hgba header 96h: %02X\n",GBA_HEADER.is96h);
@@ -98,6 +100,10 @@ int main(void) {
 		}
 
 
+	}
+
+	if (gbaOk) {
+		gbacartClose();
 	}
 
 	return 0;
