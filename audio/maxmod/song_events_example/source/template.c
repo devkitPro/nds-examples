@@ -78,7 +78,7 @@ int main(void) {
 	// start the music playing
 	mmStart( MOD_EXAMPLE, MM_PLAY_LOOP );
 
-	while(1) {
+	while(pmMainLoop()) {
 		// Sprite accelerates down
 		spriteDy += 2;
 		
