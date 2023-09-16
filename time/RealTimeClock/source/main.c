@@ -32,7 +32,7 @@ const u16 daysAtStartOfMonthLUT[12] =
 
 #define isLeapYear(year) (((year)%4) == 0)
 
-uint getDayOfWeek(uint day, uint month, uint year)
+unsigned getDayOfWeek(unsigned day, unsigned month, unsigned year)
 {
 	//http://en.wikipedia.org/wiki/Calculating_the_day_of_the_week
 

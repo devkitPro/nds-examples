@@ -16,11 +16,11 @@
 int DrawGLScene();
 
 int heading;
-int32 xpos;
-int32 zpos;
+s32 xpos;
+s32 zpos;
 
 int	yrot;				// Y Rotation
-int32 walkbias = 0;
+s32 walkbias = 0;
 int walkbiasangle = 0;
 int lookupdown = 0;
 

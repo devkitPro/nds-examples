@@ -18,11 +18,11 @@
 int DrawGLScene();
 
 int heading;
-int32 xpos;
-int32 zpos;
+s32 xpos;
+s32 zpos;
 
 int	yrot;				// Y Rotation
-int32 walkbias = 0;
+s32 walkbias = 0;
 int walkbiasangle = 0;
 int lookupdown = 0;
 
@@ -216,8 +216,8 @@ int main() {
 		{
 			touchRead(&thisXY);
 
-			int16 dx = thisXY.px - lastXY.px;
-			int16 dy = thisXY.py - lastXY.py;
+			s16 dx = thisXY.px - lastXY.px;
+			s16 dy = thisXY.py - lastXY.py;
 
 			// filtering measurement errors
 			if (dx<20 && dx>-20 && dy<20 && dy>-20)
@@ -259,9 +259,9 @@ int DrawGLScene()											// Here's Where We Do All The Drawing
 
 	v16 x_m, y_m, z_m;
 	t16 u_m, v_m;
-	int32 xtrans = -xpos;
-	int32 ztrans = -zpos;
-	int32 ytrans = -walkbias-(1<<10);
+	s32 xtrans = -xpos;
+	s32 ztrans = -zpos;
+	s32 ytrans = -walkbias-(1<<10);
 	int sceneroty = DEGREES_IN_CIRCLE - yrot;
 
 	glLoadIdentity();

@@ -36,7 +36,7 @@ class Cglfont
 		      int 	               param,
 		      int				   pallette_width,
 			  const u16			   *palette,
-			  const uint8          *texture
+			  const u8          *texture
             );
 	void Print( int x, int y, const char *text );
 	void Print( int x, int y, int value );
@@ -71,7 +71,7 @@ int Cglfont::Load( glImage              *_font_sprite,
 				   int 	              	param,
 				   int					pallette_width,
 				   const u16			*palette,
-				   const uint8          *texture
+				   const u8          *texture
 				 )
 
 {

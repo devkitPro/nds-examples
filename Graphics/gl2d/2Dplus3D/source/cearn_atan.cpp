@@ -69,7 +69,7 @@ static inline int QDIV(int num, int den, const int bits)
     while(REG_DIVCNT & DIV_BUSY);
     REG_DIVCNT = DIV_64_32;
 
-    REG_DIV_NUMER = ((int64)num)<<bits;
+    REG_DIV_NUMER = ((s64)num)<<bits;
     REG_DIV_DENOM_L = den;
 
     while(REG_DIVCNT & DIV_BUSY);
@@ -119,10 +119,10 @@ u32 atan2Lookup(int x, int y)
 
 // Seed routine
 int sqran(int seed)
-{	
+{
     int old= __qran_seed;
-    __qran_seed= seed; 
-    return old;	
+    __qran_seed= seed;
+    return old;
 }
 
 

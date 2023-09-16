@@ -105,8 +105,8 @@ int main(void) {
 	int i, delta = 0;
 	int ix = 0;
 	int iy = 0;
-	uint16* map0 = (uint16*)SCREEN_BASE_BLOCK_SUB(1);
-	uint16* map1 = (uint16*)SCREEN_BASE_BLOCK_SUB(2);
+	u16* map0 = (u16*)SCREEN_BASE_BLOCK_SUB(1);
+	u16* map1 = (u16*)SCREEN_BASE_BLOCK_SUB(2);
 
 	//set main display to render 256 color bitmap
 	videoSetMode(MODE_5_2D | DISPLAY_BG3_ACTIVE);

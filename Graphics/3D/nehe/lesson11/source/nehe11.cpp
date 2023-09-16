@@ -33,14 +33,14 @@ int	texture[1];			// Storage For 3 Textures (only going to use 1 on the DS for t
 
 float sin(float angle)
 {
-	int32 s = sinLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
+	s32 s = sinLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
 
 	return f32tofloat(s);
 }
 
 float cos(float angle)
 {
-	int32 c = cosLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
+	s32 c = cosLerp((int)((angle * DEGREES_IN_CIRCLE) / 360.0));
 
 	return f32tofloat(c);
 }

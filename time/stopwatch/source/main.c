@@ -18,7 +18,7 @@ int main()
 {
 	consoleDemoInit();
 
-	uint ticks = 0;
+	unsigned ticks = 0;
 	TimerStates state = timerState_Stop;
 
 	while(pmMainLoop())

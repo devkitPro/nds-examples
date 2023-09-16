@@ -54,14 +54,14 @@ typedef struct tagSECTOR
 
 float sin(float angle)
 {
-	int32 s = sinLerp((short)(angle * DEGREES_IN_CIRCLE / 360));
+	s32 s = sinLerp((short)(angle * DEGREES_IN_CIRCLE / 360));
 
 	return f32tofloat(s);
 }
 
 float cos(float angle)
 {
-	int32 c = cosLerp((short)(angle * DEGREES_IN_CIRCLE / 360));
+	s32 c = cosLerp((short)(angle * DEGREES_IN_CIRCLE / 360));
 
 	return f32tofloat(c);
 }
