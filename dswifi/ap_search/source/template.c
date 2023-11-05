@@ -5,7 +5,9 @@ Simple wifi demo to locate and connect to an ap
 
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <wfc.h>
 #include <dswifi9.h>
 
 #include <sys/types.h>
@@ -15,176 +17,297 @@ Simple wifi demo to locate and connect to an ap
 #include <netdb.h>
 
 //---------------------------------------------------------------------------------
-Wifi_AccessPoint* findAP(void){
+static const char* const authTypes[] = {
 //---------------------------------------------------------------------------------
+	"Open",
+	"WEP",
+	"WEP",
+	"WEP",
+	"WPA-PSK-TKIP",
+	"WPA-PSK-AES",
+	"WPA2-PSK-TKIP",
+	"WPA2-PSK-AES",
+};
 
-	int selected = 0;  
+//---------------------------------------------------------------------------------
+static const char* const connStatus[] = {
+//---------------------------------------------------------------------------------
+	"Disconnected :(",
+	"Searching...",
+	"Associating...",
+	"Obtaining IP address...",
+	"Connected!",
+};
+
+//---------------------------------------------------------------------------------
+static inline WlanBssAuthType authMaskToType(unsigned mask) {
+//---------------------------------------------------------------------------------
+	return mask ? (WlanBssAuthType)(31-__builtin_clz(mask)) : WlanBssAuthType_Open;
+}
+
+//---------------------------------------------------------------------------------
+static WlanBssDesc* findAP(void) {
+//---------------------------------------------------------------------------------
+	int selected = 0;
 	int i;
-	int count = 0, displaytop = 0;
+	int displaytop = 0;
+	unsigned count = 0;
+	WlanBssDesc* aplist = NULL;
+	WlanBssDesc* apselected = NULL;
 
-	static Wifi_AccessPoint ap;
+	static const WlanBssScanFilter filter = {
+		.channel_mask = UINT32_MAX,
+		.target_bssid = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff },
+	};
 
-	Wifi_ScanMode(); //this allows us to search for APs
+_rescan:
+	if (!wfcBeginScan(&filter)) {
+		return NULL;
+	}
 
-	int pressed = 0;
-	do {
+	iprintf("Scanning APs...\n");
 
+	while (pmMainLoop() && !(aplist = wfcGetScanBssList(&count))) {
+		swiWaitForVBlank();
 		scanKeys();
-		pressed = keysDown();
 
-		if(pressed & KEY_START) exit(0);
+		if (keysDown() & KEY_START) exit(0);
+	}
 
-		//find out how many APs there are in the area
-		count = Wifi_GetNumAP();
+	if (!aplist || !count) {
+		iprintf("No APs detected\n");
+		return NULL;
+	}
 
+	while (pmMainLoop()) {
+		swiWaitForVBlank();
+		scanKeys();
+
+		u32 pressed = keysDown();
+		if (pressed & KEY_START) exit(0);
+		if (pressed & KEY_A) {
+			apselected = &aplist[selected];
+			break;
+		}
 
 		consoleClear();
 
-		iprintf("%d APs detected\n\n", count);
+		if (pressed & KEY_R) {
+			goto _rescan;
+		}
+
+		iprintf("%u APs detected (R = rescan)\n\n", count);
 
 		int displayend = displaytop + 10;
 		if (displayend > count) displayend = count;
 
 		//display the APs to the user
-		for(i = displaytop; i < displayend; i++) {
-			Wifi_AccessPoint ap;
-
-			Wifi_GetAPData(i, &ap);
+		for (i = displaytop; i < displayend; i++) {
+			WlanBssDesc* ap = &aplist[i];
 
 			// display the name of the AP
-			iprintf("%s %.29s\n  Wep:%s Sig:%i\n", 
-				i == selected ? "*" : " ", 
-				ap.ssid, 
-				ap.flags & WFLAG_APDATA_WEP ? "Yes " : "No ",
-				ap.rssi * 100 / 0xD0);
-
+			iprintf("%s %.28s\n  RSSI:%3i Type:%s\n",
+				i == selected ? "*" : " ",
+				ap->ssid_len ? ap->ssid : "-- Hidden SSID --",
+				ap->rssi,
+				authTypes[authMaskToType(ap->auth_mask)]);
 		}
 
-		//move the selection asterick
-		if(pressed & KEY_UP) {
+		//move the selection asterisk
+		if (pressed & KEY_UP) {
 			selected--;
-			if(selected < 0) {
+			if (selected < 0) {
 				selected = 0;
 			}
-			if(selected<displaytop) displaytop = selected;
+
+			if (selected < displaytop) {
+				displaytop = selected;
+			}
 		}
 
-		if(pressed & KEY_DOWN) {
+		if (pressed & KEY_DOWN) {
 			selected++;
-			if(selected >= count) {
+			if (selected >= count) {
 				selected = count - 1;
 			}
+
 			displaytop = selected - 9;
-			if (displaytop<0) displaytop = 0;
+			if (displaytop < 0) {
+				displaytop = 0;
+			}
 		}
-		swiWaitForVBlank();
-	} while(!(pressed & KEY_A));
+	}
 
-	//user has made a choice so grab the ap and return it
-	Wifi_GetAPData(selected, &ap);
-
-	return &ap;
+	return apselected;
 }
 
 //---------------------------------------------------------------------------------
-void keyPressed(int c){
+static void keyPressed(int c){
 //---------------------------------------------------------------------------------
 	if(c > 0) iprintf("%c",c);
 }
 
 //---------------------------------------------------------------------------------
+static bool die(bool showMsg) {
+//---------------------------------------------------------------------------------
+	showMsg = showMsg && pmMainLoop();
+
+	if (showMsg) {
+		iprintf("Press A to try again, B to quit\n");
+	}
+
+	while (pmMainLoop()) {
+		swiWaitForVBlank();
+		scanKeys();
+
+		u32 pressed = keysDown();
+		if (pressed & KEY_A) return true;
+		if (pressed & (KEY_B|KEY_START)) break;
+	}
+
+	return false;
+}
+
+//---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-	Wifi_InitDefault(false);
-	
-	consoleDemoInit(); 
+	consoleDemoInit();
 
 	Keyboard* kb = keyboardDemoInit();
 	kb->OnKeyPressed = keyPressed;
 
-	while(1) {
-		int status = ASSOCSTATUS_DISCONNECTED;
+	if (!Wifi_InitDefault(false)) {
+		iprintf("Wifi init fail\n");
+		die(false);
+		return 0;
+	}
 
+	char instr[64];
+	unsigned inlen;
+
+	// Auth data must be in main RAM, not DTCM stack
+	static WlanAuthData auth;
+
+	do {
 		consoleClear();
 		consoleSetWindow(NULL, 0,0,32,24);
 
-		Wifi_AccessPoint* ap = findAP();
+		WlanBssDesc* ap = findAP();
+		if (!ap) continue;
 
 		consoleClear();
 		consoleSetWindow(NULL, 0,0,32,10);
 
-		iprintf("Connecting to %s\n", ap->ssid);
+		if (!ap->ssid_len) {
+			iprintf("Enter hidden SSID name\n");
+			bool ok;
+			do {
+				if (!fgets(instr, sizeof(instr), stdin)) {
+					exit(0);
+				}
 
-		//this tells the wifi lib to use dhcp for everything
-		Wifi_SetIP(0,0,0,0,0);	
-		char wepkey[64];
-		int wepmode = WEPMODE_NONE;
-		if (ap->flags & WFLAG_APDATA_WEP) {
-			iprintf("Enter Wep Key\n");
-			while (wepmode == WEPMODE_NONE) {
-				scanf("%s",wepkey);
-				if (strlen(wepkey)==13) {
-					wepmode = WEPMODE_128BIT;
-				} else if (strlen(wepkey) == 5) {
-					wepmode = WEPMODE_40BIT;
-				} else {
+				instr[strcspn(instr, "\n")] = 0;
+				inlen = strlen(instr);
+
+				ok = inlen && inlen <= WLAN_MAX_SSID_LEN;
+				if (!ok) {
+					iprintf("Invalid SSID\n");
+				}
+			} while (!ok);
+
+			memcpy(ap->ssid, instr, inlen);
+			ap->ssid_len = inlen;
+		}
+
+		iprintf("Connecting to %.*s\n", ap->ssid_len, ap->ssid);
+		ap->auth_type = authMaskToType(ap->auth_mask);
+		memset(&auth, 0, sizeof(auth));
+
+		if (ap->auth_type != WlanBssAuthType_Open) {
+			iprintf("Enter %s key\n", authTypes[ap->auth_type]);
+			bool ok;
+			do {
+				if (!fgets(instr, sizeof(instr), stdin)) {
+					exit(0);
+				}
+
+				instr[strcspn(instr, "\n")] = 0;
+				inlen = strlen(instr);
+
+				ok = true;
+				if (ap->auth_type < WlanBssAuthType_WPA_PSK_TKIP) {
+					if (inlen == WLAN_WEP_40_LEN) {
+						ap->auth_type = WlanBssAuthType_WEP_40;
+					} else if (inlen == WLAN_WEP_104_LEN) {
+						ap->auth_type = WlanBssAuthType_WEP_104;
+					} else if (inlen == WLAN_WEP_128_LEN) {
+						ap->auth_type = WlanBssAuthType_WEP_128;
+					} else {
+						ok = false;
+					}
+				} else if (inlen < 1 || inlen >= WLAN_WPA_PSK_LEN) {
+					ok = false;
+				}
+
+				if (!ok) {
 					iprintf("Invalid key!\n");
 				}
+			} while (!ok);
+
+			if (ap->auth_type < WlanBssAuthType_WPA_PSK_TKIP) {
+				memcpy(auth.wep_key, instr, inlen);
+			} else {
+				iprintf("Deriving PMK, please wait\n");
+				wfcDeriveWpaKey(&auth, ap->ssid, ap->ssid_len, instr, inlen);
 			}
-			Wifi_ConnectAP(ap, wepmode, 0, (u8*)wepkey);
-		} else {
-			Wifi_ConnectAP(ap, WEPMODE_NONE, 0, 0);
-		}
-		consoleClear();
-		while(status != ASSOCSTATUS_ASSOCIATED && status != ASSOCSTATUS_CANNOTCONNECT) {
-
-			status = Wifi_AssocStatus();
-			int len = strlen(ASSOCSTATUS_STRINGS[status]);
-			iprintf("\x1b[0;0H\x1b[K");
-			iprintf("\x1b[0;%dH%s", (32-len)/2,ASSOCSTATUS_STRINGS[status]);
-
-			scanKeys();
-
-			if(keysDown() & KEY_B) break;
-			
-			swiWaitForVBlank();
 		}
 
-		char url[256];
-
-		if(status == ASSOCSTATUS_ASSOCIATED) {
-			u32 ip = Wifi_GetIP();
-
-			iprintf("\nip: [%li.%li.%li.%li]\n", (ip ) & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24) & 0xFF);
-			while(1) {
-
-				scanf("%s", url);
-
-				if ( 0 == strcmp(url,"quit")) break;
-
-				struct hostent *host = gethostbyname(url);
-
-				if(host)
-					iprintf("IP (%s) : %s\n",  url, inet_ntoa(*(struct in_addr *)host->h_addr_list[0]));
-				else
-					iprintf("Could not resolve\n");
-
-				swiWaitForVBlank();
-			}
-		} else {
-			iprintf("\nConnection failed!\n");
+		if (!wfcBeginConnect(ap, &auth)) {
+			continue;
 		}
 
-		int quit = 0;
-		iprintf("Press A to try again, B to quit.");
-		while(1) {
+		bool is_connect = false;
+		while (pmMainLoop()) {
 			swiWaitForVBlank();
 			scanKeys();
-			int pressed = keysDown();
-			if(pressed&KEY_B) quit = 1;
-			if(pressed&(KEY_A|KEY_B)) break;
+
+			if (keysDown() & KEY_START) exit(0);
+
+			int status = Wifi_AssocStatus();
+
+			consoleClear();
+			iprintf("%s\n", connStatus[status]);
+
+			is_connect = status == ASSOCSTATUS_ASSOCIATED;
+			if (is_connect || status == ASSOCSTATUS_DISCONNECTED) break;
 		}
-		if(quit) break;
-	}
+
+		if (is_connect) {
+			unsigned ip = Wifi_GetIP();
+			iprintf("Our IP: %u.%u.%u.%u\n", ip & 0xff, (ip >> 8) & 0xff, (ip >> 16) & 0xff, (ip >> 24) & 0xff);
+
+			for (;;) {
+				iprintf("Enter domain name\n");
+				if (!fgets(instr, sizeof(instr), stdin)) {
+					break;
+				}
+
+				instr[strcspn(instr, "\n")] = 0;
+				inlen = strlen(instr);
+				if (!inlen) break;
+
+				struct hostent* host = gethostbyname(instr);
+				if (host) {
+					iprintf("Domain IP: %s\n", inet_ntoa(*(struct in_addr *)host->h_addr_list[0]));
+				} else {
+					iprintf("Could not resolve domain\n");
+				}
+			}
+
+			Wifi_DisconnectAP();
+		}
+
+	} while (die(true));
+
 	return 0;
 }

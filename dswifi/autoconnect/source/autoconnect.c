@@ -38,6 +38,7 @@ int main(void) {
 
 	while(pmMainLoop()) {
 		swiWaitForVBlank();
+		scanKeys();
 		int keys = keysDown();
 		if(keys & KEY_START) break;
 	}
