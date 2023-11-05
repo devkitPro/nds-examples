@@ -16,6 +16,17 @@ Simple wifi demo to locate and connect to an ap
 #include <sys/socket.h>
 #include <netdb.h>
 
+#include "wifiicon.h"
+
+//---------------------------------------------------------------------------------
+static const char* const signalStrength[] = {
+//---------------------------------------------------------------------------------
+	"[   ]",
+	"[.  ]",
+	"[.i ]",
+	"[.iI]",
+};
+
 //---------------------------------------------------------------------------------
 static const char* const authTypes[] = {
 //---------------------------------------------------------------------------------
@@ -106,10 +117,10 @@ _rescan:
 			WlanBssDesc* ap = &aplist[i];
 
 			// display the name of the AP
-			iprintf("%s %.28s\n  RSSI:%3i Type:%s\n",
+			iprintf("%s%.29s\n  %s Type:%s\n",
 				i == selected ? "*" : " ",
 				ap->ssid_len ? ap->ssid : "-- Hidden SSID --",
-				ap->rssi,
+				signalStrength[wlanCalcSignalStrength(ap->rssi)],
 				authTypes[authMaskToType(ap->auth_mask)]);
 		}
 
@@ -169,9 +180,30 @@ static bool die(bool showMsg) {
 }
 
 //---------------------------------------------------------------------------------
+static void wifiSignalIsr(void) {
+//---------------------------------------------------------------------------------
+	unsigned level = wlmgrGetSignalStrength();
+	bool is_active = wlmgrGetState() >= WlMgrState_Associating;
+
+	oamSetGfx(&oamSub, 0, SpriteSize_16x16, SpriteColorFormat_16Color, &SPRITE_GFX_SUB[level*wifiiconTilesLen/(4*sizeof(u16))]);
+	oamSetHidden(&oamSub, 0, !is_active);
+	oamUpdate(&oamSub);
+}
+
+//---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
 	consoleDemoInit();
+
+	vramSetBankD(VRAM_D_SUB_SPRITE);
+	oamInit(&oamSub, SpriteMapping_Bmp_1D_128, false);
+
+	dmaCopy(wifiiconPal, SPRITE_PALETTE_SUB, wifiiconPalLen);
+	dmaCopy(wifiiconTiles, SPRITE_GFX_SUB, wifiiconTilesLen);
+
+	oamSet(&oamSub, 0, 256-16, 0, 0, 0, SpriteSize_16x16, SpriteColorFormat_16Color, SPRITE_GFX_SUB, -1, false, false, false, false, false);
+	oamSetHidden(&oamSub, 0, true);
+	irqSet(IRQ_VBLANK, wifiSignalIsr);
 
 	Keyboard* kb = keyboardDemoInit();
 	kb->OnKeyPressed = keyPressed;
