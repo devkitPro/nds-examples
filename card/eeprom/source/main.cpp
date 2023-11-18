@@ -16,10 +16,14 @@ void ButtonWait() {
 	while(1) {
 		scanKeys();
 		int buttons = keysDown();
-		if(buttons & KEY_START)	exit(0);
+		if (!pmMainLoop() || (buttons & KEY_START)) {
+			ntrcardClose();
+			exit(0);
+		}
 		if(buttons) break;
 		swiWaitForVBlank();
 	}
+
 	scanKeys();
 }
 
@@ -29,12 +33,17 @@ int main(void) {
 
 	consoleDemoInit();
 
-	iprintf("Reading cart info...\n");
-
 	static u8 header1[512];
 	static u8 header2[512];
 
-	sysSetBusOwners(true, true); // give ARM9 access to the cart
+	// Try to obtain ARM9 access to the cart
+	if (!ntrcardOpen()) {
+		iprintf("Cannot open Slot-1\n");
+		ButtonWait();
+		return 0;
+	}
+
+	iprintf("Reading cart info...\n");
 
 	while(1) {
 		// Read the header twice to verify.
