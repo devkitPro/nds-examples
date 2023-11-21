@@ -22,9 +22,9 @@ DATA     :=
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH := -mthumb-interwork
+ARCH :=	-march=armv4t -mtune=arm7tdmi -mthumb
 
-CFLAGS   := -g -Wall -Os\
+CFLAGS   := -g -Wall -Os -ffunction-sections -fdata-sections\
             $(ARCH) $(INCLUDE) -DARM7
 CXXFLAGS := $(CFLAGS) -fno-rtti -fno-exceptions
 ASFLAGS  := -g $(ARCH)

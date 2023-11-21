@@ -24,18 +24,15 @@ INCLUDES	:=	include
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-mthumb -mthumb-interwork 
+ARCH	:=	-march=armv5te -mtune=arm946e-s -mthumb
 
-CFLAGS	:= -g -Wall -O2\
-		-march=armv5te -mtune=arm946e-s \
- 		-fomit-frame-pointer\
-		-ffast-math \
+CFLAGS	:= -g -Wall -O2 -ffunction-sections -fdata-sections\
 		$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9
 CXXFLAGS	:= $(CFLAGS)
 
-ASFLAGS	:=	-g $(ARCH) -march=armv5te -mtune=arm946e-s
+ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 #---------------------------------------------------------------------------------

@@ -81,7 +81,6 @@ int main( void ) {
 	sys.mod_count 			= 0;
 	sys.samp_count			= 0;
 	sys.mem_bank			= 0;
-	sys.fifo_channel		= FIFO_MAXMOD;
 	mmInit( &sys );
 	
 	//----------------------------------------------------------------
