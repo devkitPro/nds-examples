@@ -23,18 +23,7 @@
 */
 
 
-// When compiling for NDS, make sure NDS is defined
-#ifndef NDS
- #if defined ARM9 || defined ARM7
-  #define NDS
- #endif
-#endif
-
-#ifdef NDS
- #include <nds/ndstypes.h>
-#else
- #include "gba_types.h"
-#endif
+#include <nds/ndstypes.h>
 
 #define BYTES_PER_READ 512
 

@@ -25,7 +25,7 @@ DATA     :=
 ARCH := -mthumb-interwork
 
 CFLAGS   := -g -Wall -O3\
-            $(ARCH) $(INCLUDE) -DARM7
+            $(ARCH) $(INCLUDE) -DARM7 -D__NDS__
 CXXFLAGS := $(CFLAGS) -fno-rtti -fno-exceptions
 ASFLAGS  := -g $(ARCH)
 LDFLAGS   = -specs=ds_arm7.specs -g $(ARCH) -Wl,--nmagic -Wl,-Map,$(notdir $*).map
