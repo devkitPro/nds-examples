@@ -215,6 +215,7 @@ void ShadowDemo()
 	glPopMatrix(1);
 
 	//draw the shadow:
+	//see https://problemkaputt.de/gbatek-ds-3d-shadow-polygons.htm for details
 	{
 		//draw the cube shadow on the ground
 		glPushMatrix();
@@ -225,15 +226,15 @@ void ShadowDemo()
 		glBindTexture(0,0);
 		glColor(RGB15(0,8,0));
 
-		//1st shadow pass
-		//be sure to use opaque here
-		glPolyFmt(POLY_SHADOW | POLY_CULL_FRONT | POLY_ALPHA(31) );
+		//1st shadow pass: shadow mask
+		//be sure to use front culling, polyID 0 and alpha 1-30 here
+		glPolyFmt(POLY_SHADOW | POLY_CULL_FRONT | POLY_ALPHA(15) | POLY_ID(0) );
 		EmitCube();
 
-		//2nd shadow pass
-		//be sure to use a different polyID here (shadow with polyID 0 can't be cast on surface with polyID 0)
+		//2nd shadow pass: actual shadow rendering
+		//be sure to use no culling, polyID 1-63 and alpha 1-30 here
 		//we set the fog bit here because we want the shadow to be fogged later. i think it may be buggy but it looks better.
-		glPolyFmt(POLY_SHADOW | POLY_CULL_BACK | POLY_ALPHA(15) | POLY_ID(1) | POLY_FOG);
+		glPolyFmt(POLY_SHADOW | POLY_CULL_NONE | POLY_ALPHA(15) | POLY_ID(1) | POLY_FOG);
 		EmitCube();
 
 		//reset poly attribute
@@ -369,7 +370,8 @@ int main() {
 		DrawGLScene();
 
 		// flush to screen
-		glFlush(0);
+		// do not automatically sort translucent polygons, respect shadow polygon drawing order!
+		glFlush(GL_TRANS_MANUALSORT);
 
 		// wait for the screen to refresh
 		swiWaitForVBlank();
